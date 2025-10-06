@@ -1,0 +1,25 @@
+.MainAddManager {
+    padding: 20px;
+
+    & h2 {
+        font-size: 20px;
+    }
+}
+
+
+.MyWallet {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.Btn {
+    padding: 10px;
+    background: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;    
+}

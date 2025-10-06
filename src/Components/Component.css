@@ -1,0 +1,52 @@
+.sidebar {
+  position: fixed;
+  left: 0 !important;
+  right: 0;
+  -webkit-transform: translate3d(-270px, 0, 0);
+  -moz-transform: translate3d(-270px, 0, 0);
+  -o-transform: translate3d(-270px, 0, 0);
+  -ms-transform: translate3d(-270px, 0, 0);
+  transform: translate3d(-270px, 0, 0) !important;
+  transition: all 0.5s;
+  margin-top: 0;
+}
+.sidebar:before {
+  background: 0 0;
+  transition: all 0.5s;
+}
+.sidebar.sideOpen {
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  -o-transform: translate3d(0, 0, 0);
+  -ms-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0) !important;
+  border-right: 1px solid #f1f1f1;
+  transition: all 0.5s;
+}
+
+.main-panel {
+  -webkit-transform: translate3d(250px, 0, 0);
+  -moz-transform: translate3d(250px, 0, 0);
+  -o-transform: translate3d(250px, 0, 0);
+  -ms-transform: translate3d(250px, 0, 0);
+  transform: translate3d(250px, 0, 0) !important;
+}
+
+.main-panel {
+  width: 100%;
+  transition: all 0.5s;
+}
+
+.main-panel {
+  position: relative;
+  width: calc(100% - 250px);
+  /* height: 100vh; */
+  min-height: 100%;
+  float: right;
+  transition: all 0.3s;
+}
+
+.panelEase{
+  transition: all 0.3s;
+}
+
