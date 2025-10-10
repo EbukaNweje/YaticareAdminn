@@ -11,12 +11,22 @@ const ManageDeposit = () => {
   const [selectedDepositId, setSelectedDepositId] = useState(null);
   const [approveLoading, setApproveLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
+  const token = JSON.parse(localStorage.getItem("adminData")).token;
 
   const acceptDeposit = (depositId) => {
     const url = `https://yaticare-backend.onrender.com/api/admin/approve/${depositId}`;
     setApproveLoading(true);
     axios
-      .put(url)
+      .put(
+        url,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${token}`,
+          },
+        }
+      )
       .then((response) => {
         setApproveLoading(false);
         console.log("response", response);
@@ -26,15 +36,21 @@ const ManageDeposit = () => {
       })
       .catch((error) => {
         setApproveLoading(false);
+        toast.error(error?.response?.data?.message || "An error occurred");
         console.log("this is the error", error);
       });
   };
 
   const deleteDeposit = (depositId) => {
-    const url = `https://yaticare-back-end.vercel.app/api/admin/delete-deposit/${depositId}`;
+    const url = `https://yaticare-back-end.vercel.app/api/admin/deletedeposit/${depositId}`;
     setDeleteLoading(true);
     axios
-      .delete(url)
+      .delete(url, {
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         console.log(response.data.message);
         toast.success(response.data.message);
@@ -43,6 +59,7 @@ const ManageDeposit = () => {
       })
       .catch((error) => {
         console.log(error);
+        toast.error(error?.response?.data?.message || "An error occurred");
         setDeleteLoading(false);
       });
   };

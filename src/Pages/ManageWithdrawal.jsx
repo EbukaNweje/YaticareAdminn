@@ -11,11 +11,22 @@ const ManageWithdrawal = () => {
   const [selectedWithdrawalId, setSelectedWithdrawalId] = useState(null);
   const [approveLoading, setApproveLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
+  const token = JSON.parse(localStorage.getItem("adminData")).token;
 
   const acceptWithdrawal = (withdrawId) => {
+    setApproveLoading(true);
     const url = `https://yaticare-backend.onrender.com/api/admin/approvewithdrawal/${withdrawId}`;
     axios
-      .put(url)
+      .put(
+        url,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${token}`,
+          },
+        }
+      )
       .then((response) => {
         console.log("response", response);
         toast.success(response.data.message);
@@ -23,22 +34,30 @@ const ManageWithdrawal = () => {
         setAcceptModalVisible(false);
       })
       .catch((error) => {
+        setApproveLoading(false);
         console.log("error", error);
-        toast.error("Failed to approve withdrawal");
+        toast.error(error?.response?.data?.message || "An error occurred");
       });
   };
 
   const deleteWithdrawal = (withdrawId) => {
+    setDeleteLoading(true);
     const url = `https://yaticare-backend.onrender.com/api/admin/deletewithdrawal/${withdrawId}`;
     axios
-      .delete(url)
+      .delete(url, {
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         toast.success(response.data.message);
         getallWithdrawal(); // Refresh list
         setDeleteModalVisible(false);
       })
       .catch((error) => {
-        toast.error("Failed to delete withdrawal");
+        setDeleteLoading(false);
+        toast.error(error?.response?.data?.message || "An error occurred");
       });
   };
 

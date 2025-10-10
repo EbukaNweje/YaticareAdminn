@@ -54,6 +54,7 @@ const Login = () => {
           console.log(res);
           toast.success("Login Successful");
           localStorage.setItem("adminData", JSON.stringify(res?.data));
+
           if (res.status === 200) {
             nav("/admin/dashboard");
           }
