@@ -156,7 +156,7 @@ const Dashboard = () => {
           <div className="w-[70%] phone:w-full h-[60vh] bg-white shadow-md p-5">
             <div className="w-full h-[15%] border-b border-b-gray-200 flex justify-between">
               <p className="text-xl text-[rgb(87,89,98)]">User Statistics</p>
-              <p>2023</p>
+              <p>2025</p>
             </div>
             <div className="w-full h-[85%]  bg-sky-100 flex items-center justify-center">
               <SimpleLineChart />
