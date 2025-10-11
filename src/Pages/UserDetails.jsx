@@ -9,6 +9,7 @@ import { useParams } from "react-router-dom";
 const UserDetails = () => {
   const [oneUserData, setOneUserData] = useState({});
   const { id } = useParams();
+  const token = JSON.parse(localStorage.getItem("adminData")).token;
 
   const Nav = useNavigate();
 
@@ -296,11 +297,15 @@ const UserDetails = () => {
     setDeleteUser(false);
     const toastLoadingId = toast.loading("Please wait...");
     setShowActions(false);
-    const url = `https://yaticare-back-end.vercel.app/api/user/userdata/${id}`;
+    const url = `https://yaticare-back-end.vercel.app/api/admin/deleteuser/${id}`;
     axios
-      .delete(url)
+      .delete(url, {
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${token}`,
+        },
+      })
       .then((res) => {
-        console.log(res?.data);
         setTimeout(() => {
           toast.dismiss(toastLoadingId);
           toast.success("Success");
@@ -308,7 +313,8 @@ const UserDetails = () => {
         window.history.back();
       })
       .catch((error) => {
-        console.log(error);
+        toast.dismiss(toastLoadingId);
+        toast.error(error?.response?.data?.message || "An error occurred");
       });
   };
   const goBack = () => {
