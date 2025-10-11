@@ -15,7 +15,7 @@ const Login = () => {
         localStorage.setItem("allUserData", JSON.stringify(response?.data));
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
       });
   };
 
@@ -33,10 +33,10 @@ const Login = () => {
       document.getElementById("password").value === ""
     ) {
       setLoading(false);
-      alert("Please fill out all fields");
+      toast.error("Please fill out all fields");
     } else if (!document.getElementById("email").value) {
       setLoading(false);
-      alert("Invalid email address");
+      toast.error("Invalid email address");
     } else {
       setLoading(true);
 
@@ -51,7 +51,6 @@ const Login = () => {
           userData
         )
         .then((res) => {
-          console.log(res);
           toast.success("Login Successful");
           localStorage.setItem("adminData", JSON.stringify(res?.data));
 
@@ -61,7 +60,7 @@ const Login = () => {
           setLoading(false);
         })
         .catch((error) => {
-          console.log(error);
+          // console.log(error);
           setLoading(false);
 
           // alert("Incorrect username or password");
