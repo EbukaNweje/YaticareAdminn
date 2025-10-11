@@ -15,12 +15,11 @@ const Dashboard = () => {
 
   const nav = useNavigate();
 
-  console.log(loadAdminData());
+  loadAdminData();
 
   const userData = localStorage?.getItem("allUserData")
     ? JSON.parse(localStorage?.getItem("allUserData"))
     : [];
-  console.log(userData);
 
   return (
     <>
@@ -28,7 +27,7 @@ const Dashboard = () => {
         <div className="w-full h-20 flex justify-between phone:flex-col phone:h-[11rem] ">
           <div className="w-[73%] h-full flex flex-col justify-between py-1 phone:w-full">
             <h1 className="text-[27.6px] text-[rgb(87,89,98)] font-semibold">
-              Welcome back, Admin Test!
+              Welcome back, Admin!
             </h1>
             <p className="text-[rgb(87,89,98)]">
               Yesterday I was clever, so I wanted to change the world. Today I

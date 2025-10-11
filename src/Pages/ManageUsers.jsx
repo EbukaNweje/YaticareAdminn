@@ -23,12 +23,9 @@ const ManageUsers = () => {
     axios
       .get(url)
       .then((response) => {
-        console.log(response);
         setUserData(response?.data?.data);
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {});
   };
 
   useEffect(() => {

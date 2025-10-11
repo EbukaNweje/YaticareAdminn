@@ -36,8 +36,6 @@ const UserDetails = () => {
     }
   }, [id]);
 
-  console.log(oneUserData);
-
   const [showActions, setShowActions] = useState(false);
   const [blockUser, setBlockUser] = useState(false);
   const handleBlockUser = () => {
@@ -61,7 +59,6 @@ const UserDetails = () => {
   const [creditDebitValue, setCreditDebitValue] = useState("");
   const [creditDebitItem, setCreditDebitItem] = useState("");
   let reqData;
-  console.log(oneUserData);
 
   // if (creditDebitItem === "bonus") {
   //     reqData = {bonus: `${Number(creditDebitValue) + Number(oneUserData.bonus)}`};
