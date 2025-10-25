@@ -13,7 +13,7 @@ const UserDetails = () => {
   const [EditInfo, setEditInfo] = useState({
     userName: true,
     email: true,
-    phone: true,
+    phoneNumber: true,
     WalletAddress: true,
     WalletName: true,
     pin: false,
@@ -586,7 +586,15 @@ const UserDetails = () => {
                     readOnly={EditInfo.email}
                     className=" p-1 rounded w-[70%] border border-gray-300 outline-gray-300"
                   />
-                  <button className="py-1 px-3 bg-gray-300 rounded">
+                  <button
+                    className="py-1 px-3 bg-gray-300 rounded"
+                    onClick={() => {
+                      setEditInfo((prev) => ({
+                        ...prev,
+                        email: !prev.email,
+                      }));
+                    }}
+                  >
                     Edit
                   </button>
                 </div>
@@ -602,7 +610,15 @@ const UserDetails = () => {
                     readOnly={EditInfo.phone}
                     className=" p-1 rounded w-[70%] border border-gray-300 outline-gray-300"
                   />
-                  <button className="py-1 px-3 bg-gray-300 rounded">
+                  <button
+                    className="py-1 px-3 bg-gray-300 rounded"
+                    onClick={() => {
+                      setEditInfo((prev) => ({
+                        ...prev,
+                        phoneNumber: !prev.phoneNumber,
+                      }));
+                    }}
+                  >
                     Edit
                   </button>
                 </div>
@@ -618,7 +634,15 @@ const UserDetails = () => {
                     readOnly={EditInfo.WalletName}
                     className=" p-1 rounded w-[70%] border border-gray-300 outline-gray-300"
                   />
-                  <button className="py-1 px-3 bg-gray-300 rounded">
+                  <button
+                    className="py-1 px-3 bg-gray-300 rounded"
+                    onClick={() => {
+                      setEditInfo((prev) => ({
+                        ...prev,
+                        WalletName: !prev.WalletName,
+                      }));
+                    }}
+                  >
                     Edit
                   </button>
                 </div>
@@ -634,7 +658,15 @@ const UserDetails = () => {
                     readOnly={EditInfo.WalletAddress}
                     className=" p-1 rounded w-[70%] border border-gray-300 outline-gray-300"
                   />
-                  <button className="py-1 px-3 bg-gray-300 rounded">
+                  <button
+                    className="py-1 px-3 bg-gray-300 rounded"
+                    onClick={() => {
+                      setEditInfo((prev) => ({
+                        ...prev,
+                        WalletAddress: !prev.WalletAddress,
+                      }));
+                    }}
+                  >
                     Edit
                   </button>
                 </div>
@@ -650,7 +682,15 @@ const UserDetails = () => {
                     />
                   ) : null}
 
-                  <button className="py-1 px-3 bg-gray-300 rounded">
+                  <button
+                    className="py-1 px-3 bg-gray-300 rounded"
+                    onClick={() => {
+                      setEditInfo((prev) => ({
+                        ...prev,
+                        pin: !prev.pin,
+                      }));
+                    }}
+                  >
                     {EditInfo.pin ? "Save" : "Change Pin"}
                   </button>
                 </div>
@@ -664,11 +704,19 @@ const UserDetails = () => {
                     <input
                       type="password"
                       value={""}
-                      className=" p-1 rounded w-[30%] border border-gray-300 outline-gray-300"
+                      className=" p-1 rounded w-[60%] border border-gray-300 outline-gray-300"
                     />
                   ) : null}
-                  <button className="py-1 px-3 bg-gray-300 rounded">
-                    Change Password
+                  <button
+                    className="py-1 px-3 bg-gray-300 rounded"
+                    onClick={() => {
+                      setEditInfo((prev) => ({
+                        ...prev,
+                        password: !prev.password,
+                      }));
+                    }}
+                  >
+                    {EditInfo.password ? "Save Password" : "Change Password"}
                   </button>
                 </div>
               </div>
