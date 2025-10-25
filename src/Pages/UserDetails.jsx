@@ -18,7 +18,7 @@ const UserDetails = () => {
     axios
       .get(url)
       .then((res) => {
-        console.log(res?.data);
+        // console.log(res?.data);
         setOneUserData(res?.data.data);
       })
       .catch((error) => {
@@ -155,9 +155,6 @@ const UserDetails = () => {
             : `${Number(oneUserData.totalInvestment) - value}`,
         };
       }
-
-      console.log(reqData);
-
       // Proceed with the API call
       const url = `https://yaticare-back-end.vercel.app/api/user/userdata/${id}`;
       axios
@@ -326,6 +323,17 @@ const UserDetails = () => {
     // }
   };
 
+  const formatCurrency = (val) => {
+    const n = Number(val);
+    if (!Number.isFinite(n)) return "0.00";
+    return n.toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  };
+
+  console.log("this is one user data", oneUserData);
+
   return (
     <>
       <div className="w-full h-max px-6 py-10 flex flex-col gap-2 phone:gap-8 bg-[#f9fbfd] text-[rgb(87,89,98)]">
@@ -450,42 +458,76 @@ const UserDetails = () => {
                 </p>
               </div>
             </div>
-            {/* <div className="w-1/4 phone:w-full h-28 phone:h-max flex flex-col phone:flex-row justify-between ">
-              <div className="w-full h-[45%] flex flex-col justify-between">
-                <h1 className=" text-[rgb(14,65,82)] font-bold">Profit</h1>
-                <p className="text-sm">${oneUserData?.totalProfit}.00</p>
-              </div>
-              <div className="w-full h-[45%]">
-                <h1 className=" text-[rgb(14,65,82)] font-bold">Inv. Plans</h1>
-                <button className="py-[0.40rem] px-3 flex gap-1 items-center text-xs bg-[#0e4152] text-white rounded">
-                  View Plans
-                </button>
-              </div>
-            </div> */}
             <div className="w-1/4 phone:w-full h-28 phone:h-max flex flex-col phone:flex-row justify-between ">
               <div className="w-full h-[45%] flex flex-col justify-between">
                 <h1 className=" text-[rgb(14,65,82)] font-bold">
-                  Referral Bonus
+                  WithdrawalTotal
                 </h1>
-                <p className="text-sm">${oneUserData?.ref}.00</p>
-              </div>
-              {/* <div className="w-full h-[45%] flex flex-col justify-between">
-                <h1 className=" text-[rgb(14,65,82)] font-bold">Bonus</h1>
-                <p className="text-sm">${oneUserData?.bonus}.00</p>
-              </div> */}
-            </div>
-            {/* <div className="w-1/4 phone:w-full h-28 phone:h-max flex flex-col phone:flex-row justify-between ">
-              <div className="w-full h-[45%] flex flex-col justify-between">
-                <h1 className=" text-[rgb(14,65,82)] font-bold">Bonus</h1>
-                <p className="text-sm">${oneUserData?.bonus}.00</p>
+                <p className="text-sm">
+                  ${oneUserData?.userTransactionTotal.withdrawalTotal}.00
+                </p>
               </div>
               <div className="w-full h-[45%]">
                 <h1 className=" text-[rgb(14,65,82)] font-bold">
-                  Total Deposit
+                  Subscriptions History Total
                 </h1>
-                <p className="text-sm ">${oneUserData?.totalDeposit}.00</p>
+                <p className="text-sm">
+                  ${oneUserData?.userTransactionTotal.subscriptionsHistoryTotal}
+                  .00
+                </p>
               </div>
-            </div> */}
+            </div>
+            <div className="w-1/4 phone:w-full h-28 phone:h-max flex flex-col phone:flex-row justify-between ">
+              <div className="w-full h-[45%] flex flex-col justify-between">
+                <h1 className=" text-[rgb(14,65,82)] font-bold">
+                  Daily Interest History Total
+                </h1>
+                <p className="text-sm">
+                  ${oneUserData?.userTransactionTotal.dailyInterestHistoryTotal}
+                  .00
+                </p>
+              </div>
+              <div className="w-full h-[45%] flex flex-col justify-between">
+                <h1 className=" text-[rgb(14,65,82)] font-bold">
+                  Deposit Total
+                </h1>
+                <p className="text-sm">
+                  ${oneUserData?.userTransactionTotal.depositTotal}.00
+                </p>
+              </div>
+            </div>
+            <div className="w-1/4 phone:w-full h-28 phone:h-max flex flex-col phone:flex-row justify-between ">
+              <div className="w-full h-[45%] flex flex-col justify-between">
+                <h1 className=" text-[rgb(14,65,82)] font-bold">
+                  Bonus History Total
+                </h1>
+                <p className="text-sm">
+                  ${oneUserData?.userTransactionTotal.bonusHistoryTotal}.00
+                </p>
+              </div>
+              <div className="w-full h-[45%]">
+                <h1 className=" text-[rgb(14,65,82)] font-bold">
+                  Referral Count
+                </h1>
+                <p className="text-sm ">{oneUserData?.referralCount}</p>
+              </div>
+            </div>
+            <div className="w-1/4 phone:w-full h-28 phone:h-max flex flex-col phone:flex-row justify-between ">
+              <div className="w-full h-[45%] flex flex-col justify-between">
+                <h1 className=" text-[rgb(14,65,82)] font-bold">
+                  Referral Bonus Amount
+                </h1>
+                <p className="text-sm">
+                  ${formatCurrency(oneUserData?.referralBonusAmount)}
+                </p>
+              </div>
+              {/* <div className="w-full h-[45%]">
+                <h1 className=" text-[rgb(14,65,82)] font-bold">
+                  Referral Count
+                </h1>
+                <p className="text-sm ">{oneUserData?.referralCount}</p>
+              </div> */}
+            </div>
           </div>
           <div className="w-full h-max mb-5">
             <p className="px-4">USER INFORMATION</p>
@@ -522,14 +564,40 @@ const UserDetails = () => {
                   {oneUserData.phoneNumber}
                 </div>
               </div>
-              {/* <div className="w-full h-14 border-b border-b-gray-200 flex items-center py-3">
+              <div className="w-full h-14 flex border-b border-b-gray-200  items-center py-3">
                 <div className="w-[30%] h-full flex items-center px-4">
-                  Country
+                  WalletName
                 </div>
                 <div className="w-[70%] h-full flex items-center px-4 border-l border-l-gray-200">
-                  {oneUserData.country}
+                  {oneUserData?.WalletInfo?.WalletName}
                 </div>
-              </div> */}
+              </div>
+              <div className="w-full h-14 flex border-b border-b-gray-200  items-center py-3">
+                <div className="w-[30%] h-full flex items-center px-4">
+                  WalletAddress
+                </div>
+                <div className="w-[70%] h-full flex items-center px-4 border-l border-l-gray-200">
+                  {oneUserData?.WalletInfo?.WalletAddress}
+                </div>
+              </div>
+              <div className="w-full h-14 border-b border-b-gray-200 flex items-center py-3">
+                <div className="w-[30%] h-full flex items-center px-4">Pin</div>
+                <div className="w-[70%] h-full flex items-center px-4 border-l border-l-gray-200">
+                  <button className="py-1 px-3 bg-gray-300 rounded">
+                    Change Pin
+                  </button>
+                </div>
+              </div>
+              <div className="w-full h-14 border-b border-b-gray-200 flex items-center py-3">
+                <div className="w-[30%] h-full flex items-center px-4">
+                  Password
+                </div>
+                <div className="w-[70%] h-full flex items-center px-4 border-l border-l-gray-200">
+                  <button className="py-1 px-3 bg-gray-300 rounded">
+                    Change Password
+                  </button>
+                </div>
+              </div>
               <div className="w-full h-14 flex items-center py-3">
                 <div className="w-[30%] h-full flex items-center px-4">
                   Registered
