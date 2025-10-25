@@ -10,6 +10,15 @@ const UserDetails = () => {
   const [oneUserData, setOneUserData] = useState({});
   const { id } = useParams();
   const token = JSON.parse(localStorage.getItem("adminData")).token;
+  const [EditInfo, setEditInfo] = useState({
+    userName: true,
+    email: true,
+    phone: true,
+    WalletAddress: true,
+    WalletName: true,
+    pin: false,
+    password: false,
+  });
 
   const Nav = useNavigate();
 
@@ -464,7 +473,7 @@ const UserDetails = () => {
                   WithdrawalTotal
                 </h1>
                 <p className="text-sm">
-                  ${oneUserData?.userTransactionTotal.withdrawalTotal}.00
+                  ${oneUserData?.userTransactionTotal?.withdrawalTotal}.00
                 </p>
               </div>
               <div className="w-full h-[45%]">
@@ -472,7 +481,8 @@ const UserDetails = () => {
                   Subscriptions History Total
                 </h1>
                 <p className="text-sm">
-                  ${oneUserData?.userTransactionTotal.subscriptionsHistoryTotal}
+                  $
+                  {oneUserData?.userTransactionTotal?.subscriptionsHistoryTotal}
                   .00
                 </p>
               </div>
@@ -483,7 +493,8 @@ const UserDetails = () => {
                   Daily Interest History Total
                 </h1>
                 <p className="text-sm">
-                  ${oneUserData?.userTransactionTotal.dailyInterestHistoryTotal}
+                  $
+                  {oneUserData?.userTransactionTotal?.dailyInterestHistoryTotal}
                   .00
                 </p>
               </div>
@@ -492,7 +503,7 @@ const UserDetails = () => {
                   Deposit Total
                 </h1>
                 <p className="text-sm">
-                  ${oneUserData?.userTransactionTotal.depositTotal}.00
+                  ${oneUserData?.userTransactionTotal?.depositTotal}.00
                 </p>
               </div>
             </div>
@@ -502,7 +513,7 @@ const UserDetails = () => {
                   Bonus History Total
                 </h1>
                 <p className="text-sm">
-                  ${oneUserData?.userTransactionTotal.bonusHistoryTotal}.00
+                  ${oneUserData?.userTransactionTotal?.bonusHistoryTotal}.00
                 </p>
               </div>
               <div className="w-full h-[45%]">
@@ -545,7 +556,23 @@ const UserDetails = () => {
                   UserName
                 </div>
                 <div className="w-[70%] h-full flex items-center px-4 border-l border-l-gray-200">
-                  {oneUserData.userName}
+                  <input
+                    type="text"
+                    value={oneUserData.userName}
+                    readOnly={EditInfo.userName}
+                    className=" p-1 rounded w-[70%] border border-gray-300 outline-gray-300"
+                  />
+                  <button
+                    className="py-1 px-3 bg-gray-300 rounded"
+                    onClick={() => {
+                      setEditInfo((prev) => ({
+                        ...prev,
+                        userName: !prev.userName,
+                      }));
+                    }}
+                  >
+                    Edit
+                  </button>
                 </div>
               </div>
               <div className="w-full h-14 border-b border-b-gray-200 flex items-center py-3">
@@ -553,7 +580,15 @@ const UserDetails = () => {
                   Email
                 </div>
                 <div className="w-[70%] h-full flex items-center px-4 border-l border-l-gray-200">
-                  {oneUserData.email}
+                  <input
+                    type="text"
+                    value={oneUserData.email}
+                    readOnly={EditInfo.email}
+                    className=" p-1 rounded w-[70%] border border-gray-300 outline-gray-300"
+                  />
+                  <button className="py-1 px-3 bg-gray-300 rounded">
+                    Edit
+                  </button>
                 </div>
               </div>
               <div className="w-full h-14 flex border-b border-b-gray-200  items-center py-3">
@@ -561,7 +596,15 @@ const UserDetails = () => {
                   Mobile Number
                 </div>
                 <div className="w-[70%] h-full flex items-center px-4 border-l border-l-gray-200">
-                  {oneUserData.phoneNumber}
+                  <input
+                    type="text"
+                    value={oneUserData.phoneNumber}
+                    readOnly={EditInfo.phone}
+                    className=" p-1 rounded w-[70%] border border-gray-300 outline-gray-300"
+                  />
+                  <button className="py-1 px-3 bg-gray-300 rounded">
+                    Edit
+                  </button>
                 </div>
               </div>
               <div className="w-full h-14 flex border-b border-b-gray-200  items-center py-3">
@@ -569,7 +612,15 @@ const UserDetails = () => {
                   WalletName
                 </div>
                 <div className="w-[70%] h-full flex items-center px-4 border-l border-l-gray-200">
-                  {oneUserData?.WalletInfo?.WalletName}
+                  <input
+                    type="text"
+                    value={oneUserData?.WalletInfo?.WalletName}
+                    readOnly={EditInfo.WalletName}
+                    className=" p-1 rounded w-[70%] border border-gray-300 outline-gray-300"
+                  />
+                  <button className="py-1 px-3 bg-gray-300 rounded">
+                    Edit
+                  </button>
                 </div>
               </div>
               <div className="w-full h-14 flex border-b border-b-gray-200  items-center py-3">
@@ -577,14 +628,30 @@ const UserDetails = () => {
                   WalletAddress
                 </div>
                 <div className="w-[70%] h-full flex items-center px-4 border-l border-l-gray-200">
-                  {oneUserData?.WalletInfo?.WalletAddress}
+                  <input
+                    type="text"
+                    value={oneUserData?.WalletInfo?.WalletAddress}
+                    readOnly={EditInfo.WalletAddress}
+                    className=" p-1 rounded w-[70%] border border-gray-300 outline-gray-300"
+                  />
+                  <button className="py-1 px-3 bg-gray-300 rounded">
+                    Edit
+                  </button>
                 </div>
               </div>
               <div className="w-full h-14 border-b border-b-gray-200 flex items-center py-3">
                 <div className="w-[30%] h-full flex items-center px-4">Pin</div>
                 <div className="w-[70%] h-full flex items-center px-4 border-l border-l-gray-200">
+                  {EditInfo.pin ? (
+                    <input
+                      type="password"
+                      value={""}
+                      className=" p-1 rounded w-[30%] border border-gray-300 outline-gray-300"
+                    />
+                  ) : null}
+
                   <button className="py-1 px-3 bg-gray-300 rounded">
-                    Change Pin
+                    {EditInfo.pin ? "Save" : "Change Pin"}
                   </button>
                 </div>
               </div>
@@ -593,6 +660,13 @@ const UserDetails = () => {
                   Password
                 </div>
                 <div className="w-[70%] h-full flex items-center px-4 border-l border-l-gray-200">
+                  {EditInfo.password ? (
+                    <input
+                      type="password"
+                      value={""}
+                      className=" p-1 rounded w-[30%] border border-gray-300 outline-gray-300"
+                    />
+                  ) : null}
                   <button className="py-1 px-3 bg-gray-300 rounded">
                     Change Password
                   </button>
@@ -606,6 +680,9 @@ const UserDetails = () => {
                   {oneUserData.updatedAt}
                 </div>
               </div>
+              <button className="my-4 mx-4 py-2 px-5 bg-green-800 text-white rounded">
+                Save Changes
+              </button>
             </div>
           </div>
         </div>
