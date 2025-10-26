@@ -284,16 +284,17 @@ const UserDetails = () => {
   };
 
   const [login, setLogin] = useState(false);
-  // const handleLogin = () => {
-  //   setLogin(false);
-  //   const toastLoadingId = toast.loading("Please wait...");
-  //   setTimeout(() => {
-  //     toast.dismiss(toastLoadingId);
-  //     toast.success("Success");
-  //     window.location.href = `https://bitpaytradeauth.vercel.app/#/${id}`;
-  //   }, 3000);
-  //   setShowActions(false);
-  // };
+  const handleLogin = () => {
+    setLogin(false);
+    const toastLoadingId = toast.loading("Please wait...");
+    setTimeout(() => {
+      toast.dismiss(toastLoadingId);
+      toast.success("Success");
+      // window.location.href = `http://localhost:5174/#/dashboard/${id}`;
+      window.location.href = `https://ya-ti-pauy.vercel.app/#/dashboard/${id}`;
+    }, 3000);
+    setShowActions(false);
+  };
 
   const [deleteUser, setDeleteUser] = useState(false);
   const handleDelete = () => {
@@ -374,14 +375,7 @@ const UserDetails = () => {
                         Login Activity
                       </div>
                     </NavLink> */}
-                    {/* <div
-                                            className="w-full h-7 flex items-center pl-1 text-sm hover:bg-gray-300 cursor-pointer"
-                                            onClick={() =>
-                                                setBlockUser(!blockUser)
-                                            }
-                                        >
-                                            Block
-                                        </div> */}
+
                     {/* <div
                                             className="w-full h-7 flex items-center pl-1 text-sm hover:bg-gray-300 cursor-pointer"
                                             onClick={handleOnRoi}
@@ -395,13 +389,11 @@ const UserDetails = () => {
                       Credit/Debit
                     </div> */}
                     {/* <div
-                                            className="w-full h-7 flex items-center pl-1 text-sm hover:bg-gray-300 cursor-pointer"
-                                            onClick={() =>
-                                                setResetPwd(!resetPwd)
-                                            }
-                                        >
-                                            Reset Password
-                                        </div> */}
+                      className="w-full h-7 flex items-center pl-1 text-sm hover:bg-gray-300 cursor-pointer"
+                      onClick={() => setResetPwd(!resetPwd)}
+                    >
+                      Reset Password
+                    </div> */}
                     {/* <div
                       className="w-full h-7 flex items-center pl-1 text-sm hover:bg-gray-300 cursor-pointer"
                       onClick={() => setClearAcc(!clearAcc)}
@@ -414,29 +406,33 @@ const UserDetails = () => {
                                         >
                                             Add ROI history
                                         </div> */}
-                    {/* <div
-                                            className="w-full h-7 flex items-center pl-1 text-sm hover:bg-gray-300 cursor-pointer"
-                                            onClick={() => setEdit(!edit)}
-                                        >
-                                            Edit
-                                        </div> */}
+                    <div
+                      className="w-full h-7 flex items-center pl-1 text-sm hover:bg-gray-300 cursor-pointer"
+                      onClick={() => setEdit(!edit)}
+                    >
+                      Edit
+                    </div>
                     {/* <div className="w-full h-7 flex items-center pl-1 text-sm hover:bg-gray-300 cursor-pointer">
-                                            Add Referral
-                                        </div> */}
-                    {/* <div
-                                            className="w-full h-7 flex items-center pl-1 text-sm hover:bg-gray-300 cursor-pointer"
-                                            onClick={() =>
-                                                setSendEmail(!sendEmail)
-                                            }
-                                        >
-                                            Send Email
-                                        </div> */}
-                    {/* <div
+                      Add Referral
+                    </div> */}
+                    <div
+                      className="w-full h-7 flex items-center pl-1 text-sm hover:bg-gray-300 cursor-pointer"
+                      onClick={() => setSendEmail(!sendEmail)}
+                    >
+                      Send Email
+                    </div>
+                    <div
                       className="w-full h-max flex items-center pl-1 py-1 text-sm hover:bg-gray-300 cursor-pointer text-[#31ce36]"
                       onClick={() => setLogin(!login)}
                     >
                       Login as {oneUserData.userName}
-                    </div> */}
+                    </div>
+                    <div
+                      className="w-full h-max flex items-center pl-1 py-1 text-sm hover:bg-gray-300 cursor-pointer text-[#f25961]"
+                      onClick={() => setBlockUser(!blockUser)}
+                    >
+                      Block {oneUserData.userName}
+                    </div>
                     <div
                       className="w-full h-max flex items-center pl-1 py-1 text-sm hover:bg-gray-300 cursor-pointer text-[#f25961]"
                       onClick={() => {
@@ -529,7 +525,7 @@ const UserDetails = () => {
                   Referral Bonus Amount
                 </h1>
                 <p className="text-sm">
-                  ${formatCurrency(oneUserData?.referralBonusAmount)}
+                  ${formatCurrency(oneUserData?.inviteCode?.bonusAmount)}
                 </p>
               </div>
               {/* <div className="w-full h-[45%]">
@@ -556,23 +552,7 @@ const UserDetails = () => {
                   UserName
                 </div>
                 <div className="w-[70%] h-full flex items-center px-4 border-l border-l-gray-200">
-                  <input
-                    type="text"
-                    value={oneUserData.userName}
-                    readOnly={EditInfo.userName}
-                    className=" p-1 rounded w-[70%] border border-gray-300 outline-gray-300"
-                  />
-                  <button
-                    className="py-1 px-3 bg-gray-300 rounded"
-                    onClick={() => {
-                      setEditInfo((prev) => ({
-                        ...prev,
-                        userName: !prev.userName,
-                      }));
-                    }}
-                  >
-                    Edit
-                  </button>
+                  {oneUserData.userName}
                 </div>
               </div>
               <div className="w-full h-14 border-b border-b-gray-200 flex items-center py-3">
@@ -580,23 +560,7 @@ const UserDetails = () => {
                   Email
                 </div>
                 <div className="w-[70%] h-full flex items-center px-4 border-l border-l-gray-200">
-                  <input
-                    type="text"
-                    value={oneUserData.email}
-                    readOnly={EditInfo.email}
-                    className=" p-1 rounded w-[70%] border border-gray-300 outline-gray-300"
-                  />
-                  <button
-                    className="py-1 px-3 bg-gray-300 rounded"
-                    onClick={() => {
-                      setEditInfo((prev) => ({
-                        ...prev,
-                        email: !prev.email,
-                      }));
-                    }}
-                  >
-                    Edit
-                  </button>
+                  {oneUserData.email}
                 </div>
               </div>
               <div className="w-full h-14 flex border-b border-b-gray-200  items-center py-3">
@@ -604,23 +568,7 @@ const UserDetails = () => {
                   Mobile Number
                 </div>
                 <div className="w-[70%] h-full flex items-center px-4 border-l border-l-gray-200">
-                  <input
-                    type="text"
-                    value={oneUserData.phoneNumber}
-                    readOnly={EditInfo.phone}
-                    className=" p-1 rounded w-[70%] border border-gray-300 outline-gray-300"
-                  />
-                  <button
-                    className="py-1 px-3 bg-gray-300 rounded"
-                    onClick={() => {
-                      setEditInfo((prev) => ({
-                        ...prev,
-                        phoneNumber: !prev.phoneNumber,
-                      }));
-                    }}
-                  >
-                    Edit
-                  </button>
+                  {oneUserData.phoneNumber}
                 </div>
               </div>
               <div className="w-full h-14 flex border-b border-b-gray-200  items-center py-3">
@@ -628,23 +576,7 @@ const UserDetails = () => {
                   WalletName
                 </div>
                 <div className="w-[70%] h-full flex items-center px-4 border-l border-l-gray-200">
-                  <input
-                    type="text"
-                    value={oneUserData?.WalletInfo?.WalletName}
-                    readOnly={EditInfo.WalletName}
-                    className=" p-1 rounded w-[70%] border border-gray-300 outline-gray-300"
-                  />
-                  <button
-                    className="py-1 px-3 bg-gray-300 rounded"
-                    onClick={() => {
-                      setEditInfo((prev) => ({
-                        ...prev,
-                        WalletName: !prev.WalletName,
-                      }));
-                    }}
-                  >
-                    Edit
-                  </button>
+                  {oneUserData?.WalletInfo?.WalletName}
                 </div>
               </div>
               <div className="w-full h-14 flex border-b border-b-gray-200  items-center py-3">
@@ -652,23 +584,7 @@ const UserDetails = () => {
                   WalletAddress
                 </div>
                 <div className="w-[70%] h-full flex items-center px-4 border-l border-l-gray-200">
-                  <input
-                    type="text"
-                    value={oneUserData?.WalletInfo?.WalletAddress}
-                    readOnly={EditInfo.WalletAddress}
-                    className=" p-1 rounded w-[70%] border border-gray-300 outline-gray-300"
-                  />
-                  <button
-                    className="py-1 px-3 bg-gray-300 rounded"
-                    onClick={() => {
-                      setEditInfo((prev) => ({
-                        ...prev,
-                        WalletAddress: !prev.WalletAddress,
-                      }));
-                    }}
-                  >
-                    Edit
-                  </button>
+                  {oneUserData?.WalletInfo?.WalletAddress}
                 </div>
               </div>
               <div className="w-full h-14 border-b border-b-gray-200 flex items-center py-3">
@@ -751,7 +667,7 @@ const UserDetails = () => {
         title={"Block User"}
       >
         <p className="text-2xl">
-          Are you sure you want to block {oneUserData.fullName}?
+          Are you sure you want to block {oneUserData.userName}?
         </p>
       </Modal>
       <Modal
@@ -1014,7 +930,7 @@ const UserDetails = () => {
           </div>
         </div>
       </Modal>
-      {/* 
+
       <Modal
         open={login}
         onOk={handleLogin}
@@ -1029,7 +945,7 @@ const UserDetails = () => {
         okText={"Proceed"}
         closeIcon={true}
         title={`You are about to login as ${oneUserData.userName}.`}
-      ></Modal> */}
+      ></Modal>
       <Modal
         open={deleteUser}
         onOk={handleDelete}
@@ -1046,8 +962,8 @@ const UserDetails = () => {
         title={"Delete User"}
       >
         <p>
-          Are you sure you want to delete {oneUserData.fullName} Account?
-          Everything associated with this account will be loss.
+          Are you sure you want to delete {oneUserData.userName} Account?
+          Everything associated with this account will be lost.
         </p>
       </Modal>
     </>
