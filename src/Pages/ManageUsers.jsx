@@ -166,50 +166,33 @@ const ManageUsers = () => {
                     <p>Action</p>
                   </div>
                 </div>
-                {userData.map((item, index) => (
+                {[...userData].reverse().map((item, index) => (
                   <div
                     className="w-max h-14 flex items-center text-[rgb(33,37,41)] text-sm"
                     key={index}
                   >
-                    <div className="w-14  h-full flex items-center ">
+                    <div className="w-14 h-full flex items-center">
                       <input
                         type="checkbox"
                         className="w-3 h-3 phone:w-5 phone:h-5 cursor-pointer"
                       />
                     </div>
-                    {/* <div className="w-32  h-full flex items-center  ">
-                      <p>
-                        {item?.firstName} {item.lastName}
-                      </p>
-                    </div> */}
-                    <div className="w-32 h-full flex items-center ">
+                    <div className="w-32 h-full flex items-center">
                       <p>{item?.userName}</p>
                     </div>
-                    <div className="w-48 h-full flex items-center ">
-                      <p>{item?.email} </p>
+                    <div className="w-48 h-full flex items-center">
+                      <p>{item?.email}</p>
                     </div>
-                    <div className="w-36 h-full flex items-center ">
+                    <div className="w-36 h-full flex items-center">
                       <p>{item?.phoneNumber}</p>
                     </div>
-                    <div className="w-28 h-full flex items-center ">
+                    <div className="w-28 h-full flex items-center">
                       <p>${item?.accountBalance}.00</p>
                     </div>
-                    {/* <div className="w-40 h-full flex items-center ">
-                      <button
-                        onClick={() => {
-                          Verify(item._id);
-                        }}
-                        className={`w-14 p-[0.10rem] ${
-                          item?.verify === false ? `bg-[red]` : `bg-[#31ce36]`
-                        } bg-[#31ce36] rounded-full flex items-center justify-center text-white text-sm`}
-                      >
-                        {item?.verify === false ? "false" : "true"}
-                      </button>
-                    </div> */}
-                    <div className="w-32 h-full flex items-center ">
+                    <div className="w-32 h-full flex items-center">
                       <p>{item?.updatedAt.split("T")[0]}</p>
                     </div>
-                    <div className="w-32 h-full flex items-center ">
+                    <div className="w-32 h-full flex items-center">
                       <NavLink
                         to={`/admin/dashboard/user-details/${item?._id}`}
                       >
@@ -218,11 +201,6 @@ const ManageUsers = () => {
                         </button>
                       </NavLink>
                     </div>
-                    {/* <div className="w-32 h-full flex items-center ">
-                                                <button className="p-2 bg-[#6861ce] text-xs rounded text-white">
-                                                    Verify User
-                                                </button>
-                                        </div> */}
                   </div>
                 ))}
               </div>
