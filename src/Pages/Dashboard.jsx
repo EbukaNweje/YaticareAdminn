@@ -6,12 +6,22 @@ import { FaArrowRight } from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router-dom";
 import { SimpleBarChart } from "./SimpleBarChart";
 import { SimpleLineChart } from "./SimpleLineChart";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 const Dashboard = () => {
   const loadAdminData = () => {
     const adminData = localStorage?.getItem("adminData");
     return adminData ? JSON?.parse(adminData) : {};
   };
+
+  const [activeUser, setActiveUser] = useState(null);
+  const [blockedUser, setBlockedUser] = useState(null);
+  const [aciveSubscribers, setAciveSubscribers] = useState(null);
+  const [totalDailyWithdrawal, setTotalDailyWithdrawals] = useState(null);
+  const [totalDailyDeposit, setTotalDailyDeposits] = useState(null);
+  const [totalPendingWithdrawal, setTotalPendingWithdrawals] = useState(null);
+  const [totalPendingDeposit, settotalPendingDeposits] = useState(null);
 
   const nav = useNavigate();
 
@@ -20,6 +30,73 @@ const Dashboard = () => {
   const userData = localStorage?.getItem("allUserData")
     ? JSON.parse(localStorage?.getItem("allUserData"))
     : [];
+
+  const baseUrl = "https://yaticare-backend.onrender.com/api/admin/";
+
+  const getAciveandBlockedUser = async () => {
+    try {
+      const data = await axios.get(`${baseUrl}/totalblockedandactiveusers`);
+      setActiveUser(data?.data?.activeCount);
+      setBlockedUser(data?.data?.blockedCount);
+    } catch (err) {
+      console.log("this is get total blocked and active users error", err);
+    }
+  };
+
+  const getAciveSubscribers = async () => {
+    try {
+      const data = await axios.get(`${baseUrl}/totalactivesubscribers`);
+      setAciveSubscribers(data?.data?.activeSubscribersCount);
+      // console.log("totalactivesubscribers", data);
+    } catch (err) {
+      console.log("this is get total blocked and active users error", err);
+    }
+  };
+  const totalDailyWithdrawals = async () => {
+    try {
+      const data = await axios.get(`${baseUrl}/totaldailywithdrawals`);
+      setTotalDailyWithdrawals(data?.data?.totalAmount);
+      // console.log("totalactivesubscribers", data);
+    } catch (err) {
+      console.log("this is get total blocked and active users error", err);
+    }
+  };
+  const totalDailyDeposits = async () => {
+    try {
+      const data = await axios.get(`${baseUrl}/totaldailydeposit`);
+      setTotalDailyDeposits(data?.data?.totalAmount);
+      // console.log("totaldailydeposit", data);
+    } catch (err) {
+      console.log("this is get total blocked and active users error", err);
+    }
+  };
+  const totalPendingWithdrawals = async () => {
+    try {
+      const data = await axios.get(`${baseUrl}/totalpendingwithdrawals`);
+      setTotalPendingWithdrawals(data?.data?.pendingCount);
+      // console.log("totalPendingWithdrawals", data);
+    } catch (err) {
+      console.log("this is get total blocked and active users error", err);
+    }
+  };
+  const totalPendingDeposits = async () => {
+    try {
+      const data = await axios.get(`${baseUrl}/totalpendingdeposits`);
+      settotalPendingDeposits(data?.data?.pendingCount);
+      console.log("totalPendingDeposits", data);
+    } catch (err) {
+      console.log("this is get total blocked and active users error", err);
+    }
+  };
+
+  useEffect(() => {
+    getAciveandBlockedUser();
+    getAciveSubscribers();
+    totalDailyWithdrawals();
+    totalDailyDeposits();
+    totalPendingWithdrawals();
+    totalPendingDeposits();
+  }, []);
 
   return (
     <>
@@ -77,7 +154,9 @@ const Dashboard = () => {
                 <p className="text-[14px] text-[rgb(141,148,152)]">
                   Active Subscribers
                 </p>
-                <span className="text-xl text-[rgb(87,89,98)]">0</span>
+                <span className="text-xl text-[rgb(87,89,98)]">
+                  {aciveSubscribers}
+                </span>
               </div>
             </div>
             <div className="w-[23%] phone:w-full h-full rounded bg-white shadow-md flex gap-3 items-center p-5">
@@ -86,9 +165,11 @@ const Dashboard = () => {
               </div>
               <div className="flex flex-col ">
                 <p className="text-[14px] text-[rgb(141,148,152)]">
-                  Total Withdrawals
+                  Total Daily Withdrawals
                 </p>
-                <span className="text-xl text-[rgb(87,89,98)]">$0.00</span>
+                <span className="text-xl text-[rgb(87,89,98)]">
+                  ${totalDailyWithdrawal}.00
+                </span>
               </div>
             </div>
             <div className="w-[23%] phone:w-full h-full rounded bg-white shadow-md flex gap-3 items-center p-5">
@@ -97,9 +178,11 @@ const Dashboard = () => {
               </div>
               <div className="flex flex-col ">
                 <p className="text-[14px] text-[rgb(141,148,152)]">
-                  Total Deposits
+                  Total Daily Deposits
                 </p>
-                <span className="text-xl text-[rgb(87,89,98)]">$0.00</span>
+                <span className="text-x text-[rgb(87,89,98)]">
+                  ${totalDailyDeposit}.00
+                </span>
               </div>
             </div>
           </div>
@@ -112,7 +195,9 @@ const Dashboard = () => {
                 <p className="text-[14px] text-[rgb(141,148,152)]">
                   Blocked Users
                 </p>
-                <span className="text-xl text-[rgb(87,89,98)]">0</span>
+                <span className="text-xl text-[rgb(87,89,98)]">
+                  {blockedUser}
+                </span>
               </div>
             </div>
             <div className="w-[23%] phone:w-full h-full rounded bg-white shadow-md flex gap-3 items-center p-5">
@@ -124,7 +209,7 @@ const Dashboard = () => {
                   Active Users
                 </p>
                 <span className="text-xl text-[rgb(87,89,98)]">
-                  {userData?.data?.length}
+                  {activeUser}
                 </span>
               </div>
             </div>
@@ -136,7 +221,9 @@ const Dashboard = () => {
                 <p className="text-[14px] text-[rgb(141,148,152)]">
                   Pending Withdrawals
                 </p>
-                <span className="text-xl text-[rgb(87,89,98)]">0</span>
+                <span className="text-xl text-[rgb(87,89,98)]">
+                  {totalPendingWithdrawal}
+                </span>
               </div>
             </div>
             <div className="w-[23%] phone:w-full h-full rounded bg-white shadow-md flex gap-3 items-center p-5">
@@ -147,7 +234,9 @@ const Dashboard = () => {
                 <p className="text-[14px] text-[rgb(141,148,152)]">
                   Pending Deposits
                 </p>
-                <span className="text-xl text-[rgb(87,89,98)]">0</span>
+                <span className="text-xl text-[rgb(87,89,98)]">
+                  {totalPendingDeposit}
+                </span>
               </div>
             </div>
           </div>

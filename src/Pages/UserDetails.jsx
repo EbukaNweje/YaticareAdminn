@@ -15,8 +15,10 @@ const UserDetails = () => {
     password: false,
   });
   const [email, setEmail] = useState("");
+  const [totalreferredactivesubscribers, settotalreferredactivesubscribers] =
+    useState(null);
 
-  console.log("this is userData", oneUserData);
+  // console.log("this is userData", oneUserData);
 
   const Nav = useNavigate();
 
@@ -32,6 +34,21 @@ const UserDetails = () => {
         console.log(error);
       });
   };
+  const fetchReferredSubscribers = () => {
+    const url = `https://yaticare-back-end.vercel.app/api/user/totalreferredactivesubscribers/${id}`;
+    axios
+      .get(url)
+      .then((res) => {
+        settotalreferredactivesubscribers(
+          res?.data?.totalReferredActiveSubscribers
+        );
+        // console.log("this is totalreferredactivesubscribers", res);
+        // setOneUserData(res?.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   // const handlDeleteOneUserData = () => {
 
@@ -40,6 +57,7 @@ const UserDetails = () => {
   useEffect(() => {
     if (id) {
       handleGetOneUserData();
+      fetchReferredSubscribers();
     }
   }, [id]);
 
@@ -681,12 +699,12 @@ const UserDetails = () => {
                   ${formatCurrency(oneUserData?.inviteCode?.bonusAmount)}
                 </p>
               </div>
-              {/* <div className="w-full h-[45%]">
+              <div className="w-full h-[45%]">
                 <h1 className=" text-[rgb(14,65,82)] font-bold">
-                  Referral Count
+                  Total Referred Active Subscribers
                 </h1>
-                <p className="text-sm ">{oneUserData?.referralCount}</p>
-              </div> */}
+                <p className="text-sm ">{totalreferredactivesubscribers}</p>
+              </div>
             </div>
           </div>
           <div className="w-full h-max mb-5">
