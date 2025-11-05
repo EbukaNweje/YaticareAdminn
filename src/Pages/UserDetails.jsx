@@ -21,6 +21,7 @@ const UserDetails = () => {
   // console.log("this is userData", oneUserData);
 
   const Nav = useNavigate();
+  // console.log("id", id);
 
   const handleGetOneUserData = () => {
     const url = `https://yaticare-back-end.vercel.app/api/user/userdata/${id}`;
@@ -42,7 +43,7 @@ const UserDetails = () => {
         settotalreferredactivesubscribers(
           res?.data?.totalReferredActiveSubscribers
         );
-        // console.log("this is totalreferredactivesubscribers", res);
+        console.log("this is totalreferredactivesubscribers", res);
         // setOneUserData(res?.data.data);
       })
       .catch((error) => {
@@ -66,7 +67,6 @@ const UserDetails = () => {
   const handleBlockUser = () => {
     setBlockUser(false); // Close the modal
     const toastLoadingId = toast.loading("Blocking user...");
-
     // API endpoint for blocking the user
     const url = `https://yaticare-back-end.vercel.app/api/admin/blockuser/${id}`;
 

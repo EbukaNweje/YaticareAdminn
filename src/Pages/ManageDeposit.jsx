@@ -61,6 +61,7 @@ const ManageDeposit = () => {
       const url = "https://yaticare-back-end.vercel.app/api/admin/alldeposits";
       const response = await axios.get(url);
       setUserData(response.data.data);
+      console.log(response.data.data);
     } catch (error) {
       console.error("Error fetching deposits:", error);
     }
@@ -80,6 +81,7 @@ const ManageDeposit = () => {
             <div className="flex font-semibold border-b border-gray-200 px-4 py-3 bg-gray-50 text-sm">
               <div className="min-w-[140px]">Client</div>
               <div className="min-w-[200px]">Transaction ID</div>
+              <div className="min-w-[200px]">Deposit Wallet</div>
               <div className="min-w-[140px]">Amount</div>
               <div className="min-w-[140px]">Method</div>
               <div className="min-w-[120px]">Status</div>
@@ -102,6 +104,9 @@ const ManageDeposit = () => {
                     )}
                   </div>
                   <div className="min-w-[200px] break-all">{props._id}</div>
+                  <div className="min-w-[200px] break-all">
+                    {props.depositWallet}
+                  </div>
                   <div className="min-w-[140px]">${props.amount}</div>
                   <div className="min-w-[140px]">{props.PaymentType}</div>
                   <div className="min-w-[120px]">

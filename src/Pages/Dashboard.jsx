@@ -56,7 +56,7 @@ const Dashboard = () => {
     try {
       const data = await axios.get(`${baseUrl}/totaldailywithdrawals`);
       setTotalDailyWithdrawals(data?.data?.totalAmount);
-      // console.log("totalactivesubscribers", data);
+      // console.log("totalDailyWithdrawals", data);
     } catch (err) {
       console.log("this is get total blocked and active users error", err);
     }
@@ -83,7 +83,7 @@ const Dashboard = () => {
     try {
       const data = await axios.get(`${baseUrl}/totalpendingdeposits`);
       settotalPendingDeposits(data?.data?.pendingCount);
-      console.log("totalPendingDeposits", data);
+      // console.log("totalPendingDeposits", data);
     } catch (err) {
       console.log("this is get total blocked and active users error", err);
     }
@@ -187,6 +187,19 @@ const Dashboard = () => {
             </div>
           </div>
           <div className="w-full h-[6rem] phone:h-max flex justify-between phone:flex-col phone:gap-4">
+            {/* <div className="w-[23%] phone:w-full h-full rounded bg-white shadow-md flex gap-3 items-center p-5">
+              <div className="w-16 h-16 rounded flex items-center justify-center bg-[#f25961]">
+                <ImUsers className="w-7 h-7 text-white" />
+              </div>
+              <div className="flex flex-col ">
+                <p className="text-[14px] text-[rgb(141,148,152)]">
+                  Deleted Users
+                </p>
+                <span className="text-xl text-[rgb(87,89,98)]">
+                  {blockedUser}
+                </span>
+              </div>
+            </div> */}
             <div className="w-[23%] phone:w-full h-full rounded bg-white shadow-md flex gap-3 items-center p-5">
               <div className="w-16 h-16 rounded flex items-center justify-center bg-[#f25961]">
                 <ImUsers className="w-7 h-7 text-white" />
