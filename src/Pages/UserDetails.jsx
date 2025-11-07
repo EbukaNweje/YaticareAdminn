@@ -18,7 +18,7 @@ const UserDetails = () => {
   const [totalreferredactivesubscribers, settotalreferredactivesubscribers] =
     useState(null);
 
-  // console.log("this is userData", oneUserData);
+  console.log("this is userData", oneUserData);
 
   const Nav = useNavigate();
   // console.log("id", id);
