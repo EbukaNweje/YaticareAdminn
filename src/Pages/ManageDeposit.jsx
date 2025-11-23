@@ -81,11 +81,12 @@ const ManageDeposit = () => {
             {/* Header Row */}
             <div className="flex font-semibold border-b border-gray-200 px-4 py-3 bg-gray-50 text-sm">
               <div className="min-w-[140px]">Client</div>
-              <div className="min-w-[140px]">Proof of Payment</div>
               <div className="min-w-[200px]">Transaction ID</div>
               <div className="min-w-[200px]">Deposit Wallet</div>
+              <div className="min-w-[200px]">Coin Type</div>
               <div className="min-w-[140px]">Amount</div>
               <div className="min-w-[140px]">Method</div>
+              <div className="min-w-[140px]">Proof of Payment</div>
               <div className="min-w-[120px]">Status</div>
               <div className="min-w-[160px]">Date</div>
               <div className="min-w-[180px]">Actions</div>
@@ -105,15 +106,18 @@ const ManageDeposit = () => {
                       props?.user.userName
                     )}
                   </div>
-                  <div className="min-w-[fit] break-all  p-2">
-                    <Image width={100} src={props.proofFile} />
-                  </div>
                   <div className="min-w-[200px] break-all">{props._id}</div>
+                  <div className="min-w-[200px] break-all">
+                    {props.depositWallet}
+                  </div>
                   <div className="min-w-[200px] break-all">
                     {props.depositWallet}
                   </div>
                   <div className="min-w-[140px]">${props.amount}</div>
                   <div className="min-w-[140px]">{props.PaymentType}</div>
+                  <div className="min-w-[fit] break-all  p-2">
+                    <Image width={100} src={props.proofFile} />
+                  </div>
                   <div className="min-w-[120px]">
                     <span
                       className={`px-2 py-1 rounded-full text-white text-xs ${
