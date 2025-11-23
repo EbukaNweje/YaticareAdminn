@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { Modal } from "antd";
+import { Image } from "antd";
 
 const ManageDeposit = () => {
   const [userData, setUserData] = useState([]);
@@ -76,10 +77,11 @@ const ManageDeposit = () => {
       <div className="w-full px-4 py-8 bg-[#f9fbfd] text-gray-700">
         <h2 className="text-2xl font-semibold mb-6">Manage Clients Deposits</h2>
         <div className="bg-white shadow rounded-lg overflow-x-auto">
-          <div className="min-w-[1000px]">
+          <div className="min-w-[1500px]">
             {/* Header Row */}
             <div className="flex font-semibold border-b border-gray-200 px-4 py-3 bg-gray-50 text-sm">
               <div className="min-w-[140px]">Client</div>
+              <div className="min-w-[140px]">Proof of Payment</div>
               <div className="min-w-[200px]">Transaction ID</div>
               <div className="min-w-[200px]">Deposit Wallet</div>
               <div className="min-w-[140px]">Amount</div>
@@ -102,6 +104,9 @@ const ManageDeposit = () => {
                     ) : (
                       props?.user.userName
                     )}
+                  </div>
+                  <div className="min-w-[fit] break-all  p-2">
+                    <Image width={100} src={props.proofFile} />
                   </div>
                   <div className="min-w-[200px] break-all">{props._id}</div>
                   <div className="min-w-[200px] break-all">
