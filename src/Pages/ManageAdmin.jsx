@@ -10,7 +10,7 @@ const ManageAdmin = () => {
   const [coin, setCoin] = useState();
 
   const AddWallet = () => {
-    const url = `https://joe-backend-bit-trade-lime.vercel.app/api/createWalletAddress`;
+    const url = `https://yaticare-back-end.vercel.app/api/createWalletAddress`;
     const toastLoadingId = toast.loading("Please wait...");
 
     const data = { walletName, walletAddress, coin };

@@ -93,7 +93,7 @@ const ManageUsers = () => {
   // };
 
   // const Verify = (id) => {
-  //   const url = `https://joe-backend-bit-trade-lime.vercel.app/api/UserVerify/${id}`;
+  //   const url = `https://yaticare-back-end.vercel.app/api/UserVerify/${id}`;
   //   axios
   //     .patch(url)
   //     .then((response) => {

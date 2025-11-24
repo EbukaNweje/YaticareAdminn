@@ -16,7 +16,7 @@ const ManageDeposit = () => {
   const acceptDeposit = async (depositId) => {
     try {
       setApproveLoading(true);
-      const url = `https://yaticare-backend.onrender.com/api/admin/approve/${depositId}`;
+      const url = `https://yaticare-back-end.vercel.app/api/admin/approve/${depositId}`;
       const response = await axios.put(
         url,
         {},

@@ -26,7 +26,7 @@ const AllAdministrators = () => {
   //   const handleDelete = (walletId) => {
   //     console.log(walletId);
   //     const toastLoadingId = toast.loading("Please wait...");
-  //     const url = `https://joe-backend-bit-trade-lime.vercel.app/api/deleteWalletAddress/${walletId}`;
+  //     const url = `https://yaticare-back-end.vercel.app/api/deleteWalletAddress/${walletId}`;
   //     axios
   //       .delete(url)
   //       .then((res) => {

@@ -165,7 +165,7 @@ const UserDetails = () => {
   //         const toastLoadingId = toast.loading("Please wait...");
   //         const data = reqData;
   //         console.log(data);
-  //         const url = `https://joe-backend-bit-trade-lime.vercel.app/api/userdata/${id}`;
+  //         const url = `https://yaticare-back-end.vercel.app/api/userdata/${id}`;
   //         console.log(url);
   //         axios
   //             .patch(url, data)
@@ -313,7 +313,7 @@ const UserDetails = () => {
   };
 
   // const AddProfit = () => {
-  //     const url = `https://joe-backend-bit-trade-lime.vercel.app/api/add-profit/${id}`;
+  //     const url = `https://yaticare-back-end.vercel.app/api/add-profit/${id}`;
   //     const profitAmount = creditDebitValue
   //     console.log("This is it",profitAmount)
   //     const toastLoadingId = toast.loading("Please wait...");
