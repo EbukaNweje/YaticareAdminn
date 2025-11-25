@@ -5,9 +5,11 @@ import toast from "react-hot-toast";
 
 const AddManager = () => {
   const [adminWallet, setAdminWaller] = useState();
+  const token = JSON.parse(localStorage.getItem("adminData"))?.token;
 
-  const getallDeposit = () => {
-    const url = "https://yaticare-backend.onrender.com/api/getallWalletAddress";
+  const getallWalletAddress = () => {
+    const url =
+      "https://yaticare-backend.onrender.com/api/admin/getallWalletAddress";
     axios
       .get(url)
       .then((response) => {
@@ -20,15 +22,20 @@ const AddManager = () => {
   };
 
   useEffect(() => {
-    getallDeposit();
+    getallWalletAddress();
   }, []);
 
   const handleDelete = (walletId) => {
     console.log(walletId);
     const toastLoadingId = toast.loading("Please wait...");
-    const url = `https://yaticare-backend.onrender.com/api/deleteWalletAddress/${walletId}`;
+    const url = `https://yaticare-backend.onrender.com/api/admin/deleteWalletAddress/${walletId}`;
     axios
-      .delete(url)
+      .delete(url, {
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${token}`,
+        },
+      })
       .then((res) => {
         console.log(res);
         setTimeout(() => {

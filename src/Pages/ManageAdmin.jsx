@@ -8,14 +8,20 @@ const ManageAdmin = () => {
   const [walletName, setWalletName] = useState();
   const [walletAddress, setWalletAddress] = useState();
   const [coin, setCoin] = useState();
+  const token = JSON.parse(localStorage.getItem("adminData"))?.token;
 
   const AddWallet = () => {
-    const url = `https://yaticare-backend.onrender.com/api/createWalletAddress`;
+    const url = `https://yaticare-backend.onrender.com/api/admin/createWalletAddress`;
     const toastLoadingId = toast.loading("Please wait...");
 
     const data = { walletName, walletAddress, coin };
     axios
-      .post(url, data)
+      .post(url, data, {
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         toast.dismiss(toastLoadingId);
         console.log(response);
@@ -29,6 +35,7 @@ const ManageAdmin = () => {
       .catch((error) => {
         console.log("Profile", error);
         setLoading(false);
+        toast.dismiss(toastLoadingId);
       });
   };
 
