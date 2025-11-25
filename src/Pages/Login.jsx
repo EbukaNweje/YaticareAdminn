@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 
 const Login = () => {
   const getAllUserData = () => {
-    const url = "https://yaticare-back-end.vercel.app/api/admin/allusers";
+    const url = "https://yaticare-backend.onrender.com/api/admin/allusers";
     axios
       .get(url)
       .then((response) => {
@@ -47,7 +47,7 @@ const Login = () => {
       console.log(userData);
       axios
         .post(
-          "https://yaticare-back-end.vercel.app/api/admin/adminlogin",
+          "https://yaticare-backend.onrender.com/api/admin/adminlogin",
           userData
         )
         .then((res) => {

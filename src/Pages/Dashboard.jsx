@@ -31,7 +31,7 @@ const Dashboard = () => {
     ? JSON.parse(localStorage?.getItem("allUserData"))
     : [];
 
-  const baseUrl = "https://yaticare-back-end.vercel.app/api/admin/";
+  const baseUrl = "https://yaticare-backend.onrender.com/api/admin/";
 
   const getAciveandBlockedUser = async () => {
     try {

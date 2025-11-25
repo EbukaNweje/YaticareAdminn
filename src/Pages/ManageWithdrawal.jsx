@@ -15,7 +15,7 @@ const ManageWithdrawal = () => {
 
   const acceptWithdrawal = (withdrawId) => {
     setApproveLoading(true);
-    const url = `https://yaticare-back-end.vercel.app/api/admin/approvewithdrawal/${withdrawId}`;
+    const url = `https://yaticare-backend.onrender.com/api/admin/approvewithdrawal/${withdrawId}`;
     axios
       .put(
         url,
@@ -42,7 +42,7 @@ const ManageWithdrawal = () => {
 
   const deleteWithdrawal = (withdrawId) => {
     setDeleteLoading(true);
-    const url = `https://yaticare-back-end.vercel.app/api/admin/deletewithdrawal/${withdrawId}`;
+    const url = `https://yaticare-backend.onrender.com/api/admin/deletewithdrawal/${withdrawId}`;
     axios
       .delete(url, {
         headers: {
@@ -62,7 +62,8 @@ const ManageWithdrawal = () => {
   };
 
   const getallWithdrawal = () => {
-    const url = "https://yaticare-back-end.vercel.app/api/admin/allwithdrawals";
+    const url =
+      "https://yaticare-backend.onrender.com/api/admin/allwithdrawals";
     axios
       .get(url)
       .then((response) => {

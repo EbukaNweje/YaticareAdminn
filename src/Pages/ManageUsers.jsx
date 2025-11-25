@@ -19,7 +19,7 @@ const ManageUsers = () => {
   const [showIcon, setShowIcon] = useState(true);
 
   const getAllUserData = () => {
-    const url = "https://yaticare-back-end.vercel.app/api/admin/allusers";
+    const url = "https://yaticare-backend.onrender.com/api/admin/allusers";
     axios
       .get(url)
       .then((response) => {
@@ -93,7 +93,7 @@ const ManageUsers = () => {
   // };
 
   // const Verify = (id) => {
-  //   const url = `https://yaticare-back-end.vercel.app/api/UserVerify/${id}`;
+  //   const url = `https://yaticare-backend.onrender.com/api/UserVerify/${id}`;
   //   axios
   //     .patch(url)
   //     .then((response) => {

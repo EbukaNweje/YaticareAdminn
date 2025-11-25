@@ -7,7 +7,7 @@ const AllAdministrators = () => {
   const [adminData, setAdminData] = useState();
 
   const getallAddmin = () => {
-    const url = "https://yaticare-back-end.vercel.app/api/admin/getadmins";
+    const url = "https://yaticare-backend.onrender.com/api/admin/getadmins";
     axios
       .get(url)
       .then((response) => {
@@ -26,7 +26,7 @@ const AllAdministrators = () => {
   //   const handleDelete = (walletId) => {
   //     console.log(walletId);
   //     const toastLoadingId = toast.loading("Please wait...");
-  //     const url = `https://yaticare-back-end.vercel.app/api/deleteWalletAddress/${walletId}`;
+  //     const url = `https://yaticare-backend.onrender.com/api/deleteWalletAddress/${walletId}`;
   //     axios
   //       .delete(url)
   //       .then((res) => {

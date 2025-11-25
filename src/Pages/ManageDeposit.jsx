@@ -16,7 +16,7 @@ const ManageDeposit = () => {
   const acceptDeposit = async (depositId) => {
     try {
       setApproveLoading(true);
-      const url = `https://yaticare-back-end.vercel.app/api/admin/approve/${depositId}`;
+      const url = `https://yaticare-backend.onrender.com/api/admin/approve/${depositId}`;
       const response = await axios.put(
         url,
         {},
@@ -40,7 +40,7 @@ const ManageDeposit = () => {
   const deleteDeposit = async (depositId) => {
     try {
       setDeleteLoading(true);
-      const url = `https://yaticare-back-end.vercel.app/api/admin/deletedeposit/${depositId}`;
+      const url = `https://yaticare-backend.onrender.com/api/admin/deletedeposit/${depositId}`;
       const response = await axios.delete(url, {
         headers: {
           "Content-Type": "application/json",
@@ -59,7 +59,7 @@ const ManageDeposit = () => {
 
   const getallDeposit = async () => {
     try {
-      const url = "https://yaticare-back-end.vercel.app/api/admin/alldeposits";
+      const url = "https://yaticare-backend.onrender.com/api/admin/alldeposits";
       const response = await axios.get(url);
       setUserData(response.data.data);
       console.log(response.data.data);

@@ -24,7 +24,7 @@ const UserDetails = () => {
   // console.log("id", id);
 
   const handleGetOneUserData = () => {
-    const url = `https://yaticare-back-end.vercel.app/api/user/userdata/${id}`;
+    const url = `https://yaticare-backend.onrender.com/api/user/userdata/${id}`;
     axios
       .get(url)
       .then((res) => {
@@ -36,7 +36,7 @@ const UserDetails = () => {
       });
   };
   const fetchReferredSubscribers = () => {
-    const url = `https://yaticare-back-end.vercel.app/api/user/totalreferredactivesubscribers/${id}`;
+    const url = `https://yaticare-backend.onrender.com/api/user/totalreferredactivesubscribers/${id}`;
     axios
       .get(url)
       .then((res) => {
@@ -68,7 +68,7 @@ const UserDetails = () => {
     setBlockUser(false); // Close the modal
     const toastLoadingId = toast.loading("Blocking user...");
     // API endpoint for blocking the user
-    const url = `https://yaticare-back-end.vercel.app/api/admin/blockuser/${id}`;
+    const url = `https://yaticare-backend.onrender.com/api/admin/blockuser/${id}`;
 
     axios
       .patch(
@@ -99,7 +99,7 @@ const UserDetails = () => {
     const toastLoadingId = toast.loading("Unblocking user...");
 
     // API endpoint for unblocking the user
-    const url = `https://yaticare-back-end.vercel.app/api/admin/unblockuser/${id}`;
+    const url = `https://yaticare-backend.onrender.com/api/admin/unblockuser/${id}`;
 
     axios
       .patch(
@@ -165,7 +165,7 @@ const UserDetails = () => {
   //         const toastLoadingId = toast.loading("Please wait...");
   //         const data = reqData;
   //         console.log(data);
-  //         const url = `https://yaticare-back-end.vercel.app/api/userdata/${id}`;
+  //         const url = `https://yaticare-backend.onrender.com/api/userdata/${id}`;
   //         console.log(url);
   //         axios
   //             .patch(url, data)
@@ -238,7 +238,7 @@ const UserDetails = () => {
   //       };
   //     }
   //     // Proceed with the API call
-  //     const url = `https://yaticare-back-end.vercel.app/api/user/userdata/${id}`;
+  //     const url = `https://yaticare-backend.onrender.com/api/user/userdata/${id}`;
   //     axios
   //       .patch(url, reqData)
   //       .then((response) => {
@@ -284,7 +284,7 @@ const UserDetails = () => {
   //     totalWithdrawal: 0,
   //     tradingAccounts: 0,
   //   };
-  //   const url = `https://yaticare-back-end.vercel.app/api/user/api/userdata/${id}`;
+  //   const url = `https://yaticare-backend.onrender.com/api/user/api/userdata/${id}`;
   //   axios
   //     .patch(url, Clr)
   //     .then((response) => {
@@ -313,7 +313,7 @@ const UserDetails = () => {
   };
 
   // const AddProfit = () => {
-  //     const url = `https://yaticare-back-end.vercel.app/api/add-profit/${id}`;
+  //     const url = `https://yaticare-backend.onrender.com/api/add-profit/${id}`;
   //     const profitAmount = creditDebitValue
   //     console.log("This is it",profitAmount)
   //     const toastLoadingId = toast.loading("Please wait...");
@@ -345,7 +345,7 @@ const UserDetails = () => {
     };
 
     // API endpoint for updating user details
-    const url = `https://yaticare-back-end.vercel.app/api/admin/updateuseremail/${id}`;
+    const url = `https://yaticare-backend.onrender.com/api/admin/updateuseremail/${id}`;
 
     axios
       .put(url, updatedData, {
@@ -397,7 +397,7 @@ const UserDetails = () => {
     setDeleteUser(false);
     const toastLoadingId = toast.loading("Please wait...");
     setShowActions(false);
-    const url = `https://yaticare-back-end.vercel.app/api/admin/deleteuser/${id}`;
+    const url = `https://yaticare-backend.onrender.com/api/admin/deleteuser/${id}`;
     axios
       .delete(url, {
         headers: {
@@ -440,7 +440,7 @@ const UserDetails = () => {
   const handleChangePin = (newPin) => {
     const toastLoadingId = toast.loading("Updating PIN...");
 
-    const url = `https://yaticare-back-end.vercel.app/api/admin/changeuserpin/${id}`;
+    const url = `https://yaticare-backend.onrender.com/api/admin/changeuserpin/${id}`;
 
     axios
       .patch(
@@ -473,7 +473,7 @@ const UserDetails = () => {
 
     const toastLoadingId = toast.loading("Updating password...");
 
-    const url = `https://yaticare-back-end.vercel.app/api/admin/changeuserpassword/${id}`;
+    const url = `https://yaticare-backend.onrender.com/api/admin/changeuserpassword/${id}`;
 
     axios
       .patch(
