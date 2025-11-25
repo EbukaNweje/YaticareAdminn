@@ -1,25 +1,117 @@
-.MainAddManager {
-    padding: 20px;
-
-    & h2 {
-        font-size: 20px;
-    }
+.all-admin-container {
+  width: 100%;
+  padding: 20px;
+  background: #f9fbfd;
+  color: #575962;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
+.admin-title {
+  font-size: 28px;
+  font-weight: 600;
+}
 
-.MyWallet {
+.admin-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.filter-item {
+  display: flex;
+  flex-direction: column;
+  min-width: 150px;
+}
+
+.filter-item label {
+  font-size: 14px;
+  margin-bottom: 5px;
+  color: #495057;
+}
+
+.filter-item input,
+.filter-item select {
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #d2e4ec;
+  font-size: 14px;
+}
+
+.admin-table-wrapper {
+  width: 100%;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  overflow-x: auto;
+}
+
+.admin-table-header,
+.admin-table-row {
+  display: flex;
+  align-items: center;
+  min-width: 600px;
+  padding: 12px 20px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.admin-table-header {
+  font-weight: 600;
+  background: #f1f5f9;
+}
+
+.admin-table-row:hover {
+  background: #f8f9fa;
+}
+
+.col {
+  flex: 1;
+  min-width: 120px;
+}
+
+.actions {
+  flex: 0.5;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.no-data {
+  padding: 20px;
+  text-align: center;
+  color: #888;
+}
+
+.delete-btn {
+  padding: 6px 12px;
+  background: #f25961;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+  .admin-filters {
+    flex-direction: column;
+  }
+
+  .admin-table-header,
+  .admin-table-row {
+    flex-direction: column;
+    align-items: flex-start;
+    min-width: auto;
+    padding: 10px 15px;
+  }
+
+  .col {
     width: 100%;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
+    margin-bottom: 5px;
+  }
 
-.Btn {
-    padding: 10px;
-    background: red;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 3px;    
+  .actions {
+    justify-content: flex-start;
+  }
 }
