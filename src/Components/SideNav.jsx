@@ -281,7 +281,7 @@ const SideNav = () => {
               >
                 <div className="w-full  h-12 flex gap-2 items-center px-4">
                   <span className="w-1 h-1 rounded-full bg-[#777777]"></span>
-                  <p className="">Manager Wallet</p>
+                  <p className="">manage Wallet</p>
                 </div>
               </NavLink>
               <NavLink
