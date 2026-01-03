@@ -1,283 +1,428 @@
-import { IoMail } from "react-icons/io5";
+import { IoMail, IoSearch } from "react-icons/io5";
 import { HiUserAdd } from "react-icons/hi";
 import { Modal } from "antd";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { NavLink } from "react-router-dom";
-import { toast } from "react-hot-toast";
 import axios from "axios";
-// import { useNavigate } from "react-router-dom";
 
 const ManageUsers = () => {
-  // const nav = useNavigate()
   const [addNewUser, setAddNewUser] = useState(false);
   const [userData, setUserData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortBy, setSortBy] = useState("updatedAt");
+  const [sortOrder, setSortOrder] = useState("desc");
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [selectedUsers, setSelectedUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const handleAddNewUser = () => {
     setAddNewUser(!addNewUser);
   };
 
-  const [showIcon, setShowIcon] = useState(true);
+  const getAllUserData = async () => {
+    setLoading(true);
+    try {
+      const url = "https://yaticare-backend.onrender.com/api/admin/allusers";
+      const response = await axios.get(url);
+      setUserData(response?.data?.data || []);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      setUserData([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  const getAllUserData = () => {
-    const url = "https://yaticare-backend.onrender.com/api/admin/allusers";
-    axios
-      .get(url)
-      .then((response) => {
-        setUserData(response?.data?.data);
-      })
-      .catch((error) => {});
+  // Filter and sort users based on search term and sorting options
+  const filteredAndSortedUsers = useMemo(() => {
+    let filtered = userData.filter((user) => {
+      const searchLower = searchTerm.toLowerCase();
+      return (
+        user?.userName?.toLowerCase().includes(searchLower) ||
+        user?.email?.toLowerCase().includes(searchLower) ||
+        user?.phoneNumber?.includes(searchTerm)
+      );
+    });
+
+    // Sort users
+    filtered.sort((a, b) => {
+      let aValue, bValue;
+
+      switch (sortBy) {
+        case "userName":
+          aValue = a.userName || "";
+          bValue = b.userName || "";
+          break;
+        case "email":
+          aValue = a.email || "";
+          bValue = b.email || "";
+          break;
+        case "updatedAt":
+          aValue = new Date(a.updatedAt);
+          bValue = new Date(b.updatedAt);
+          break;
+        case "accountBalance":
+          aValue = parseFloat(a.accountBalance) || 0;
+          bValue = parseFloat(b.accountBalance) || 0;
+          break;
+        default:
+          aValue = a.updatedAt;
+          bValue = b.updatedAt;
+      }
+
+      if (sortOrder === "asc") {
+        return aValue > bValue ? 1 : -1;
+      } else {
+        return aValue < bValue ? 1 : -1;
+      }
+    });
+
+    return filtered;
+  }, [userData, searchTerm, sortBy, sortOrder]);
+
+  // Pagination
+  const totalPages = Math.ceil(filteredAndSortedUsers.length / itemsPerPage);
+  const paginatedUsers = filteredAndSortedUsers.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const handleSelectAll = (checked) => {
+    if (checked) {
+      setSelectedUsers(paginatedUsers.map((user) => user._id));
+    } else {
+      setSelectedUsers([]);
+    }
+  };
+
+  const handleSelectUser = (userId, checked) => {
+    if (checked) {
+      setSelectedUsers((prev) => [...prev, userId]);
+    } else {
+      setSelectedUsers((prev) => prev.filter((id) => id !== userId));
+    }
   };
 
   useEffect(() => {
     getAllUserData();
   }, []);
 
-  useEffect(() => {}, []);
-
   useEffect(() => {
-    if (window.innerWidth <= 480) {
-      setShowIcon(false);
-    } else {
-      setShowIcon(true);
-    }
-  }, []);
-
-  // const userData = localStorage.getItem("allUserData")
-  //     ? JSON.parse(localStorage.getItem("allUserData"))
-  //     : [];
-  // console.log(userData);
-
-  // const sendSignUpEmail = async () => {
-  //   const data = {
-  //     email: email.value,
-  //   };
-  //   fetch('https://tonexbackend.onrender.com/api/signupemailsand', {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify(data),
-  //   })
-  //   .then(response=> response.json())
-  //     .then(response => {
-  //       console.log(response);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // };
-
-  // const handleManageUser = () =>{
-
-  // }
-
-  // const adminAproveEmailSand = async (email) => {
-  //   const data = {
-  //     email: email,
-  //   };
-
-  //   fetch("https://boss2k.onrender.com/api/adminAproveEmailSand", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(data),
-  //   })
-  //     .then((response) => response.json())
-  //     .then((response) => {
-  //       console.log(response);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // };
-
-  // const Verify = (id) => {
-  //   const url = `https://yaticare-backend.onrender.com/api/UserVerify/${id}`;
-  //   axios
-  //     .patch(url)
-  //     .then((response) => {
-  //       console.log(response.data.data.email);
-  //       adminAproveEmailSand(response.data.data.email);
-  //       setTimeout(() => {
-  //         window.location.reload();
-  //       }, 5000);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // };
+    setCurrentPage(1);
+  }, [searchTerm, sortBy, sortOrder, itemsPerPage]);
 
   return (
-    <>
-      <div className="w-full h-max px-6 py-10 flex flex-col gap-2 phone:gap-8 bg-[#f9fbfd] text-[rgb(87,89,98)]">
-        <p className="text-[27px] font-semibold">Yaticare users list</p>
-        <div className="w-full h-max px-6 py-5 bg-white">
-          <div className="full">
-            <div className="w-full h-14 flex items-center justify-between border-b-2 border-b-gray-200 px-5">
-              <input
-                type="search"
-                placeholder="name, username or email"
-                className="w-48 phone:w-24 h-8 border outline-offset-0 outline-0 border-solid border-gray-200 pl-2 text-sm rounded outline-gray-200 outline"
-              />
-              <button className="p-2 rounded flex items-center gap-1 justify-center text-xs text-white bg-[#48abf7]">
-                <IoMail className={` ${showIcon ? "w-3 h-3" : "w-6 h-5"}`} />
-                {showIcon && "Send message"}
-              </button>
-              <button
-                className="p-2 rounded flex items-center gap-1 justify-center text-xs text-white bg-[#0e4152]"
-                onClick={handleAddNewUser}
-              >
-                <HiUserAdd className={` ${showIcon ? "w-3 h-3" : "w-6 h-5"}`} />
-                {showIcon && "New user"}
-              </button>
-            </div>
-            <div className="w-full h-max overflow-x-auto pt-6 pb-6 px-6">
-              <div className="w-full h-max">
-                <div className="w-max h-14 flex items-center text-[#000] font-bold">
-                  <div className="w-14  h-full flex items-center ">
-                    <input
-                      type="checkbox"
-                      className="w-3 h-3 phone:w-5 phone:h-5 cursor-pointer"
-                    />
-                  </div>
-                  {/* <div className="w-32  h-full flex items-center  ">
-                    <p>Fullname</p>
-                  </div> */}
-                  <div className="w-32 h-full flex items-center ">
-                    <p>Username</p>
-                  </div>
-                  <div className="w-48 h-full flex items-center ">
-                    <p>Email</p>
-                  </div>
-                  <div className="w-36 h-full flex items-center ">
-                    <p>Phone</p>
-                  </div>
-                  <div className="w-28 h-full flex items-center ">
-                    <p>Account Balance</p>
-                  </div>
-                  {/* <div className="w-32 h-full flex items-center ">
-                    <p>Verify</p>
-                  </div> */}
-                  <div className="w-32 h-full flex items-center ">
-                    <p>Registered</p>
-                  </div>
-                  <div className="w-32 h-full flex items-center ">
-                    <p>Action</p>
-                  </div>
-                </div>
-                {[...userData].reverse().map((item, index) => (
-                  <div
-                    className="w-max h-14 flex items-center text-[rgb(33,37,41)] text-sm"
-                    key={index}
-                  >
-                    <div className="w-14 h-full flex items-center">
-                      <input
-                        type="checkbox"
-                        className="w-3 h-3 phone:w-5 phone:h-5 cursor-pointer"
-                      />
-                    </div>
-                    <div className="w-32 h-full flex items-center">
-                      <p>{item?.userName}</p>
-                    </div>
-                    <div className="w-48 h-full flex items-center">
-                      <p>{item?.email}</p>
-                    </div>
-                    <div className="w-36 h-full flex items-center">
-                      <p>{item?.phoneNumber}</p>
-                    </div>
-                    <div className="w-28 h-full flex items-center">
-                      <p>${item?.accountBalance}.00</p>
-                    </div>
-                    <div className="w-32 h-full flex items-center">
-                      <p>{item?.updatedAt.split("T")[0]}</p>
-                    </div>
-                    <div className="w-32 h-full flex items-center">
-                      <NavLink
-                        to={`/admin/dashboard/user-details/${item?._id}`}
-                      >
-                        <button className="p-2 bg-[#6861ce] text-xs rounded text-white">
-                          Manage
-                        </button>
-                      </NavLink>
-                    </div>
-                  </div>
-                ))}
+    <div className="min-h-screen bg-gray-50 p-4 md:p-6">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="mb-6">
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+            User Management
+          </h1>
+          <p className="text-gray-600">Manage and monitor all Yaticare users</p>
+        </div>
+
+        {/* Main Content Card */}
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+          {/* Search and Actions Bar */}
+          <div className="p-4 md:p-6 border-b border-gray-200">
+            <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+              {/* Search Input */}
+              <div className="relative flex-1 max-w-md">
+                <IoSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <input
+                  type="search"
+                  placeholder="Search by name, username, or email..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+                />
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex gap-2 flex-shrink-0">
+                {/* <button
+                  className="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg flex items-center gap-2 transition-colors text-sm font-medium"
+                  disabled={selectedUsers.length === 0}
+                >
+                  <IoMail className="w-4 h-4" />
+                  <span className="hidden sm:inline">Send Message</span>
+                </button> */}
+                {/* <button
+                  onClick={handleAddNewUser}
+                  className="px-4 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-lg flex items-center gap-2 transition-colors text-sm font-medium"
+                >
+                  <HiUserAdd className="w-4 h-4" />
+                  <span className="hidden sm:inline">Add User</span>
+                </button> */}
               </div>
             </div>
-            <div className="full h-20 flex items-center gap-10 phone:gap-5 phone:justify-between">
-              <select name="" id="" className="w-20 border h-10 rounded px-2">
-                <option value="">10</option>
-                <option value="">20</option>
-                <option value="">50</option>
-                <option value="">100</option>
-                <option value="">20</option>
-              </select>
-              <select
-                name=""
-                id=""
-                className="w-40 phone:w-24 border h-10 rounded px-2"
-              >
-                <option value="">Id</option>
-                <option value="">Name</option>
-                <option value="">Email</option>
-                <option value="">Sign up date</option>
-              </select>
-              <select
-                name=""
-                id=""
-                className="w-40 phone:w-28 border h-10 rounded px-2"
-              >
-                <option value="">Descending</option>
-                <option value="">Ascending</option>
-              </select>
+          </div>
+
+          {/* Table Container */}
+          <div className="overflow-x-auto">
+            {loading ? (
+              <div className="flex justify-center items-center py-12">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+              </div>
+            ) : (
+              <table className="w-full">
+                <thead className="bg-gray-50 border-b border-gray-200">
+                  <tr>
+                    <th className="px-4 py-3 text-left">
+                      <input
+                        type="checkbox"
+                        checked={
+                          selectedUsers.length === paginatedUsers.length &&
+                          paginatedUsers.length > 0
+                        }
+                        onChange={(e) => handleSelectAll(e.target.checked)}
+                        className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                      />
+                    </th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Username
+                    </th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Email
+                    </th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">
+                      Phone
+                    </th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Balance
+                    </th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell">
+                      Registered
+                    </th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {paginatedUsers.length === 0 ? (
+                    <tr>
+                      <td
+                        colSpan="7"
+                        className="px-4 py-12 text-center text-gray-500"
+                      >
+                        {searchTerm
+                          ? "No users found matching your search."
+                          : "No users available."}
+                      </td>
+                    </tr>
+                  ) : (
+                    paginatedUsers.map((user) => (
+                      <tr
+                        key={user._id}
+                        className="hover:bg-gray-50 transition-colors"
+                      >
+                        <td className="px-4 py-4">
+                          <input
+                            type="checkbox"
+                            checked={selectedUsers.includes(user._id)}
+                            onChange={(e) =>
+                              handleSelectUser(user._id, e.target.checked)
+                            }
+                            className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                          />
+                        </td>
+                        <td className="px-4 py-4">
+                          <div className="text-sm font-medium text-gray-900">
+                            {user?.userName || "N/A"}
+                          </div>
+                        </td>
+                        <td className="px-4 py-4">
+                          <div className="text-sm text-gray-900">
+                            {user?.email}
+                          </div>
+                        </td>
+                        <td className="px-4 py-4 hidden md:table-cell">
+                          <div className="text-sm text-gray-900">
+                            {user?.phoneNumber || "N/A"}
+                          </div>
+                        </td>
+                        <td className="px-4 py-4">
+                          <div className="text-sm font-medium text-green-600">
+                            ${user?.accountBalance || 0}.00
+                          </div>
+                        </td>
+                        <td className="px-4 py-4 hidden lg:table-cell">
+                          <div className="text-sm text-gray-500">
+                            {user?.updatedAt
+                              ? new Date(user.updatedAt).toLocaleDateString()
+                              : "N/A"}
+                          </div>
+                        </td>
+                        <td className="px-4 py-4">
+                          <NavLink
+                            to={`/admin/dashboard/user-details/${user?._id}`}
+                          >
+                            <button className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs rounded-md transition-colors font-medium">
+                              Manage
+                            </button>
+                          </NavLink>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            )}
+          </div>
+
+          {/* Pagination and Controls */}
+          <div className="px-4 py-4 border-t border-gray-200 bg-gray-50">
+            <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+              {/* Items per page and sorting */}
+              <div className="flex flex-wrap gap-3 items-center text-sm">
+                <div className="flex items-center gap-2">
+                  <label className="text-gray-600">Show:</label>
+                  <select
+                    value={itemsPerPage}
+                    onChange={(e) => setItemsPerPage(Number(e.target.value))}
+                    className="border border-gray-300 rounded px-2 py-1 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  >
+                    <option value={10}>10</option>
+                    <option value={20}>20</option>
+                    <option value={50}>50</option>
+                    <option value={100}>100</option>
+                  </select>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <label className="text-gray-600">Sort by:</label>
+                  <select
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value)}
+                    className="border border-gray-300 rounded px-2 py-1 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  >
+                    <option value="updatedAt">Registration Date</option>
+                    <option value="userName">Username</option>
+                    <option value="email">Email</option>
+                    <option value="accountBalance">Balance</option>
+                  </select>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <select
+                    value={sortOrder}
+                    onChange={(e) => setSortOrder(e.target.value)}
+                    className="border border-gray-300 rounded px-2 py-1 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  >
+                    <option value="desc">Descending</option>
+                    <option value="asc">Ascending</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Pagination Info and Controls */}
+              <div className="flex items-center gap-4">
+                <span className="text-sm text-gray-600">
+                  Showing{" "}
+                  {Math.min(
+                    (currentPage - 1) * itemsPerPage + 1,
+                    filteredAndSortedUsers.length
+                  )}{" "}
+                  to{" "}
+                  {Math.min(
+                    currentPage * itemsPerPage,
+                    filteredAndSortedUsers.length
+                  )}{" "}
+                  of {filteredAndSortedUsers.length} users
+                </span>
+
+                <div className="flex gap-1">
+                  <button
+                    onClick={() =>
+                      setCurrentPage((prev) => Math.max(prev - 1, 1))
+                    }
+                    disabled={currentPage === 1}
+                    className="px-3 py-1 border border-gray-300 rounded text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+                  >
+                    Previous
+                  </button>
+                  <button
+                    onClick={() =>
+                      setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                    }
+                    disabled={currentPage === totalPages}
+                    className="px-3 py-1 border border-gray-300 rounded text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
+      {/* Add User Modal */}
       <Modal
         open={addNewUser}
-        onOk={handleAddNewUser}
         onCancel={() => setAddNewUser(false)}
-        cancelButtonProps={{ hidden: true }}
-        okButtonProps={{
-          className: "bg-[#0A503D] text-white",
-          size: "middle",
-          style: {
-            backgroundColor: "#0e4152",
-            width: "100px",
-            height: "40px",
-          },
-        }}
-        okText={"Add User"}
-        closeIcon={true}
-        title={"Add New User"}
+        footer={null}
+        title={
+          <div className="text-lg font-semibold text-gray-900">
+            Add New User
+          </div>
+        }
+        className="top-20"
       >
-        <div className="w-full h-max py-6 flex flex-col gap-4">
-          <div className="w-full h-16 ">
-            <p>UserName</p>
+        <form className="space-y-4 mt-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Username
+            </label>
             <input
               type="text"
-              className="w-full h-10 border border-gray-200 rounded outline-blue-300 pl-2"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+              placeholder="Enter username"
             />
           </div>
-          <div className="w-full h-16 ">
-            <p>Email</p>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Email Address
+            </label>
             <input
-              type="text"
-              className="w-full h-10 border border-gray-200 rounded outline-blue-300 pl-2"
+              type="email"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+              placeholder="Enter email address"
             />
           </div>
-          <div className="w-full h-16 ">
-            <p>Password</p>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Password
+            </label>
             <input
-              type="text"
-              className="w-full h-10 border border-gray-200 rounded outline-blue-300 pl-2"
+              type="password"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+              placeholder="Enter password"
             />
           </div>
-        </div>
+
+          <div className="flex gap-3 pt-4">
+            <button
+              type="button"
+              onClick={() => setAddNewUser(false)}
+              className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="flex-1 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors font-medium"
+            >
+              Add User
+            </button>
+          </div>
+        </form>
       </Modal>
-    </>
+    </div>
   );
 };
 

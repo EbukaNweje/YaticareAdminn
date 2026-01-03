@@ -21,15 +21,15 @@ const Header = ({ sideBar }) => {
             Yaticare{" "}
           </p>
 
-          <div className="flex items-center h-10 w-96 bg-[#0c3846] rounded text-white phone:hidden">
+          {/* <div className="flex items-center h-10 w-96 bg-[#0c3846] rounded text-white phone:hidden">
             <FaSearch className="w-10 h-6 cursor-pointer" />
             <input
               type="text"
               placeholder="Manage users"
               className="w-full h-full bg-transparent text-sm font-bold outline-none pl-4 text-white"
             />
-          </div>
-          <FaUser className="cursor-pointer w-8 h-8 p-1 phone:hidden text-white" />
+          </div> */}
+          {/* <FaUser className="justify-items-start cursor-pointer w-8 h-8 p-1 phone:hidden text-white" /> */}
           <HiDotsVertical className="hidden phone:block w-7 h-7 cursor-pointer text-white" />
         </div>
       </div>
