@@ -352,7 +352,7 @@ const ManageDeposit = () => {
                         </td>
                         <td className="px-4 py-4">
                           <div className="text-sm text-gray-900 font-mono break-all">
-                            {deposit._id.slice(0, 8)}...
+                            {deposit._id}
                           </div>
                         </td>
                         <td className="px-4 py-4 hidden md:table-cell">

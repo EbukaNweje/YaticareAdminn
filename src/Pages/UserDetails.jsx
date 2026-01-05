@@ -1,5 +1,25 @@
 import { useEffect, useState } from "react";
-import { FaArrowLeft, FaCaretDown } from "react-icons/fa";
+import {
+  FaArrowLeft,
+  FaCaretDown,
+  FaUser,
+  FaWallet,
+  FaEdit,
+  FaTrash,
+  FaEnvelope,
+  FaLock,
+  FaEye,
+} from "react-icons/fa";
+import {
+  IoMail,
+  IoCall,
+  IoCard,
+  IoStatsChart,
+  IoShield,
+  IoTime,
+  IoPerson,
+} from "react-icons/io5";
+import { MdAccountBalance, MdHistory, MdSecurity } from "react-icons/md";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Modal } from "antd";
 import { toast } from "react-hot-toast";
@@ -504,356 +524,425 @@ const UserDetails = () => {
   // console.log("this is one user data", oneUserData);
 
   return (
-    <>
-      <div className="w-full h-max px-6 py-10 flex flex-col gap-2 phone:gap-8 bg-[#f9fbfd] text-[rgb(87,89,98)]">
-        <div className="w-full h-max bg-white shadow-md px-5 py-2 flex flex-col gap-5">
-          <div className="w-full h-20 px-5 phone:px-0 flex items-center justify-between ">
-            <p className="text-[27px] font-semibold text-[rgb(14,65,82)]">
-              {oneUserData.userName}
-            </p>
-            <div className="flex items-center gap-2">
-              <NavLink to={"/admin/dashboard/manageusers"}>
-                <button
-                  className="py-2 px-3 flex gap-1 items-center text-xs bg-[#0e4152] text-white rounded"
-                  onClick={goBack}
-                >
-                  <FaArrowLeft /> Back
+    <div className="min-h-screen bg-gray-50 p-4 md:p-6">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <NavLink to="/admin/dashboard/manageusers">
+                <button className="flex items-center gap-2 px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors">
+                  <FaArrowLeft className="w-4 h-4" />
+                  Back
                 </button>
               </NavLink>
-              <div className="w-max h-max relative">
-                <button
-                  className="py-2 px-3 flex gap-1 items-center text-xs bg-[#6861ce] text-white rounded"
-                  onClick={() => setShowActions(!showActions)}
-                >
-                  Actions <FaCaretDown />
-                </button>
-                {showActions && (
-                  <div className="w-44 h-max absolute top-10 right-0 border border-gray-200 rounded p-3 bg-white shadow">
-                    {/* <NavLink to={`/admin/dashboard/login-activity/${2}`}>
-                      <div className="w-full h-7 flex items-center pl-1 text-sm hover:bg-gray-300 cursor-pointer">
-                        Login Activity
-                      </div>
-                    </NavLink> */}
+              <div>
+                <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
+                  {oneUserData.userName || "User Details"}
+                </h1>
+                <p className="text-gray-600">
+                  Manage user account and settings
+                </p>
+              </div>
+            </div>
 
-                    {/* <div
-                                            className="w-full h-7 flex items-center pl-1 text-sm hover:bg-gray-300 cursor-pointer"
-                                            onClick={handleOnRoi}
-                                        >
-                                            Turn off auto ROI
-                                        </div> */}
-                    {/* <div
-                      className="w-full h-7 flex items-center pl-1 text-sm hover:bg-gray-300 cursor-pointer"
-                      onClick={() => setCreditDebit(!creditDebit)}
-                    >
-                      Credit/Debit
-                    </div> */}
-                    {/* <div
-                      className="w-full h-7 flex items-center pl-1 text-sm hover:bg-gray-300 cursor-pointer"
-                      onClick={() => setResetPwd(!resetPwd)}
-                    >
-                      Reset Password
-                    </div> */}
-                    {/* <div
-                      className="w-full h-7 flex items-center pl-1 text-sm hover:bg-gray-300 cursor-pointer"
-                      onClick={() => setClearAcc(!clearAcc)}
-                    >
-                      Clear Account
-                    </div> */}
-                    {/* <div
-                                            className="w-full h-7 flex items-center pl-1 text-sm hover:bg-gray-300 cursor-pointer"
-                                            onClick={() => setAddRoi(!addRoi)}
-                                        >
-                                            Add ROI history
-                                        </div> */}
-                    <div
-                      className="w-full h-7 flex items-center pl-1 text-sm hover:bg-gray-300 cursor-pointer"
-                      onClick={() => setEdit(!edit)}
-                    >
-                      Edit Email
-                    </div>
-                    {/* <div className="w-full h-7 flex items-center pl-1 text-sm hover:bg-gray-300 cursor-pointer">
-                      Add Referral
-                    </div> */}
-                    <div
-                      className="w-full h-7 flex items-center pl-1 text-sm hover:bg-gray-300 cursor-pointer"
-                      onClick={() => setSendEmail(!sendEmail)}
-                    >
-                      Send Email
-                    </div>
-                    <div
-                      className="w-full h-max flex items-center pl-1 py-1 text-sm hover:bg-gray-300 cursor-pointer text-[#31ce36]"
-                      onClick={() => setLogin(!login)}
-                    >
-                      Login as {oneUserData.userName}
-                    </div>
-                    <div
-                      className="w-full h-max flex items-center pl-1 py-1 text-sm hover:bg-gray-300 cursor-pointer "
-                      style={{
-                        color:
-                          oneUserData.status === "blocked" ? "orange" : "red",
-                      }}
-                      onClick={() => setBlockUser(!blockUser)}
-                    >
-                      {oneUserData.status === "blocked" ? "Unblock" : "Block"}{" "}
-                      {oneUserData.userName}
-                    </div>
-                    <div
-                      className="w-full h-max flex items-center pl-1 py-1 text-sm hover:bg-gray-300 cursor-pointer text-[#f25961]"
-                      onClick={() => {
-                        setDeleteUser(!deleteUser);
-                      }}
-                    >
-                      Delete {oneUserData.userName}
-                    </div>
-                  </div>
-                )}
-              </div>
+            {/* Actions Dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => setShowActions(!showActions)}
+                className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors"
+              >
+                Actions <FaCaretDown />
+              </button>
+
+              {showActions && (
+                <div className="absolute right-0 top-12 w-56 bg-white border border-gray-200 rounded-lg shadow-lg z-10 py-2">
+                  <button
+                    onClick={() => setEdit(true)}
+                    className="w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center gap-2 text-sm"
+                  >
+                    <FaEdit className="w-4 h-4 text-blue-600" />
+                    Edit Email
+                  </button>
+                  <button
+                    onClick={() => setSendEmail(true)}
+                    className="w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center gap-2 text-sm"
+                  >
+                    <FaEnvelope className="w-4 h-4 text-green-600" />
+                    Send Email
+                  </button>
+                  <button
+                    onClick={() => setLogin(true)}
+                    className="w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center gap-2 text-sm text-green-600"
+                  >
+                    <FaEye className="w-4 h-4" />
+                    Login as {oneUserData.userName}
+                  </button>
+                  <button
+                    onClick={() => setBlockUser(true)}
+                    className="w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center gap-2 text-sm"
+                    style={{
+                      color:
+                        oneUserData.status === "blocked" ? "orange" : "red",
+                    }}
+                  >
+                    <IoShield className="w-4 h-4" />
+                    {oneUserData.status === "blocked"
+                      ? "Unblock"
+                      : "Block"}{" "}
+                    User
+                  </button>
+                  <button
+                    onClick={() => setDeleteUser(true)}
+                    className="w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center gap-2 text-sm text-red-600"
+                  >
+                    <FaTrash className="w-4 h-4" />
+                    Delete User
+                  </button>
+                </div>
+              )}
             </div>
           </div>
-          <div className="w-full h-max flex phone:flex-col phone:gap-5 p-4 phone:p-2 phone:py-4 px-8 border border-gray-200 rounded">
-            <div className="w-1/4 phone:w-full h-28 phone:h-max flex flex-col phone:flex-row justify-between ">
-              <div className="w-full h-[45%] flex flex-col justify-between">
-                <h1 className=" text-[rgb(14,65,82)] font-bold">
+        </div>
+
+        {/* User Status Card */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+          <div className="flex items-center gap-4 mb-4">
+            <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white text-xl font-bold">
+              {oneUserData.userName?.charAt(0)?.toUpperCase() || "U"}
+            </div>
+            <div>
+              <h2 className="text-xl font-semibold text-gray-900">
+                {oneUserData.userName}
+              </h2>
+              <p className="text-gray-600">{oneUserData.email}</p>
+              <span
+                className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                  oneUserData.status === "active"
+                    ? "bg-green-100 text-green-800"
+                    : "bg-red-100 text-red-800"
+                }`}
+              >
+                {oneUserData.status?.charAt(0)?.toUpperCase() +
+                  oneUserData.status?.slice(1)}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Stats Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-500 mb-1">
                   Account Balance
-                </h1>
-                <p className="text-sm">${oneUserData?.accountBalance}.00</p>
-              </div>
-              <div className="w-full h-[45%]">
-                <h1 className=" text-[rgb(14,65,82)] font-bold">
-                  User Account Status
-                </h1>
-                <p
-                  className="text-xs  transform-cpu text-white w-max py-1 px-2 rounded-full"
-                  style={{
-                    backgroundColor:
-                      oneUserData.status === "active" ? "green" : "red",
-                    textTransform: "capitalize",
-                  }}
-                >
-                  {oneUserData.status}
+                </p>
+                <p className="text-2xl font-bold text-green-600">
+                  ${(oneUserData?.accountBalance || 0).toLocaleString()}.00
                 </p>
               </div>
-            </div>
-            <div className="w-1/4 phone:w-full h-28 phone:h-max flex flex-col phone:flex-row justify-between ">
-              <div className="w-full h-[45%] flex flex-col justify-between">
-                <h1 className=" text-[rgb(14,65,82)] font-bold">
-                  WithdrawalTotal
-                </h1>
-                <p className="text-sm">
-                  ${oneUserData?.userTransactionTotal?.withdrawalTotal}.00
-                </p>
-              </div>
-              <div className="w-full h-[45%]">
-                <h1 className=" text-[rgb(14,65,82)] font-bold">
-                  Subscriptions History Total
-                </h1>
-                <p className="text-sm">
-                  $
-                  {oneUserData?.userTransactionTotal?.subscriptionsHistoryTotal}
-                  .00
-                </p>
-              </div>
-            </div>
-            <div className="w-1/4 phone:w-full h-28 phone:h-max flex flex-col phone:flex-row justify-between ">
-              <div className="w-full h-[45%] flex flex-col justify-between">
-                <h1 className=" text-[rgb(14,65,82)] font-bold">
-                  Daily Interest History Total
-                </h1>
-                <p className="text-sm">
-                  $
-                  {oneUserData?.userTransactionTotal?.dailyInterestHistoryTotal}
-                  .00
-                </p>
-              </div>
-              <div className="w-full h-[45%] flex flex-col justify-between">
-                <h1 className=" text-[rgb(14,65,82)] font-bold">
-                  Deposit Total
-                </h1>
-                <p className="text-sm">
-                  ${oneUserData?.userTransactionTotal?.depositTotal}.00
-                </p>
-              </div>
-            </div>
-            <div className="w-1/4 phone:w-full h-28 phone:h-max flex flex-col phone:flex-row justify-between ">
-              <div className="w-full h-[45%] flex flex-col justify-between">
-                <h1 className=" text-[rgb(14,65,82)] font-bold">
-                  Bonus History Total
-                </h1>
-                <p className="text-sm">
-                  ${oneUserData?.userTransactionTotal?.bonusHistoryTotal}.00
-                </p>
-              </div>
-              <div className="w-full h-[45%]">
-                <h1 className=" text-[rgb(14,65,82)] font-bold">
-                  Referral Count
-                </h1>
-                <p className="text-sm ">{oneUserData?.referralCount}</p>
-              </div>
-            </div>
-            <div className="w-1/4 phone:w-full h-28 phone:h-max flex flex-col phone:flex-row justify-between ">
-              <div className="w-full h-[45%] flex flex-col justify-between">
-                <h1 className=" text-[rgb(14,65,82)] font-bold">
-                  Referral Bonus Amount
-                </h1>
-                <p className="text-sm">
-                  ${formatCurrency(oneUserData?.inviteCode?.bonusAmount)}
-                </p>
-              </div>
-              <div className="w-full h-[45%]">
-                <h1 className=" text-[rgb(14,65,82)] font-bold">
-                  Total Referred Active Subscribers
-                </h1>
-                <p className="text-sm ">{totalreferredactivesubscribers}</p>
+              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                <MdAccountBalance className="w-6 h-6 text-green-600" />
               </div>
             </div>
           </div>
-          <div className="w-full h-max mb-5">
-            <p className="px-4">USER INFORMATION</p>
-            <div className="w-full h-max border border-gray-200 rounded">
-              {/* <div className="w-full h-14 border-b border-b-gray-200 flex items-center py-3">
-                <div className="w-[30%] h-full flex items-center px-4">
-                  FullName
-                </div>
-                <div className="w-[70%] h-full flex items-center px-4 border-l border-l-gray-200">
-                  {oneUserData.firstName} {oneUserData.lastName}
-                </div>
-              </div> */}
-              <div className="w-full h-14 border-b border-b-gray-200 flex items-center py-3">
-                <div className="w-[30%] h-full flex items-center px-4">
-                  UserName
-                </div>
-                <div className="w-[70%] h-full flex items-center px-4 border-l border-l-gray-200">
-                  {oneUserData.userName}
-                </div>
+
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-500 mb-1">
+                  Total Withdrawals
+                </p>
+                <p className="text-2xl font-bold text-red-600">
+                  $
+                  {(
+                    oneUserData?.userTransactionTotal?.withdrawalTotal || 0
+                  ).toLocaleString()}
+                  .00
+                </p>
               </div>
-              <div className="w-full h-14 border-b border-b-gray-200 flex items-center py-3">
-                <div className="w-[30%] h-full flex items-center px-4">
-                  Email
-                </div>
-                <div className="w-[70%] h-full flex items-center px-4 border-l border-l-gray-200">
-                  {oneUserData.email}
-                </div>
+              <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                <IoCard className="w-6 h-6 text-red-600" />
               </div>
-              <div className="w-full h-14 flex border-b border-b-gray-200  items-center py-3">
-                <div className="w-[30%] h-full flex items-center px-4">
-                  Mobile Number
-                </div>
-                <div className="w-[70%] h-full flex items-center px-4 border-l border-l-gray-200">
-                  {oneUserData.phoneNumber}
-                </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-500 mb-1">
+                  Total Deposits
+                </p>
+                <p className="text-2xl font-bold text-blue-600">
+                  $
+                  {(
+                    oneUserData?.userTransactionTotal?.depositTotal || 0
+                  ).toLocaleString()}
+                  .00
+                </p>
               </div>
-              <div className="w-full h-14 flex border-b border-b-gray-200  items-center py-3">
-                <div className="w-[30%] h-full flex items-center px-4">
-                  WalletName
-                </div>
-                <div className="w-[70%] h-full flex items-center px-4 border-l border-l-gray-200">
-                  {oneUserData?.WalletInfo?.WalletName}
-                </div>
+              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                <FaWallet className="w-6 h-6 text-blue-600" />
               </div>
-              <div className="w-full h-14 flex border-b border-b-gray-200  items-center py-3">
-                <div className="w-[30%] h-full flex items-center px-4">
-                  WalletAddress
-                </div>
-                <div className="w-[70%] h-full flex items-center px-4 border-l border-l-gray-200">
-                  {oneUserData?.WalletInfo?.WalletAddress}
-                </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-500 mb-1">
+                  Referral Count
+                </p>
+                <p className="text-2xl font-bold text-purple-600">
+                  {oneUserData?.referralCount || 0}
+                </p>
               </div>
-              <div className="w-full h-14 border-b border-b-gray-200 flex items-center py-3">
-                <div className="w-[30%] h-full flex items-center px-4">Pin</div>
-                <div className="w-[70%] h-full flex items-center px-4 border-l border-l-gray-200">
-                  {EditInfo.pin ? (
-                    <input
-                      type="password" // Ensures only numbers can be entered
-                      value={EditInfo.newPin || ""}
-                      onChange={(e) => {
-                        // Prevents entering non-numeric values
-                        const value = e.target.value;
-                        if (/^\d*$/.test(value)) {
+              <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                <IoPerson className="w-6 h-6 text-purple-600" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Additional Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              Transaction Summary
+            </h3>
+            <div className="space-y-3">
+              <div className="flex justify-between">
+                <span className="text-gray-600">Daily Interest Total</span>
+                <span className="font-medium">
+                  $
+                  {(
+                    oneUserData?.userTransactionTotal
+                      ?.dailyInterestHistoryTotal || 0
+                  ).toLocaleString()}
+                  .00
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Subscriptions Total</span>
+                <span className="font-medium">
+                  $
+                  {(
+                    oneUserData?.userTransactionTotal
+                      ?.subscriptionsHistoryTotal || 0
+                  ).toLocaleString()}
+                  .00
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Bonus Total</span>
+                <span className="font-medium">
+                  $
+                  {(
+                    oneUserData?.userTransactionTotal?.bonusHistoryTotal || 0
+                  ).toLocaleString()}
+                  .00
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              Referral Information
+            </h3>
+            <div className="space-y-3">
+              <div className="flex justify-between">
+                <span className="text-gray-600">Referral Bonus</span>
+                <span className="font-medium">
+                  ${formatCurrency(oneUserData?.inviteCode?.bonusAmount)}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Active Subscribers</span>
+                <span className="font-medium">
+                  {totalreferredactivesubscribers || 0}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              Account Info
+            </h3>
+            <div className="space-y-3">
+              <div className="flex justify-between">
+                <span className="text-gray-600">Status</span>
+                <span
+                  className={`font-medium ${
+                    oneUserData.status === "active"
+                      ? "text-green-600"
+                      : "text-red-600"
+                  }`}
+                >
+                  {oneUserData.status?.charAt(0)?.toUpperCase() +
+                    oneUserData.status?.slice(1)}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Registered</span>
+                <span className="font-medium text-sm">
+                  {new Date(oneUserData.updatedAt).toLocaleDateString()}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* User Information */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-6 flex items-center gap-2">
+            <FaUser className="w-5 h-5 text-blue-600" />
+            User Information
+          </h3>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Basic Info */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                <div className="flex items-center gap-3">
+                  <FaUser className="w-4 h-4 text-gray-500" />
+                  <span className="font-medium text-gray-700">Username</span>
+                </div>
+                <span className="text-gray-900">{oneUserData.userName}</span>
+              </div>
+
+              <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                <div className="flex items-center gap-3">
+                  <IoMail className="w-4 h-4 text-gray-500" />
+                  <span className="font-medium text-gray-700">Email</span>
+                </div>
+                <span className="text-gray-900">{oneUserData.email}</span>
+              </div>
+
+              <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                <div className="flex items-center gap-3">
+                  <IoCall className="w-4 h-4 text-gray-500" />
+                  <span className="font-medium text-gray-700">Phone</span>
+                </div>
+                <span className="text-gray-900">
+                  {oneUserData.phoneNumber || "Not provided"}
+                </span>
+              </div>
+            </div>
+
+            {/* Wallet Info */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                <div className="flex items-center gap-3">
+                  <FaWallet className="w-4 h-4 text-gray-500" />
+                  <span className="font-medium text-gray-700">Wallet Name</span>
+                </div>
+                <span className="text-gray-900">
+                  {oneUserData?.WalletInfo?.WalletName || "Not set"}
+                </span>
+              </div>
+
+              <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                <div className="flex items-center gap-3">
+                  <IoCard className="w-4 h-4 text-gray-500" />
+                  <span className="font-medium text-gray-700">
+                    Wallet Address
+                  </span>
+                </div>
+                <span className="text-gray-900 font-mono text-sm">
+                  {oneUserData?.WalletInfo?.WalletAddress
+                    ? `${oneUserData.WalletInfo.WalletAddress.slice(
+                        0,
+                        10
+                      )}...${oneUserData.WalletInfo.WalletAddress.slice(-6)}`
+                    : "Not set"}
+                </span>
+              </div>
+
+              {/* Security Actions */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <MdSecurity className="w-4 h-4 text-gray-500" />
+                    <span className="font-medium text-gray-700">PIN</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {EditInfo.pin && (
+                      <input
+                        type="password"
+                        value={EditInfo.newPin || ""}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          if (/^\d*$/.test(value)) {
+                            setEditInfo((prev) => ({ ...prev, newPin: value }));
+                          }
+                        }}
+                        className="px-3 py-1 border border-gray-300 rounded text-sm w-24"
+                        placeholder="New PIN"
+                        maxLength={4}
+                      />
+                    )}
+                    <button
+                      onClick={() => {
+                        if (EditInfo.pin) {
+                          handleChangePin(EditInfo.newPin);
+                        } else {
+                          setEditInfo((prev) => ({ ...prev, pin: !prev.pin }));
+                        }
+                      }}
+                      className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded text-sm transition-colors"
+                    >
+                      {EditInfo.pin ? "Save" : "Change PIN"}
+                    </button>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <FaLock className="w-4 h-4 text-gray-500" />
+                    <span className="font-medium text-gray-700">Password</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {EditInfo.password && (
+                      <input
+                        type="password"
+                        value={EditInfo.newPassword || ""}
+                        onChange={(e) =>
                           setEditInfo((prev) => ({
                             ...prev,
-                            newPin: value,
+                            newPassword: e.target.value,
+                          }))
+                        }
+                        className="px-3 py-1 border border-gray-300 rounded text-sm w-32"
+                        placeholder="New password"
+                      />
+                    )}
+                    <button
+                      onClick={() => {
+                        if (EditInfo.password) {
+                          handleChangePassword(EditInfo.newPassword);
+                        } else {
+                          setEditInfo((prev) => ({
+                            ...prev,
+                            password: !prev.password,
                           }));
                         }
                       }}
-                      className="p-1 rounded w-[30%] border border-gray-300 outline-gray-300"
-                      placeholder="Enter new PIN"
-                      maxLength={4} // Limits the input to 4 digits
-                    />
-                  ) : null}
-
-                  <button
-                    className="py-1 px-3 bg-gray-300 rounded"
-                    onClick={() => {
-                      if (EditInfo.pin) {
-                        // Save the new PIN
-                        handleChangePin(EditInfo.newPin);
-                      } else {
-                        // Toggle the input field
-                        setEditInfo((prev) => ({
-                          ...prev,
-                          pin: !prev.pin,
-                        }));
-                      }
-                    }}
-                  >
-                    {EditInfo.pin ? "Save" : "Change Pin"}
-                  </button>
+                      className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded text-sm transition-colors"
+                    >
+                      {EditInfo.password ? "Save" : "Change Password"}
+                    </button>
+                  </div>
                 </div>
               </div>
-              <div className="w-full h-14 border-b border-b-gray-200 flex items-center py-3">
-                <div className="w-[30%] h-full flex items-center px-4">
-                  Password
-                </div>
-                <div className="w-[70%] h-full flex items-center px-4 border-l border-l-gray-200">
-                  {EditInfo.password ? (
-                    <input
-                      type="password"
-                      value={EditInfo.password || ""}
-                      onChange={(e) =>
-                        setEditInfo((prev) => ({
-                          ...prev,
-                          password: e.target.value,
-                        }))
-                      }
-                      className="p-1 rounded w-[60%] border border-gray-300 outline-gray-300"
-                      placeholder="Enter new password"
-                    />
-                  ) : null}
-
-                  <button
-                    className="py-1 px-3 bg-gray-300 rounded"
-                    onClick={() => {
-                      if (EditInfo.password) {
-                        // Save the new password
-                        handleChangePassword(EditInfo.newPassword);
-                      } else {
-                        // Toggle the input field
-                        setEditInfo((prev) => ({
-                          ...prev,
-                          password: !prev.password,
-                        }));
-                      }
-                    }}
-                  >
-                    {EditInfo.password ? "Save Password" : "Change Password"}
-                  </button>
-                </div>
-              </div>
-              <div className="w-full h-14 flex items-center py-3">
-                <div className="w-[30%] h-full flex items-center px-4">
-                  Registered
-                </div>
-                <div className="w-[70%] h-full flex items-center px-4 border-l border-l-gray-200">
-                  {oneUserData.updatedAt}
-                </div>
-              </div>
-              {/* <button className="my-4 mx-4 py-2 px-5 bg-green-800 text-white rounded">
-                Save Changes
-              </button> */}
             </div>
           </div>
         </div>
       </div>
+
+      {/* Modals */}
       <Modal
         open={blockUser}
         onOk={
@@ -861,281 +950,77 @@ const UserDetails = () => {
         }
         onCancel={() => setBlockUser(false)}
         okButtonProps={{
-          className: "bg-[#0A503D] text-white",
-          size: "middle",
-          style: {
-            backgroundColor: "#0e4152",
-          },
+          className: "bg-red-600 hover:bg-red-700 border-red-600",
         }}
-        okText={"Yes block"}
-        closeIcon={true}
-        title={"Block User"}
+        okText={
+          oneUserData.status === "blocked" ? "Yes, Unblock" : "Yes, Block"
+        }
+        title={`${oneUserData.status === "blocked" ? "Unblock" : "Block"} User`}
       >
-        <p className="text-2xl">
+        <p className="py-4">
           Are you sure you want to{" "}
           {oneUserData.status === "blocked" ? "unblock" : "block"}{" "}
-          {oneUserData.userName}?
+          <strong>{oneUserData.userName}</strong>?
         </p>
       </Modal>
-      <Modal
-        open={creditDebit}
-        onOk={TextClick}
-        onCancel={() => setCreditDebit(false)}
-        cancelButtonProps={{ hidden: true }}
-        okButtonProps={{
-          className: "bg-[#0A503D] text-white",
-          size: "middle",
-          style: {
-            backgroundColor: "#0e4152",
-          },
-        }}
-        okText={`${creditOrDebit}`}
-        closeIcon={true}
-        title={`Credit/Debit ${oneUserData.fullName} account.`}
-      >
-        <div className="w-full h-max pt-6 flex flex-col gap-4">
-          <div className="w-full h-max flex">
-            <div className="w-10 h-10 bg-gray-300 flex items-center justify-center">
-              $
-            </div>
-            <input
-              type="number"
-              placeholder="Enter amount"
-              className="w-full h-10 pl-4 border border-gray-200 rounded-r outline-sky-300"
-              onChange={(e) => {
-                setCreditDebitValue(e.target.value);
-              }}
-              value={creditDebitValue}
-            />
-          </div>
-          <div className="w-full h-max">
-            <p>Select where to Credit/Debit</p>
-            <select
-              name=""
-              id=""
-              className="w-full h-10 pl-4 border border-gray-200 rounded-r outline-sky-300"
-              onChange={(e) => {
-                setCreditDebitItem(e.target.value);
-              }}
-              value={creditDebitItem}
-            >
-              <option value="">Select Column</option>
-              <option value="bonus">Bonus</option>
-              <option value="profit">Profit</option>
-              <option value="refBonus">Ref_Bonus</option>
-              <option value="accountBalance">Account Balance</option>
-              <option value="deposit">Deposit</option>
-              <option value="totalInv">Total Investment</option>
-            </select>
-          </div>
-          <div className="w-full">
-            <p>Select credit to add, debit to subtract</p>
-            <select
-              name=""
-              id=""
-              className="w-full h-10 pl-4 border border-gray-200 rounded-r outline-sky-300"
-              onChange={(e) => setCreditOrDebit(e.target.value)}
-              value={creditOrDebit}
-            >
-              <option value="Credit">Credit</option>
-              <option value="Debit">Debit</option>
-            </select>
-            <p>
-              <span>NOTE: &nbsp;</span>You cannot debit the deposit column of
-              users
-            </p>
-          </div>
-        </div>
-      </Modal>
-      {/* <Modal
-        open={resetPwd}
-        onOk={handleResetPwd}
-        onCancel={() => setResetPwd(false)}
-        okButtonProps={{
-          className: "bg-[#0A503D] text-white",
-          size: "middle",
-          style: {
-            backgroundColor: "#0e4152",
-          },
-        }}
-        okText={"Reset Now"}
-        closeIcon={true}
-        title={"Reset Password"}
-      >
-        <p className="text-base">
-          Are you sure you want to reset password for {oneUserData.fullName} to
-          user01236
-        </p>
-      </Modal> */}
-      {/* <Modal
-        open={clearAcc}
-        onOk={handleClearAcc}
-        onCancel={() => setClearAcc(false)}
-        okButtonProps={{
-          className: "bg-[#ffad46] text-white",
-          size: "middle",
-          style: {
-            backgroundColor: "#ffad46",
-          },
-        }}
-        okText={"Proceed"}
-        closeIcon={true}
-        title={"Clear Account"}
-      >
-        <p className="text-base">
-          You are clearing account for {oneUserData.fullName} to $0.00
-        </p>
-      </Modal> */}
-      <Modal
-        open={addRoi}
-        onOk={handleAddRoi}
-        onCancel={() => setAddRoi(false)}
-        cancelButtonProps={{ hidden: true }}
-        okButtonProps={{
-          className: "bg-[#0A503D] text-white",
-          size: "middle",
-          style: {
-            backgroundColor: "#0e4152",
-          },
-        }}
-        okText={"Add History"}
-        closeIcon={true}
-        title={`Add Trading History for ${oneUserData.fullName}`}
-      >
-        <div className="w-full h-max pt-6 flex flex-col gap-4">
-          <div className="w-full h-max">
-            <p>Select Investment Plan</p>
-            <select
-              name=""
-              id=""
-              className="w-full h-10 pl-4 border border-gray-200 rounded-r outline-sky-300"
-            >
-              <option value="">Select Plan</option>
-              <option value="">Bronze Plan</option>
-              <option value="">Silver Plan</option>
-              <option value="">Gold Plan</option>
-              <option value="">Daimond Plan</option>
-            </select>
-          </div>
-          <div className="w-full h-max">
-            <p>Select Investment Plan</p>
-            <input
-              type="number"
-              placeholder="Enter amount"
-              className="w-full h-10 pl-4 border border-gray-200 rounded-r outline-sky-300"
-            />
-          </div>
-          <div className="w-full">
-            <p>Type</p>
-            <select
-              name=""
-              id=""
-              className="w-full h-10 pl-4 border border-gray-200 rounded-r outline-sky-300"
-            >
-              <option value="">Select Type</option>
-              <option value="">Bonus</option>
-              <option value="">ROI</option>
-            </select>
-          </div>
-        </div>
-      </Modal>
+
       <Modal
         open={edit}
         onOk={handleEdit}
         onCancel={() => setEdit(false)}
-        cancelButtonProps={{ hidden: true }}
         okButtonProps={{
-          className: "bg-[#0A503D] text-white",
-          size: "middle",
-          style: {
-            backgroundColor: "#0e4152",
-          },
+          className: "bg-blue-600 hover:bg-blue-700 border-blue-600",
         }}
-        okText={"Update"}
-        closeIcon={true}
-        title={`Edit ${oneUserData.userName} details.`}
+        okText="Update Email"
+        title={`Edit ${oneUserData.userName} Details`}
       >
-        <div className="w-full h-max pt-6 flex flex-col gap-4">
-          {/* <div className="w-full h-max">
-            <p>Username</p>
-            <input
-              type="text"
-              className="w-full h-10 pl-4 border border-gray-200 rounded-r outline-sky-300"
-            />
-            <p>Note: same username should be use in the referral link.</p>
-          </div> */}
-          {/* <div className="w-full h-max">
-            <p>Full name</p>
-            <input
-              type="text"
-              className="w-full h-10 pl-4 border border-gray-200 rounded-r outline-sky-300"
-            />
-          </div> */}
-          <div className="w-full h-max">
-            <p>Email</p>
-            <input
-              type="text"
-              className="w-full h-10 pl-4 border border-gray-200 rounded-r outline-sky-300"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          {/* <div className="w-full h-max">
-            <p>Phone number</p>
-            <input
-              type="text"
-              className="w-full h-10 pl-4 border border-gray-200 rounded-r outline-sky-300"
-            />
-          </div> */}
-          {/* <div className="w-full h-max">
-            <p>Country</p>
-            <input
-              type="text"
-              className="w-full h-10 pl-4 border border-gray-200 rounded-r outline-sky-300"
-            />
-          </div> */}
-          {/* <div className="w-full h-max">
-            <p>Referral link</p>
-            <input
-              type="text"
-              className="w-full h-10 pl-4 border border-gray-200 rounded-r outline-sky-300"
-            />
-          </div> */}
+        <div className="py-4">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Email Address
+          </label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+            placeholder="Enter new email address"
+          />
         </div>
       </Modal>
+
       <Modal
         open={sendEmail}
         onOk={handleSendEmail}
         onCancel={() => setSendEmail(false)}
-        cancelButtonProps={{ hidden: true }}
         okButtonProps={{
-          className: "bg-[#0A503D] text-white",
-          size: "middle",
-          style: {
-            backgroundColor: "#0e4152",
-          },
+          className: "bg-green-600 hover:bg-green-700 border-green-600",
         }}
-        okText={"Send"}
-        closeIcon={true}
-        title={"Send Email"}
+        okText="Send Email"
+        title="Send Email"
       >
-        <div className="w-full h-max pt-6 flex flex-col gap-4">
-          <p>This message will be sent to {oneUserData.fullName}</p>
-          <div className="w-full h-max">
+        <div className="py-4 space-y-4">
+          <p className="text-gray-600">
+            Send a message to <strong>{oneUserData.userName}</strong>
+          </p>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Subject
+            </label>
             <input
               type="text"
-              placeholder="Subject"
-              className="w-full h-10 pl-4 border border-gray-200 rounded-r outline-sky-300"
+              placeholder="Email subject"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
             />
           </div>
-          <div className="w-full h-max">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Message
+            </label>
             <textarea
-              name=""
-              id=""
-              cols="30"
-              rows="10"
-              className="w-full h-20 pl-4 border border-gray-200 rounded-r outline-sky-300"
-            ></textarea>
+              rows="4"
+              placeholder="Email message"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none resize-none"
+            />
           </div>
         </div>
       </Modal>
@@ -1145,37 +1030,85 @@ const UserDetails = () => {
         onOk={handleLogin}
         onCancel={() => setLogin(false)}
         okButtonProps={{
-          className: "bg-[#ffad46] text-white",
-          size: "middle",
-          style: {
-            backgroundColor: "#31ce36",
-          },
+          className: "bg-green-600 hover:bg-green-700 border-green-600",
         }}
-        okText={"Proceed"}
-        closeIcon={true}
-        title={`You are about to login as ${oneUserData.userName}.`}
-      ></Modal>
+        okText="Proceed"
+        title={`Login as ${oneUserData.userName}`}
+      >
+        <p className="py-4">
+          You are about to login as <strong>{oneUserData.userName}</strong>.
+          This will redirect you to their account dashboard.
+        </p>
+      </Modal>
+
       <Modal
         open={deleteUser}
         onOk={handleDelete}
         onCancel={() => setDeleteUser(false)}
         okButtonProps={{
-          className: "bg-[#ffad46] text-white",
-          size: "middle",
-          style: {
-            backgroundColor: "#f25961",
-          },
+          className: "bg-red-600 hover:bg-red-700 border-red-600",
         }}
-        okText={"Yes I'm sure"}
-        closeIcon={true}
-        title={"Delete User"}
+        okText="Yes, Delete"
+        title="Delete User"
       >
-        <p>
-          Are you sure you want to delete {oneUserData.userName} Account?
-          Everything associated with this account will be lost.
-        </p>
+        <div className="py-4">
+          <p className="text-gray-700 mb-2">
+            Are you sure you want to delete{" "}
+            <strong>{oneUserData.userName}</strong>'s account?
+          </p>
+          <p className="text-red-600 text-sm">
+            ⚠️ This action cannot be undone. Everything associated with this
+            account will be permanently lost.
+          </p>
+        </div>
       </Modal>
-    </>
+
+      <Modal
+        open={addRoi}
+        onOk={handleAddRoi}
+        onCancel={() => setAddRoi(false)}
+        okButtonProps={{
+          className: "bg-blue-600 hover:bg-blue-700 border-blue-600",
+        }}
+        okText="Add History"
+        title={`Add Trading History for ${oneUserData.userName}`}
+      >
+        <div className="py-4 space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Investment Plan
+            </label>
+            <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+              <option value="">Select Plan</option>
+              <option value="bronze">Bronze Plan</option>
+              <option value="silver">Silver Plan</option>
+              <option value="gold">Gold Plan</option>
+              <option value="diamond">Diamond Plan</option>
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Amount
+            </label>
+            <input
+              type="number"
+              placeholder="Enter amount"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Type
+            </label>
+            <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+              <option value="">Select Type</option>
+              <option value="bonus">Bonus</option>
+              <option value="roi">ROI</option>
+            </select>
+          </div>
+        </div>
+      </Modal>
+    </div>
   );
 };
 
