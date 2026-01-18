@@ -40,7 +40,7 @@ const ManageWithdrawal = () => {
             "Content-Type": "application/json",
             authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
       toast.success(response.data.message);
       getallWithdrawal();
@@ -142,11 +142,11 @@ const ManageWithdrawal = () => {
 
   // Pagination
   const totalPages = Math.ceil(
-    filteredAndSortedWithdrawals.length / itemsPerPage
+    filteredAndSortedWithdrawals.length / itemsPerPage,
   );
   const paginatedWithdrawals = filteredAndSortedWithdrawals.slice(
     (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+    currentPage * itemsPerPage,
   );
 
   const formatDate = (dateString) => {
@@ -303,7 +303,7 @@ const ManageWithdrawal = () => {
                     <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Amount
                     </th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider  md:table-cell">
                       Method
                     </th>
                     <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -312,7 +312,7 @@ const ManageWithdrawal = () => {
                     <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Status
                     </th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell">
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider  lg:table-cell">
                       Date
                     </th>
                     <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -353,11 +353,11 @@ const ManageWithdrawal = () => {
                           <div className="text-sm font-semibold text-red-600">
                             $
                             {parseFloat(
-                              withdrawal.amount || 0
+                              withdrawal.amount || 0,
                             ).toLocaleString()}
                           </div>
                         </td>
-                        <td className="px-4 py-4 hidden md:table-cell">
+                        <td className="px-4 py-4  md:table-cell">
                           <div className="text-sm text-gray-900 flex items-center gap-1">
                             <IoWallet className="w-3 h-3 text-gray-400" />
                             {withdrawal.method || "N/A"}
@@ -386,14 +386,14 @@ const ManageWithdrawal = () => {
                         <td className="px-4 py-4">
                           <span
                             className={`px-2 py-1 rounded-full text-xs font-medium border ${getStatusColor(
-                              withdrawal.status
+                              withdrawal.status,
                             )}`}
                           >
                             {withdrawal.status?.charAt(0).toUpperCase() +
                               withdrawal.status?.slice(1) || "Unknown"}
                           </span>
                         </td>
-                        <td className="px-4 py-4 hidden lg:table-cell">
+                        <td className="px-4 py-4  lg:table-cell">
                           <div className="text-sm text-gray-500">
                             {formatDate(withdrawal.withdrawalDate)}
                           </div>
@@ -454,12 +454,12 @@ const ManageWithdrawal = () => {
                   Showing{" "}
                   {Math.min(
                     (currentPage - 1) * itemsPerPage + 1,
-                    filteredAndSortedWithdrawals.length
+                    filteredAndSortedWithdrawals.length,
                   )}{" "}
                   to{" "}
                   {Math.min(
                     currentPage * itemsPerPage,
-                    filteredAndSortedWithdrawals.length
+                    filteredAndSortedWithdrawals.length,
                   )}{" "}
                   of {filteredAndSortedWithdrawals.length} withdrawals
                 </span>

@@ -42,7 +42,7 @@ const ManageDeposit = () => {
             "Content-Type": "application/json",
             authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
       toast.success(response.data.message);
       setAcceptModalVisible(false);
@@ -146,7 +146,7 @@ const ManageDeposit = () => {
   const totalPages = Math.ceil(filteredAndSortedDeposits.length / itemsPerPage);
   const paginatedDeposits = filteredAndSortedDeposits.slice(
     (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+    currentPage * itemsPerPage,
   );
 
   const formatDate = (dateString) => {
@@ -179,6 +179,8 @@ const ManageDeposit = () => {
   useEffect(() => {
     setCurrentPage(1);
   }, [searchTerm, statusFilter, sortBy, sortOrder, itemsPerPage]);
+
+  console.log("object", userData);
 
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-6">
@@ -298,13 +300,13 @@ const ManageDeposit = () => {
                     <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Transaction ID
                     </th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider  md:table-cell">
                       Wallet Address
                     </th>
                     <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Amount
                     </th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell">
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider  lg:table-cell">
                       Method
                     </th>
                     <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -313,7 +315,7 @@ const ManageDeposit = () => {
                     <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Status
                     </th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden xl:table-cell">
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider  xl:table-cell">
                       Date
                     </th>
                     <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -355,7 +357,7 @@ const ManageDeposit = () => {
                             {deposit._id}
                           </div>
                         </td>
-                        <td className="px-4 py-4 hidden md:table-cell">
+                        <td className="px-4 py-4  md:table-cell">
                           <div className="text-sm text-gray-900 break-all max-w-xs">
                             {deposit.depositWallet?.slice(0, 20)}...
                           </div>
@@ -365,7 +367,7 @@ const ManageDeposit = () => {
                             ${parseFloat(deposit.amount || 0).toLocaleString()}
                           </div>
                         </td>
-                        <td className="px-4 py-4 hidden lg:table-cell">
+                        <td className="px-4 py-4  lg:table-cell">
                           <div className="text-sm text-gray-900">
                             {deposit.PaymentType || "N/A"}
                           </div>
@@ -391,14 +393,14 @@ const ManageDeposit = () => {
                         <td className="px-4 py-4">
                           <span
                             className={`px-2 py-1 rounded-full text-xs font-medium border ${getStatusColor(
-                              deposit.status
+                              deposit.status,
                             )}`}
                           >
                             {deposit.status?.charAt(0).toUpperCase() +
                               deposit.status?.slice(1) || "Unknown"}
                           </span>
                         </td>
-                        <td className="px-4 py-4 hidden xl:table-cell">
+                        <td className="px-4 py-4 xl:table-cell">
                           <div className="text-sm text-gray-500">
                             {formatDate(deposit.depositDate)}
                           </div>
@@ -459,12 +461,12 @@ const ManageDeposit = () => {
                   Showing{" "}
                   {Math.min(
                     (currentPage - 1) * itemsPerPage + 1,
-                    filteredAndSortedDeposits.length
+                    filteredAndSortedDeposits.length,
                   )}{" "}
                   to{" "}
                   {Math.min(
                     currentPage * itemsPerPage,
-                    filteredAndSortedDeposits.length
+                    filteredAndSortedDeposits.length,
                   )}{" "}
                   of {filteredAndSortedDeposits.length} deposits
                 </span>
