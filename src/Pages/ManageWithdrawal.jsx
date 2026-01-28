@@ -395,7 +395,7 @@ const ManageWithdrawal = () => {
                         </td>
                         <td className="px-4 py-4  lg:table-cell">
                           <div className="text-sm text-gray-500">
-                            {formatDate(withdrawal.withdrawalDate)}
+                            {withdrawal.withdrawalDate}
                           </div>
                         </td>
                         <td className="px-4 py-4">

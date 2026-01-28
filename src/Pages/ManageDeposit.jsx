@@ -402,7 +402,7 @@ const ManageDeposit = () => {
                         </td>
                         <td className="px-4 py-4 xl:table-cell">
                           <div className="text-sm text-gray-500">
-                            {formatDate(deposit.depositDate)}
+                            {deposit.depositDate}
                           </div>
                         </td>
                         <td className="px-4 py-4">
