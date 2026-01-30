@@ -336,7 +336,7 @@ const ManageDeposit = () => {
                       </td>
                     </tr>
                   ) : (
-                    paginatedDeposits.map((deposit) => (
+                    paginatedDeposits.reverse().map((deposit) => (
                       <tr
                         key={deposit._id}
                         className="hover:bg-gray-50 transition-colors"

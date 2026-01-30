@@ -333,7 +333,7 @@ const ManageWithdrawal = () => {
                       </td>
                     </tr>
                   ) : (
-                    paginatedWithdrawals.map((withdrawal) => (
+                    paginatedWithdrawals.reverse().map((withdrawal) => (
                       <tr
                         key={withdrawal._id}
                         className="hover:bg-gray-50 transition-colors"
