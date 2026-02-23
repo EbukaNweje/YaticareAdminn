@@ -80,6 +80,7 @@ const ManageDeposit = () => {
       const url = "https://yaticare-backend.onrender.com/api/admin/alldeposits";
       const response = await axios.get(url);
       setUserData(response.data.data || []);
+      setCurrentPage(1); // Reset to first page to show newest deposits
     } catch (error) {
       console.error("Error fetching deposits:", error);
       toast.error("Failed to fetch deposits");
@@ -93,6 +94,7 @@ const ManageDeposit = () => {
   const filteredAndSortedDeposits = useMemo(() => {
     let filtered = userData.filter((deposit) => {
       const searchLower = searchTerm.toLowerCase();
+
       const matchesSearch =
         deposit?.user?.userName?.toLowerCase().includes(searchLower) ||
         deposit?._id?.toLowerCase().includes(searchLower) ||
@@ -106,41 +108,16 @@ const ManageDeposit = () => {
       return matchesSearch && matchesStatus;
     });
 
-    // Sort deposits
+    // 🔥 Always sort newest first using createdAt
     filtered.sort((a, b) => {
-      let aValue, bValue;
+      const aDate = new Date(a.createdAt).getTime();
+      const bDate = new Date(b.createdAt).getTime();
 
-      switch (sortBy) {
-        case "amount":
-          aValue = parseFloat(a.amount) || 0;
-          bValue = parseFloat(b.amount) || 0;
-          break;
-        case "depositDate":
-          aValue = new Date(a.depositDate);
-          bValue = new Date(b.depositDate);
-          break;
-        case "status":
-          aValue = a.status || "";
-          bValue = b.status || "";
-          break;
-        case "userName":
-          aValue = a.user?.userName || "";
-          bValue = b.user?.userName || "";
-          break;
-        default:
-          aValue = new Date(a.depositDate);
-          bValue = new Date(b.depositDate);
-      }
-
-      if (sortOrder === "asc") {
-        return aValue > bValue ? 1 : -1;
-      } else {
-        return aValue < bValue ? 1 : -1;
-      }
+      return sortOrder === "asc" ? aDate - bDate : bDate - aDate;
     });
 
     return filtered;
-  }, [userData, searchTerm, statusFilter, sortBy, sortOrder]);
+  }, [userData, searchTerm, statusFilter, sortOrder]);
 
   // Pagination
   const totalPages = Math.ceil(filteredAndSortedDeposits.length / itemsPerPage);
@@ -148,16 +125,6 @@ const ManageDeposit = () => {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage,
   );
-
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
 
   const getStatusColor = (status) => {
     switch (status?.toLowerCase()) {
@@ -336,7 +303,7 @@ const ManageDeposit = () => {
                       </td>
                     </tr>
                   ) : (
-                    paginatedDeposits.reverse().map((deposit) => (
+                    paginatedDeposits.map((deposit) => (
                       <tr
                         key={deposit._id}
                         className="hover:bg-gray-50 transition-colors"
@@ -402,7 +369,7 @@ const ManageDeposit = () => {
                         </td>
                         <td className="px-4 py-4 xl:table-cell">
                           <div className="text-sm text-gray-500">
-                            {deposit.depositDate}
+                            {new Date(deposit.createdAt).toLocaleString()}
                           </div>
                         </td>
                         <td className="px-4 py-4">

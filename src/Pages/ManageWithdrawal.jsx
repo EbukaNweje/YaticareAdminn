@@ -92,6 +92,7 @@ const ManageWithdrawal = () => {
   const filteredAndSortedWithdrawals = useMemo(() => {
     let filtered = userData.filter((withdrawal) => {
       const searchLower = searchTerm.toLowerCase();
+
       const matchesSearch =
         withdrawal?.user?.userName?.toLowerCase().includes(searchLower) ||
         withdrawal?.method?.toLowerCase().includes(searchLower) ||
@@ -104,41 +105,16 @@ const ManageWithdrawal = () => {
       return matchesSearch && matchesStatus;
     });
 
-    // Sort withdrawals
+    // 🔥 Always sort using createdAt (newest first)
     filtered.sort((a, b) => {
-      let aValue, bValue;
+      const aDate = new Date(a.createdAt).getTime();
+      const bDate = new Date(b.createdAt).getTime();
 
-      switch (sortBy) {
-        case "amount":
-          aValue = parseFloat(a.amount) || 0;
-          bValue = parseFloat(b.amount) || 0;
-          break;
-        case "withdrawalDate":
-          aValue = new Date(a.withdrawalDate);
-          bValue = new Date(b.withdrawalDate);
-          break;
-        case "status":
-          aValue = a.status || "";
-          bValue = b.status || "";
-          break;
-        case "userName":
-          aValue = a.user?.userName || "";
-          bValue = b.user?.userName || "";
-          break;
-        default:
-          aValue = new Date(a.withdrawalDate);
-          bValue = new Date(b.withdrawalDate);
-      }
-
-      if (sortOrder === "asc") {
-        return aValue > bValue ? 1 : -1;
-      } else {
-        return aValue < bValue ? 1 : -1;
-      }
+      return sortOrder === "asc" ? aDate - bDate : bDate - aDate;
     });
 
     return filtered;
-  }, [userData, searchTerm, statusFilter, sortBy, sortOrder]);
+  }, [userData, searchTerm, statusFilter, sortOrder]);
 
   // Pagination
   const totalPages = Math.ceil(
@@ -148,6 +124,8 @@ const ManageWithdrawal = () => {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage,
   );
+
+  console.log(paginatedWithdrawals);
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -333,7 +311,7 @@ const ManageWithdrawal = () => {
                       </td>
                     </tr>
                   ) : (
-                    paginatedWithdrawals.reverse().map((withdrawal) => (
+                    paginatedWithdrawals.map((withdrawal) => (
                       <tr
                         key={withdrawal._id}
                         className="hover:bg-gray-50 transition-colors"
@@ -395,7 +373,8 @@ const ManageWithdrawal = () => {
                         </td>
                         <td className="px-4 py-4  lg:table-cell">
                           <div className="text-sm text-gray-500">
-                            {withdrawal.withdrawalDate}
+                            {new Date(withdrawal.createdAt).toLocaleString()}
+                            {/* {withdrawal.withdrawalDate} */}
                           </div>
                         </td>
                         <td className="px-4 py-4">
