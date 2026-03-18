@@ -61,7 +61,7 @@ const UserDetails = () => {
       .get(url)
       .then((res) => {
         settotalreferredactivesubscribers(
-          res?.data?.totalReferredActiveSubscribers
+          res?.data?.totalReferredActiveSubscribers,
         );
         console.log("this is totalreferredactivesubscribers", res);
         // setOneUserData(res?.data.data);
@@ -99,7 +99,7 @@ const UserDetails = () => {
             "Content-Type": "application/json",
             authorization: `Bearer ${token}`,
           },
-        }
+        },
       )
       .then((response) => {
         toast.dismiss(toastLoadingId);
@@ -130,7 +130,7 @@ const UserDetails = () => {
             "Content-Type": "application/json",
             authorization: `Bearer ${token}`,
           },
-        }
+        },
       )
       .then((response) => {
         toast.dismiss(toastLoadingId);
@@ -407,7 +407,7 @@ const UserDetails = () => {
       toast.dismiss(toastLoadingId);
       toast.success("Success");
       // window.location.href = `http://localhost:5174/#/dashboard/${id}`;
-      window.location.href = `https://ya-ti-pauy.vercel.app/#/dashboard/${id}`;
+      window.location.href = `https://www.yaticare.com/dashboard/${id}`;
     }, 3000);
     setShowActions(false);
   };
@@ -471,7 +471,7 @@ const UserDetails = () => {
             "Content-Type": "application/json",
             authorization: `Bearer ${token}`,
           },
-        }
+        },
       )
       .then((response) => {
         toast.dismiss(toastLoadingId);
@@ -504,7 +504,7 @@ const UserDetails = () => {
             "Content-Type": "application/json",
             authorization: `Bearer ${token}`,
           },
-        }
+        },
       )
       .then((response) => {
         toast.dismiss(toastLoadingId);
@@ -855,7 +855,7 @@ const UserDetails = () => {
                   {oneUserData?.WalletInfo?.WalletAddress
                     ? `${oneUserData.WalletInfo.WalletAddress.slice(
                         0,
-                        10
+                        10,
                       )}...${oneUserData.WalletInfo.WalletAddress.slice(-6)}`
                     : "Not set"}
                 </span>
