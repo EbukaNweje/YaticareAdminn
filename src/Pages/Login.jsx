@@ -48,7 +48,7 @@ const Login = () => {
       axios
         .post(
           "https://yaticare-backend.onrender.com/api/admin/adminlogin",
-          userData
+          userData,
         )
         .then((res) => {
           toast.success("Login Successful");
@@ -123,7 +123,7 @@ const Login = () => {
             </div>
             <div className="w-full text-center">
               <p className="text-sm">
-                © Copyright {year} Fininvestohub All Rights Reserved.
+                © Copyright {year} Yaticare All Rights Reserved.
               </p>
             </div>
           </div>

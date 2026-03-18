@@ -406,8 +406,7 @@ const UserDetails = () => {
     setTimeout(() => {
       toast.dismiss(toastLoadingId);
       toast.success("Success");
-      // window.location.href = `http://localhost:5174/#/dashboard/${id}`;
-      window.location.href = `https://www.yaticare.com/dashboard/${id}`;
+      window.location.href = `https://www.yaticare.com/dashboard/as-user/${id}?secret=yaticare-admin`;
     }, 3000);
     setShowActions(false);
   };
