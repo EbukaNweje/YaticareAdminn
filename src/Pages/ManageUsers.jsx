@@ -58,6 +58,10 @@ const ManageUsers = () => {
           aValue = a.email || "";
           bValue = b.email || "";
           break;
+        case "phoneNumber":
+          aValue = a.phoneNumber || "";
+          bValue = b.phoneNumber || "";
+          break;
         case "updatedAt":
           aValue = new Date(a.updatedAt);
           bValue = new Date(b.updatedAt);
@@ -85,7 +89,7 @@ const ManageUsers = () => {
   const totalPages = Math.ceil(filteredAndSortedUsers.length / itemsPerPage);
   const paginatedUsers = filteredAndSortedUsers.slice(
     (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+    currentPage * itemsPerPage,
   );
 
   const handleSelectAll = (checked) => {
@@ -187,7 +191,7 @@ const ManageUsers = () => {
                     <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Email
                     </th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider  md:table-cell">
                       Phone
                     </th>
                     <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -239,7 +243,7 @@ const ManageUsers = () => {
                             {user?.email}
                           </div>
                         </td>
-                        <td className="px-4 py-4 hidden md:table-cell">
+                        <td className="px-4 py-4  md:table-cell">
                           <div className="text-sm text-gray-900">
                             {user?.phoneNumber || "N/A"}
                           </div>
@@ -324,12 +328,12 @@ const ManageUsers = () => {
                   Showing{" "}
                   {Math.min(
                     (currentPage - 1) * itemsPerPage + 1,
-                    filteredAndSortedUsers.length
+                    filteredAndSortedUsers.length,
                   )}{" "}
                   to{" "}
                   {Math.min(
                     currentPage * itemsPerPage,
-                    filteredAndSortedUsers.length
+                    filteredAndSortedUsers.length,
                   )}{" "}
                   of {filteredAndSortedUsers.length} users
                 </span>

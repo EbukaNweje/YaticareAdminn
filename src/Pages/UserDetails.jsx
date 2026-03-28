@@ -388,15 +388,40 @@ const UserDetails = () => {
       });
   };
 
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
   const [sendEmail, setSendEmail] = useState(false);
+
   const handleSendEmail = () => {
-    setSendEmail(false);
+    if (!subject || !message) {
+      toast.error("Subject and message are required");
+      return;
+    }
     const toastLoadingId = toast.loading("Please wait...");
-    setTimeout(() => {
-      toast.dismiss(toastLoadingId);
-      toast.success("Email sent successfully");
-    }, 3000);
-    setShowActions(false);
+    const url = `https://yaticare-backend.onrender.com/api/admin/send-email/${id}`;
+    axios
+      .post(
+        url,
+        { subject, message },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${token}`,
+          },
+        },
+      )
+      .then((response) => {
+        toast.dismiss(toastLoadingId);
+        toast.success("Email sent successfully to user");
+        setSubject("");
+        setMessage("");
+        setSendEmail(false);
+        setShowActions(false);
+      })
+      .catch((error) => {
+        toast.dismiss(toastLoadingId);
+        toast.error(error?.response?.data?.message || "An error occurred");
+      });
   };
 
   const [login, setLogin] = useState(false);
@@ -1007,6 +1032,8 @@ const UserDetails = () => {
             </label>
             <input
               type="text"
+              value={subject}
+              onChange={(e) => setSubject(e.target.value)}
               placeholder="Email subject"
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
             />
@@ -1017,6 +1044,8 @@ const UserDetails = () => {
             </label>
             <textarea
               rows="4"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
               placeholder="Email message"
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none resize-none"
             />
