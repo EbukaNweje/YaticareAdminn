@@ -26,6 +26,7 @@ import ForgetPassword from "./Pages/ForgetPassword";
 import UserDetails from "./Pages/UserDetails";
 import LoginActivity from "./Pages/LoginActivity";
 import AllAdministrators from "./Pages/AllAdministrators";
+import Testimonials from "./Pages/Testimonials";
 // import { ToastContainer } from "react-toastify";
 
 const router = createBrowserRouter([
@@ -244,6 +245,14 @@ const router = createBrowserRouter([
         element: (
           <>
             <Platform />
+          </>
+        ),
+      },
+      {
+        path: "dashboard/testimonials",
+        element: (
+          <>
+            <Testimonials />
           </>
         ),
       },

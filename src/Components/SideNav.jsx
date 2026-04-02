@@ -4,6 +4,7 @@ import {
   FaArrowAltCircleUp,
   FaCaretDown,
   FaCog,
+  FaCommentDots,
   FaCubes,
   FaDownload,
   FaHome,
@@ -154,6 +155,19 @@ const SideNav = () => {
             <div className="w-full h-12 text-sm cursor-pointer hover:text-[0.90rem] transition-all  rounded-md flex items-center gap-4 font-bold px-2 ">
               <FaArrowAltCircleUp className="w-5 h-5" />
               <p className="">Manage Withdrawal</p>
+            </div>
+          </NavLink>
+          <NavLink
+            to={"/admin/dashboard/testimonials"}
+            className={({ isActive }) =>
+              !isActive
+                ? "transition-all hover:text-[0.90rem] hover:bg-gray-100 rounded  hover:text-[#0e4152] text-[#777]"
+                : "transition-all bg-[#0e4152] hover:bg-[#0e4152] text-white"
+            }
+          >
+            <div className="w-full h-12 text-sm cursor-pointer hover:text-[0.90rem] transition-all  rounded-md flex items-center gap-4 font-bold px-2 ">
+              <FaCommentDots className="w-5 h-5" />
+              <p className="">Testimonials</p>
             </div>
           </NavLink>
           <NavLink
