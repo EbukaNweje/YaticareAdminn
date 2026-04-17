@@ -5,6 +5,7 @@ import {
   IoTrash,
   IoFilter,
   IoWallet,
+  IoArrowUndo,
 } from "react-icons/io5";
 import { useState, useEffect, useMemo } from "react";
 import axios from "axios";
@@ -18,6 +19,8 @@ const ManageWithdrawal = () => {
   const [selectedWithdrawalId, setSelectedWithdrawalId] = useState(null);
   const [approveLoading, setApproveLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
+  const [reverseLoading, setReverseLoading] = useState(false);
+  const [reverseModalVisible, setReverseModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -73,12 +76,41 @@ const ManageWithdrawal = () => {
     }
   };
 
+  const reverseWithdrawal = async (withdrawId) => {
+    try {
+      setReverseLoading(true);
+      const url = `https://yaticare-backend.onrender.com/api/admin/reversewithdrawal/${withdrawId}`;
+      const response = await axios.put(
+        url,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      toast.success(response.data.message);
+      getallWithdrawal();
+      setReverseModalVisible(false);
+    } catch (error) {
+      toast.error(error?.response?.data?.message || "An error occurred");
+    } finally {
+      setReverseLoading(false);
+    }
+  };
+
   const getallWithdrawal = async () => {
     try {
       setLoading(true);
       const url =
         "https://yaticare-backend.onrender.com/api/admin/allwithdrawals";
-      const response = await axios.get(url);
+      const response = await axios.get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${token}`,
+        },
+      });
       setUserData(response.data.data || []);
     } catch (error) {
       toast.error("Failed to fetch withdrawals");
@@ -105,11 +137,27 @@ const ManageWithdrawal = () => {
       return matchesSearch && matchesStatus;
     });
 
-    // 🔥 Always sort using createdAt (newest first)
     filtered.sort((a, b) => {
+      if (sortBy === "amount") {
+        return sortOrder === "asc"
+          ? (parseFloat(a.amount) || 0) - (parseFloat(b.amount) || 0)
+          : (parseFloat(b.amount) || 0) - (parseFloat(a.amount) || 0);
+      }
+
+      if (sortBy === "status") {
+        return sortOrder === "asc"
+          ? (a.status || "").localeCompare(b.status || "")
+          : (b.status || "").localeCompare(a.status || "");
+      }
+
+      if (sortBy === "userName") {
+        return sortOrder === "asc"
+          ? (a.user?.userName || "").localeCompare(b.user?.userName || "")
+          : (b.user?.userName || "").localeCompare(a.user?.userName || "");
+      }
+
       const aDate = new Date(a.createdAt).getTime();
       const bDate = new Date(b.createdAt).getTime();
-
       return sortOrder === "asc" ? aDate - bDate : bDate - aDate;
     });
 
@@ -145,6 +193,8 @@ const ManageWithdrawal = () => {
         return "bg-green-100 text-green-800 border-green-200";
       case "rejected":
         return "bg-red-100 text-red-800 border-red-200";
+      case "reversed":
+        return "bg-blue-100 text-blue-800 border-blue-200";
       default:
         return "bg-gray-100 text-gray-800 border-gray-200";
     }
@@ -391,16 +441,30 @@ const ManageWithdrawal = () => {
                                 <IoCheckmark className="w-3 h-3" />
                               </button>
                             )}
-                            <button
-                              onClick={() => {
-                                setSelectedWithdrawalId(withdrawal._id);
-                                setDeleteModalVisible(true);
-                              }}
-                              className="p-1.5 bg-red-600 hover:bg-red-700 text-white rounded-md transition-colors"
-                              title="Delete"
-                            >
-                              <IoTrash className="w-3 h-3" />
-                            </button>
+                            {withdrawal.status === "pending" && (
+                              <button
+                                onClick={() => {
+                                  setSelectedWithdrawalId(withdrawal._id);
+                                  setReverseModalVisible(true);
+                                }}
+                                className="p-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors"
+                                title="Reverse"
+                              >
+                                <IoArrowUndo className="w-3 h-3" />
+                              </button>
+                            )}
+                            {withdrawal.status === "pending" && (
+                              <button
+                                onClick={() => {
+                                  setSelectedWithdrawalId(withdrawal._id);
+                                  setDeleteModalVisible(true);
+                                }}
+                                className="p-1.5 bg-red-600 hover:bg-red-700 text-white rounded-md transition-colors"
+                                title="Delete"
+                              >
+                                <IoTrash className="w-3 h-3" />
+                              </button>
+                            )}
                           </div>
                         </td>
                       </tr>
@@ -490,6 +554,31 @@ const ManageWithdrawal = () => {
           <p className="text-gray-700">
             Are you sure you want to approve this withdrawal? This action will
             process the payment to the user's wallet.
+          </p>
+        </div>
+      </Modal>
+
+      {/* Reverse Modal */}
+      <Modal
+        open={reverseModalVisible}
+        onOk={() => reverseWithdrawal(selectedWithdrawalId)}
+        onCancel={() => setReverseModalVisible(false)}
+        okButtonProps={{
+          loading: reverseLoading,
+          className: "bg-blue-600 hover:bg-blue-700 border-blue-600",
+        }}
+        okText={reverseLoading ? "Processing..." : "Yes, Reverse"}
+        title={
+          <div className="flex items-center gap-2 text-blue-700">
+            <IoArrowUndo className="w-5 h-5" />
+            Reverse Withdrawal
+          </div>
+        }
+      >
+        <div className="py-4">
+          <p className="text-gray-700">
+            Are you sure you want to reverse this approved withdrawal? This
+            action will refund the amount back to the user's account.
           </p>
         </div>
       </Modal>
