@@ -7,11 +7,20 @@ const AllAdministrators = () => {
   const [adminData, setAdminData] = useState([]);
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("all");
+  const [giftOptions, setGiftOptions] = useState([]);
+  const [newGiftTitle, setNewGiftTitle] = useState("");
+  const [creatingGift, setCreatingGift] = useState(false);
+
+  const token = JSON.parse(localStorage.getItem("adminData"))?.token;
 
   const getAllAdmin = async () => {
     try {
       const url = "https://yaticare-backend.onrender.com/api/admin/getadmins";
-      const response = await axios.get(url);
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : undefined,
+        },
+      });
       setAdminData(response?.data?.admins || []);
     } catch (error) {
       console.log(error);
@@ -19,14 +28,88 @@ const AllAdministrators = () => {
     }
   };
 
+  const getGiftOptions = async () => {
+    try {
+      const url =
+        "https://yaticare-backend.onrender.com/api/admin/gift-options";
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : undefined,
+        },
+      });
+      setGiftOptions(response?.data?.data || []);
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to fetch gift options");
+    }
+  };
+
+  const handleCreateGiftOption = async () => {
+    if (!newGiftTitle.trim()) {
+      toast.error("Title is required");
+      return;
+    }
+
+    if (creatingGift) {
+      return;
+    }
+
+    setCreatingGift(true);
+    try {
+      const url =
+        "https://yaticare-backend.onrender.com/api/admin/create-gift-option";
+      await axios.post(
+        url,
+        {
+          title: newGiftTitle.trim(),
+          amount: 1,
+        },
+        {
+          headers: {
+            Authorization: token ? `Bearer ${token}` : undefined,
+          },
+        },
+      );
+      toast.success("Gift option created successfully");
+      setNewGiftTitle("");
+      getGiftOptions();
+    } catch (error) {
+      console.log(error);
+      toast.error(
+        error?.response?.data?.message || "Failed to create gift option",
+      );
+    } finally {
+      setCreatingGift(false);
+    }
+  };
+
+  const handleDeleteGiftOption = async (optionId) => {
+    try {
+      const url = `https://yaticare-backend.onrender.com/api/admin/delete-gift-option/${optionId}`;
+      await axios.delete(url, {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : undefined,
+        },
+      });
+      toast.success("Gift option deleted successfully");
+      getGiftOptions();
+    } catch (error) {
+      console.log(error);
+      toast.error(
+        error?.response?.data?.message || "Failed to delete gift option",
+      );
+    }
+  };
+
   useEffect(() => {
     getAllAdmin();
+    getGiftOptions();
   }, []);
 
   const filteredAdmins = adminData.filter(
     (admin) =>
       admin?.email?.toLowerCase().includes(search.toLowerCase()) &&
-      (status === "all" || (status === "super" ? admin.super : !admin.super))
+      (status === "all" || (status === "super" ? admin.super : !admin.super)),
   );
 
   return (
@@ -76,6 +159,61 @@ const AllAdministrators = () => {
             </div>
           ))
         )}
+      </div>
+
+      <div className="gift-options-section mt-8">
+        <h2 className="admin-title">Gift Options</h2>
+
+        <div className="admin-filters grid gap-4 md:grid-cols-1">
+          <div className="filter-item">
+            <label>Title</label>
+            <input
+              type="text"
+              placeholder="Gift title"
+              value={newGiftTitle}
+              onChange={(e) => setNewGiftTitle(e.target.value)}
+            />
+          </div>
+        </div>
+
+        <button
+          className={`px-4 py-2 rounded-lg mt-4 text-white ${
+            creatingGift
+              ? "bg-blue-400 cursor-not-allowed"
+              : "bg-blue-600 hover:bg-blue-700"
+          }`}
+          onClick={handleCreateGiftOption}
+          disabled={creatingGift}
+        >
+          {creatingGift ? "Adding..." : "Add Gift Option"}
+        </button>
+
+        <div className="admin-table-wrapper mt-6">
+          <div className="admin-table-header">
+            <div className="col">Title</div>
+            <div className="col actions">Actions</div>
+          </div>
+
+          {giftOptions.length === 0 ? (
+            <p className="no-data">No gift options available.</p>
+          ) : (
+            giftOptions.map((option) => (
+              <div className="admin-table-row" key={option._id || option.id}>
+                <div className="col">{option.title}</div>
+                <div className="col actions">
+                  <button
+                    className="delete-btn"
+                    onClick={() =>
+                      handleDeleteGiftOption(option._id || option.id)
+                    }
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
       </div>
     </div>
   );

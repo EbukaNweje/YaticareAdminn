@@ -10,6 +10,8 @@ import {
   FaLock,
   FaEye,
 } from "react-icons/fa";
+import { CgAdd } from "react-icons/cg";
+
 import {
   IoMail,
   IoCall,
@@ -29,7 +31,7 @@ import { useParams } from "react-router-dom";
 const UserDetails = () => {
   const [oneUserData, setOneUserData] = useState({});
   const { id } = useParams();
-  const token = JSON.parse(localStorage.getItem("adminData")).token;
+  const token = JSON.parse(localStorage.getItem("adminData"))?.token;
   const [EditInfo, setEditInfo] = useState({
     pin: false,
     password: false,
@@ -37,38 +39,69 @@ const UserDetails = () => {
   const [email, setEmail] = useState("");
   const [totalreferredactivesubscribers, settotalreferredactivesubscribers] =
     useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   console.log("this is userData", oneUserData);
 
   const Nav = useNavigate();
   // console.log("id", id);
 
-  const handleGetOneUserData = () => {
-    const url = `https://yaticare-backend.onrender.com/api/user/userdata/${id}`;
-    axios
-      .get(url)
-      .then((res) => {
-        // console.log(res?.data);
-        setOneUserData(res?.data.data);
-      })
-      .catch((error) => {
-        console.log(error);
+  const handleGetOneUserData = async () => {
+    if (!token) {
+      const message = "Admin token is missing. Please log in again.";
+      toast.error(message);
+      setError(message);
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+
+    try {
+      const url = `https://yaticare-backend.onrender.com/api/user/userdata/${id}`;
+      const res = await axios.get(url, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
       });
+      setOneUserData(res?.data?.data || {});
+      setEmail(res?.data?.data?.email || "");
+    } catch (error) {
+      const message =
+        error?.response?.data?.message ||
+        error?.message ||
+        "Unable to load user details.";
+      console.error(error);
+      setError(message);
+      toast.error(message);
+    } finally {
+      setLoading(false);
+    }
   };
-  const fetchReferredSubscribers = () => {
-    const url = `https://yaticare-backend.onrender.com/api/user/totalreferredactivesubscribers/${id}`;
-    axios
-      .get(url)
-      .then((res) => {
-        settotalreferredactivesubscribers(
-          res?.data?.totalReferredActiveSubscribers,
-        );
-        console.log("this is totalreferredactivesubscribers", res);
-        // setOneUserData(res?.data.data);
-      })
-      .catch((error) => {
-        console.log(error);
+
+  const fetchReferredSubscribers = async () => {
+    if (!token) {
+      return;
+    }
+
+    try {
+      const url = `https://yaticare-backend.onrender.com/api/user/totalreferredactivesubscribers/${id}`;
+      const res = await axios.get(url, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
       });
+      settotalreferredactivesubscribers(
+        res?.data?.totalReferredActiveSubscribers || 0,
+      );
+      console.log("this is totalreferredactivesubscribers", res);
+    } catch (error) {
+      console.error(error);
+      toast.error(
+        error?.response?.data?.message || "Unable to load referral stats.",
+      );
+    }
   };
 
   // const handlDeleteOneUserData = () => {
@@ -79,6 +112,7 @@ const UserDetails = () => {
     if (id) {
       handleGetOneUserData();
       fetchReferredSubscribers();
+      handleGetGiftOptions();
     }
   }, [id]);
 
@@ -391,6 +425,110 @@ const UserDetails = () => {
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
   const [sendEmail, setSendEmail] = useState(false);
+  const [addBonus, setAddBonus] = useState(false);
+  const [giftOptions, setGiftOptions] = useState([]);
+  const [giftOptionsLoading, setGiftOptionsLoading] = useState(false);
+  const [selectedGiftOptionId, setSelectedGiftOptionId] = useState("");
+  const [customGiftAmount, setCustomGiftAmount] = useState("");
+  const [giftReason, setGiftReason] = useState("");
+
+  const handleGetGiftOptions = async () => {
+    if (!token) {
+      toast.error("Unable to load gift options: admin token missing.");
+      return;
+    }
+
+    setGiftOptionsLoading(true);
+    try {
+      const url = `https://yaticare-backend.onrender.com/api/admin/gift-options`;
+      const res = await axios.get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const options = res?.data?.data || [];
+      setGiftOptions(options);
+      console.log("this is gift options", options);
+    } catch (error) {
+      console.error("Failed to load gift options", error);
+      toast.error(
+        error?.response?.data?.message ||
+          "Failed to load gift options. Please try again.",
+      );
+      setGiftOptions([]);
+    } finally {
+      setGiftOptionsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (addBonus) {
+      handleGetGiftOptions();
+    }
+  }, [addBonus]);
+
+  const handleGiftUser = () => {
+    const useGiftOption = Boolean(selectedGiftOptionId);
+    const amount = useGiftOption ? undefined : Number(customGiftAmount || 0);
+
+    if (!useGiftOption && (!customGiftAmount || amount <= 0)) {
+      toast.error("Select a gift option or enter a custom amount");
+      return;
+    }
+
+    if (useGiftOption) {
+      const selectedOption = giftOptions.find(
+        (option) =>
+          option._id === selectedGiftOptionId ||
+          option.id === selectedGiftOptionId,
+      );
+      const optionAmount = Number(
+        selectedOption?.amount ??
+          selectedOption?.value ??
+          selectedOption?.giftAmount ??
+          0,
+      );
+
+      if (!selectedOption || optionAmount <= 0) {
+        toast.error(
+          "Selected gift option has no valid amount. Use a different gift option or enter a custom amount.",
+        );
+        return;
+      }
+    }
+
+    const toastLoadingId = toast.loading("Sending gift to user...");
+    const url = `https://yaticare-backend.onrender.com/api/admin/gift-user/${id}`;
+    const body = useGiftOption
+      ? {
+          giftOptionId: selectedGiftOptionId,
+          reason: giftReason,
+        }
+      : { giftAmount: amount, reason: giftReason };
+
+    axios
+      .post(url, body, {
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        toast.dismiss(toastLoadingId);
+        toast.success("Gift sent successfully");
+        setAddBonus(false);
+        setShowActions(false);
+        setSelectedGiftOptionId("");
+        setCustomGiftAmount("");
+        setGiftReason("");
+        handleGetOneUserData();
+      })
+      .catch((error) => {
+        toast.dismiss(toastLoadingId);
+        toast.error(error?.response?.data?.message || "An error occurred");
+      });
+  };
 
   const handleSendEmail = () => {
     if (!subject || !message) {
@@ -550,6 +688,16 @@ const UserDetails = () => {
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-6">
       <div className="max-w-7xl mx-auto">
+        {loading && (
+          <div className="mb-6 rounded-xl bg-white border border-gray-200 p-6 text-center text-sm font-medium text-gray-700 shadow-sm">
+            Loading user details...
+          </div>
+        )}
+        {error && (
+          <div className="mb-6 rounded-xl bg-red-50 border border-red-200 p-6 text-center text-sm font-medium text-red-700 shadow-sm">
+            {error}
+          </div>
+        )}
         {/* Header */}
         <div className="mb-6">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -594,6 +742,16 @@ const UserDetails = () => {
                   >
                     <FaEnvelope className="w-4 h-4 text-green-600" />
                     Send Email
+                  </button>
+                  <button
+                    onClick={() => {
+                      setAddBonus(true);
+                      setShowActions(false);
+                    }}
+                    className="w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center gap-2 text-sm"
+                  >
+                    <CgAdd className="w-4 h-4 text-green-600" />
+                    Gift User
                   </button>
                   <button
                     onClick={() => setLogin(true)}
@@ -1047,6 +1205,86 @@ const UserDetails = () => {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               placeholder="Email message"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none resize-none"
+            />
+          </div>
+        </div>
+      </Modal>
+
+      <Modal
+        open={addBonus}
+        onOk={handleGiftUser}
+        onCancel={() => setAddBonus(false)}
+        okButtonProps={{
+          className: "bg-blue-600 hover:bg-blue-700 border-blue-600",
+        }}
+        okText="Send Gift"
+        title={`Gift ${oneUserData.userName}`}
+      >
+        <div className="py-4 space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Gift Option
+            </label>
+            <select
+              value={selectedGiftOptionId}
+              onChange={(e) => setSelectedGiftOptionId(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+            >
+              <option value="">Select gift option (or custom amount)</option>
+              {giftOptionsLoading ? (
+                <option value="" disabled>
+                  Loading gift options...
+                </option>
+              ) : giftOptions.length === 0 ? (
+                <option value="" disabled>
+                  No gift options available
+                </option>
+              ) : (
+                giftOptions.map((option, index) => {
+                  const label =
+                    option.title ||
+                    option.name ||
+                    option.giftTitle ||
+                    `Gift option ${index + 1}`;
+                  const amount =
+                    option.amount ?? option.value ?? option.giftAmount ?? 0;
+                  return (
+                    <option
+                      key={option._id || option.id || index}
+                      value={option._id || option.id || index}
+                      disabled={amount <= 0}
+                    >
+                      {label} - ${formatCurrency(amount)}
+                      {amount <= 0 ? " (invalid amount)" : ""}
+                    </option>
+                  );
+                })
+              )}
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Custom Amount
+            </label>
+            <input
+              type="number"
+              min="0"
+              value={customGiftAmount}
+              onChange={(e) => setCustomGiftAmount(e.target.value)}
+              placeholder="Enter amount if not using a gift option"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Reason (optional)
+            </label>
+            <textarea
+              rows="3"
+              value={giftReason}
+              onChange={(e) => setGiftReason(e.target.value)}
+              placeholder="Enter a reason for the gift"
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none resize-none"
             />
           </div>

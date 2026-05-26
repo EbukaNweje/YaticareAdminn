@@ -7,6 +7,7 @@ import {
   FaCommentDots,
   FaCubes,
   FaDownload,
+  FaGift,
   FaHome,
   FaInfoCircle,
   FaUser,
@@ -155,6 +156,19 @@ const SideNav = () => {
             <div className="w-full h-12 text-sm cursor-pointer hover:text-[0.90rem] transition-all  rounded-md flex items-center gap-4 font-bold px-2 ">
               <FaArrowAltCircleUp className="w-5 h-5" />
               <p className="">Manage Withdrawal</p>
+            </div>
+          </NavLink>
+          <NavLink
+            to={"/admin/dashboard/allAdministrators"}
+            className={({ isActive }) =>
+              !isActive
+                ? "transition-all hover:text-[0.90rem] hover:bg-gray-100 rounded  hover:text-[#0e4152] text-[#777]"
+                : "transition-all bg-[#0e4152] hover:bg-[#0e4152] text-white"
+            }
+          >
+            <div className="w-full h-12  flex gap-2 items-center px-4">
+              <span className="w-1 h-1 rounded-full bg-[#777777]"></span>
+              <p className="">Gift Options</p>
             </div>
           </NavLink>
           <NavLink
@@ -322,6 +336,19 @@ const SideNav = () => {
                 <div className="w-full h-12  flex gap-2 items-center px-4">
                   <span className="w-1 h-1 rounded-full bg-[#777777]"></span>
                   <p className="">All Administrators</p>
+                </div>
+              </NavLink>
+              <NavLink
+                to={"/admin/dashboard/allAdministrators"}
+                className={({ isActive }) =>
+                  !isActive
+                    ? "transition-all hover:text-[0.90rem] hover:bg-gray-100 rounded  hover:text-[#0e4152] text-[#777]"
+                    : "transition-all bg-[#0e4152] hover:bg-[#0e4152] text-white"
+                }
+              >
+                <div className="w-full h-12  flex gap-2 items-center px-4">
+                  <FaGift className="w-4 h-4 text-[#777777]" />
+                  <p className="">Gift Options</p>
                 </div>
               </NavLink>
             </div>
