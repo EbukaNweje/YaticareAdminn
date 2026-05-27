@@ -470,6 +470,7 @@ const UserDetails = () => {
 
   const handleGiftUser = () => {
     const useGiftOption = Boolean(selectedGiftOptionId);
+    console.log("useGiftOption", useGiftOption);
     const amount = useGiftOption ? undefined : Number(customGiftAmount || 0);
 
     if (!useGiftOption && (!customGiftAmount || amount <= 0)) {
@@ -484,13 +485,14 @@ const UserDetails = () => {
           option.id === selectedGiftOptionId,
       );
       const optionAmount = Number(
-        selectedOption?.amount ??
+        customGiftAmount ??
+          selectedOption?.amount ??
           selectedOption?.value ??
           selectedOption?.giftAmount ??
           0,
       );
 
-      if (!selectedOption || optionAmount <= 0) {
+      if (!selectedOption) {
         toast.error(
           "Selected gift option has no valid amount. Use a different gift option or enter a custom amount.",
         );
@@ -504,9 +506,9 @@ const UserDetails = () => {
       ? {
           giftOptionId: selectedGiftOptionId,
           reason: giftReason,
+          amount: customGiftAmount,
         }
-      : { giftAmount: amount, reason: giftReason };
-
+      : { amount: customGiftAmount, reason: giftReason };
     axios
       .post(url, body, {
         headers: {
@@ -1247,16 +1249,12 @@ const UserDetails = () => {
                     option.name ||
                     option.giftTitle ||
                     `Gift option ${index + 1}`;
-                  const amount =
-                    option.amount ?? option.value ?? option.giftAmount ?? 0;
                   return (
                     <option
                       key={option._id || option.id || index}
                       value={option._id || option.id || index}
-                      disabled={amount <= 0}
                     >
-                      {label} - ${formatCurrency(amount)}
-                      {amount <= 0 ? " (invalid amount)" : ""}
+                      {label}
                     </option>
                   );
                 })
