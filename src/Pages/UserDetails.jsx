@@ -972,7 +972,7 @@ const UserDetails = () => {
               <div className="flex justify-between">
                 <span className="text-gray-600">Registered</span>
                 <span className="font-medium text-sm">
-                  {new Date(oneUserData.updatedAt).toLocaleDateString()}
+                  {new Date(oneUserData.date).toLocaleDateString()}
                 </span>
               </div>
             </div>

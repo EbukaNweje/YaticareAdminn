@@ -44,7 +44,7 @@ const Login = () => {
         email: document.getElementById("email").value,
         password: document.getElementById("password").value,
       };
-      console.log(userData);
+      // console.log(userData);
       axios
         .post(
           "https://yaticare-backend.onrender.com/api/admin/adminlogin",
