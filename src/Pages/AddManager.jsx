@@ -39,7 +39,7 @@ const AddManager = () => {
     }
   };
 
-  // Filter and sort wallets
+  // Filter and sort wallet
   const filteredAndSortedWallets = useMemo(() => {
     let filtered = adminWallet.filter((wallet) => {
       const searchLower = searchTerm.toLowerCase();
