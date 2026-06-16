@@ -32,7 +32,6 @@ const AddManager = () => {
       const response = await axios.get(url);
       setAdminWaller(response.data.data || []);
     } catch (error) {
-      console.log(error);
       toast.error("Failed to fetch wallet addresses");
       setAdminWaller([]);
     } finally {
@@ -82,7 +81,7 @@ const AddManager = () => {
   const totalPages = Math.ceil(filteredAndSortedWallets.length / itemsPerPage);
   const paginatedWallets = filteredAndSortedWallets.slice(
     (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+    currentPage * itemsPerPage,
   );
 
   useEffect(() => {
@@ -109,7 +108,6 @@ const AddManager = () => {
     } catch (error) {
       toast.dismiss(toastLoadingId);
       toast.error("Failed to delete wallet");
-      console.log(error);
     }
   };
 
@@ -342,12 +340,12 @@ const AddManager = () => {
                 Showing{" "}
                 {Math.min(
                   (currentPage - 1) * itemsPerPage + 1,
-                  filteredAndSortedWallets.length
+                  filteredAndSortedWallets.length,
                 )}{" "}
                 to{" "}
                 {Math.min(
                   currentPage * itemsPerPage,
-                  filteredAndSortedWallets.length
+                  filteredAndSortedWallets.length,
                 )}{" "}
                 of {filteredAndSortedWallets.length} wallets
               </div>

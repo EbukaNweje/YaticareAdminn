@@ -27,6 +27,7 @@ import UserDetails from "./Pages/UserDetails";
 import LoginActivity from "./Pages/LoginActivity";
 import AllAdministrators from "./Pages/AllAdministrators";
 import Testimonials from "./Pages/Testimonials";
+import AllChat from "./Pages/AllChat";
 // import { ToastContainer } from "react-toastify";
 
 const router = createBrowserRouter([
@@ -253,6 +254,14 @@ const router = createBrowserRouter([
         element: (
           <>
             <Testimonials />
+          </>
+        ),
+      },
+      {
+        path: "dashboard/all-chats",
+        element: (
+          <>
+            <AllChat />
           </>
         ),
       },

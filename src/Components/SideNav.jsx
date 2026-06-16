@@ -14,10 +14,17 @@ import {
   FaUserCheck,
   FaUserCircle,
 } from "react-icons/fa";
+import { HiMiniChatBubbleOvalLeft } from "react-icons/hi2";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const SideNav = () => {
+  const adminData = useSelector((state) => state.admin.data);
+  const isLowerAdmin =
+    (adminData?.fullName || adminData?.name || "").trim().toLowerCase() ===
+    "lower admin";
+
   const [dropInvestment, setDropInvestment] = useState(false);
 
   const handleDropInvestment = () => {
@@ -40,6 +47,12 @@ const SideNav = () => {
   };
 
   const nav = useNavigate();
+  const unreadCount = useSelector((state) =>
+    state.chat.conversations.reduce(
+      (sum, conversation) => sum + (conversation.unreadCount || 0),
+      0,
+    ),
+  );
 
   const handleNavToPlan = () => {
     nav("/admin/dashboard");
@@ -53,17 +66,19 @@ const SideNav = () => {
             <p className="text-[rgb(119,119,119)]">Admin</p>
             <p className="text-sm font-bold text-[rgb(85,85,85)]">Admin</p>
           </div>
-          <div
-            onClick={handleNavToPlan}
-            className={`${
-              location.pathname === "/admin/dashboard"
-                ? "transition-all bg-[#0e4152] hover:bg-[#0e4152] text-white"
-                : "transition-all hover:text-[0.90rem] hover:bg-gray-100 rounded  hover:text-[#0e4152] text-[#777]"
-            } transition-all w-full text-sm h-12 cursor-pointer rounded-md flex items-center gap-4 font-bold px-2 `}
-          >
-            <FaHome className="w-5 h-5" />
-            <p className="">Dashboard</p>
-          </div>
+          {!isLowerAdmin && (
+            <div
+              onClick={handleNavToPlan}
+              className={`${
+                location.pathname === "/admin/dashboard"
+                  ? "transition-all bg-[#0e4152] hover:bg-[#0e4152] text-white"
+                  : "transition-all hover:text-[0.90rem] hover:bg-gray-100 rounded  hover:text-[#0e4152] text-[#777]"
+              } transition-all w-full text-sm h-12 cursor-pointer rounded-md flex items-center gap-4 font-bold px-2 `}
+            >
+              <FaHome className="w-5 h-5" />
+              <p className="">Dashboard</p>
+            </div>
+          )}
           {/* <div className="w-full h-max flex flex-col gap-2 ">
                         <div
                             className="w-full h-12 flex text-sm transition-all hover:text-[0.90rem] hover:bg-gray-100  hover:text-[#0e4152] cursor-pointer items-center justify-between text-[#777777]"
@@ -118,72 +133,99 @@ const SideNav = () => {
                             </NavLink>
                         </div>
                     </div> */}
+          {!isLowerAdmin && (
+            <NavLink
+              to={"/admin/dashboard/manageusers"}
+              className={({ isActive }) =>
+                !isActive
+                  ? "transition-all  hover:bg-gray-100 rounded  hover:text-[#0e4152] text-[#777]"
+                  : "transition-all bg-[#0e4152]  hover:bg-[#0e4152] text-white hover:text-[0.90rem]"
+              }
+            >
+              <div className="w-full h-12 text-sm rounded-md hover:text-[0.90rem] cursor-pointer transition-all flex items-center gap-4 font-bold px-2 ">
+                <FaUserCircle className="w-5 h-5" />
+                <p className="">Manage Users</p>
+              </div>
+            </NavLink>
+          )}
+          {!isLowerAdmin && (
+            <NavLink
+              to={"/admin/dashboard/manage-deposits"}
+              className={({ isActive }) =>
+                !isActive
+                  ? "transition-all hover:text-[0.90rem] hover:bg-gray-100 rounded  hover:text-[#0e4152] text-[#777]"
+                  : "transition-all bg-[#0e4152] hover:bg-[#0e4152] text-white"
+              }
+            >
+              <div className="w-full h-12 text-sm cursor-pointer hover:text-[0.90rem] transition-all rounded-md flex items-center gap-4 font-bold px-2 ">
+                <FaDownload className="w-5 h-5" />
+                <p className="">Manage Deposits</p>
+              </div>
+            </NavLink>
+          )}
+          {!isLowerAdmin && (
+            <NavLink
+              to={"/admin/dashboard/manage-withdrawals"}
+              className={({ isActive }) =>
+                !isActive
+                  ? "transition-all hover:text-[0.90rem] hover:bg-gray-100 rounded  hover:text-[#0e4152] text-[#777]"
+                  : "transition-all bg-[#0e4152] hover:bg-[#0e4152] text-white"
+              }
+            >
+              <div className="w-full h-12 text-sm cursor-pointer hover:text-[0.90rem] transition-all  rounded-md flex items-center gap-4 font-bold px-2 ">
+                <FaArrowAltCircleUp className="w-5 h-5" />
+                <p className="">Manage Withdrawal</p>
+              </div>
+            </NavLink>
+          )}
+          {!isLowerAdmin && (
+            <NavLink
+              to={"/admin/dashboard/allAdministrators"}
+              className={({ isActive }) =>
+                !isActive
+                  ? "transition-all hover:text-[0.90rem] hover:bg-gray-100 rounded  hover:text-[#0e4152] text-[#777]"
+                  : "transition-all bg-[#0e4152] hover:bg-[#0e4152] text-white"
+              }
+            >
+              <div className="w-full h-12  flex gap-2 items-center px-4">
+                <FaGift className="w-5 h-5" />
+                <p className="">Gift Options</p>
+              </div>
+            </NavLink>
+          )}
           <NavLink
-            to={"/admin/dashboard/manageusers"}
-            className={({ isActive }) =>
-              !isActive
-                ? "transition-all  hover:bg-gray-100 rounded  hover:text-[#0e4152] text-[#777]"
-                : "transition-all bg-[#0e4152]  hover:bg-[#0e4152] text-white hover:text-[0.90rem]"
-            }
-          >
-            <div className="w-full h-12 text-sm rounded-md hover:text-[0.90rem] cursor-pointer transition-all flex items-center gap-4 font-bold px-2 ">
-              <FaUserCircle className="w-5 h-5" />
-              <p className="">Manage Users</p>
-            </div>
-          </NavLink>
-          <NavLink
-            to={"/admin/dashboard/manage-deposits"}
+            to={"/admin/dashboard/all-chats"}
             className={({ isActive }) =>
               !isActive
                 ? "transition-all hover:text-[0.90rem] hover:bg-gray-100 rounded  hover:text-[#0e4152] text-[#777]"
                 : "transition-all bg-[#0e4152] hover:bg-[#0e4152] text-white"
             }
           >
-            <div className="w-full h-12 text-sm cursor-pointer hover:text-[0.90rem] transition-all rounded-md flex items-center gap-4 font-bold px-2 ">
-              <FaDownload className="w-5 h-5" />
-              <p className="">Manage Deposits</p>
+            <div className="w-full h-12  flex gap-2 items-center px-4 relative">
+              {unreadCount > 0 && (
+                <span className="absolute left-4 top-1/2 z-10 -translate-y-1/2 inline-flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-red-500 px-2 text-[0.65rem] font-bold text-white">
+                  {unreadCount > 99 ? "99+" : unreadCount}
+                </span>
+              )}
+              <HiMiniChatBubbleOvalLeft className="w-5 h-5" />
+              <p className="">All Chats</p>
             </div>
           </NavLink>
-
-          <NavLink
-            to={"/admin/dashboard/manage-withdrawals"}
-            className={({ isActive }) =>
-              !isActive
-                ? "transition-all hover:text-[0.90rem] hover:bg-gray-100 rounded  hover:text-[#0e4152] text-[#777]"
-                : "transition-all bg-[#0e4152] hover:bg-[#0e4152] text-white"
-            }
-          >
-            <div className="w-full h-12 text-sm cursor-pointer hover:text-[0.90rem] transition-all  rounded-md flex items-center gap-4 font-bold px-2 ">
-              <FaArrowAltCircleUp className="w-5 h-5" />
-              <p className="">Manage Withdrawal</p>
-            </div>
-          </NavLink>
-          <NavLink
-            to={"/admin/dashboard/allAdministrators"}
-            className={({ isActive }) =>
-              !isActive
-                ? "transition-all hover:text-[0.90rem] hover:bg-gray-100 rounded  hover:text-[#0e4152] text-[#777]"
-                : "transition-all bg-[#0e4152] hover:bg-[#0e4152] text-white"
-            }
-          >
-            <div className="w-full h-12  flex gap-2 items-center px-4">
-              <span className="w-1 h-1 rounded-full bg-[#777777]"></span>
-              <p className="">Gift Options</p>
-            </div>
-          </NavLink>
-          <NavLink
-            to={"/admin/dashboard/testimonials"}
-            className={({ isActive }) =>
-              !isActive
-                ? "transition-all hover:text-[0.90rem] hover:bg-gray-100 rounded  hover:text-[#0e4152] text-[#777]"
-                : "transition-all bg-[#0e4152] hover:bg-[#0e4152] text-white"
-            }
-          >
-            <div className="w-full h-12 text-sm cursor-pointer hover:text-[0.90rem] transition-all  rounded-md flex items-center gap-4 font-bold px-2 ">
-              <FaCommentDots className="w-5 h-5" />
-              <p className="">Testimonials</p>
-            </div>
-          </NavLink>
+          {!isLowerAdmin && (
+            <NavLink
+              to={"/admin/dashboard/testimonials"}
+              className={({ isActive }) =>
+                !isActive
+                  ? "transition-all hover:text-[0.90rem] hover:bg-gray-100 rounded  hover:text-[#0e4152] text-[#777]"
+                  : "transition-all bg-[#0e4152] hover:bg-[#0e4152] text-white"
+              }
+            >
+              <div className="w-full h-12 text-sm cursor-pointer hover:text-[0.90rem] transition-all  rounded-md flex items-center gap-4 font-bold px-2 ">
+                <FaCommentDots className="w-5 h-5" />
+                <p className="">Testimonials</p>
+              </div>
+            </NavLink>
+          )}
           <NavLink
             to={"/admin/dashboard/kyc-applications"}
             className={({ isActive }) =>
@@ -275,84 +317,86 @@ const SideNav = () => {
                             </NavLink>
                         </div>
                     </div> */}
-          <div className="w-full h-max flex flex-col gap-2 ">
-            <div
-              className="w-full h-12 text-sm flex cursor-pointer transition-all  items-center justify-between text-[#777777]"
-              onClick={handleDropAdmin}
-            >
-              <div className="w-[90%] h-full hover:text-[0.90rem] transition-all hover:text-[#0e4152] flex items-center gap-4 font-bold px-2 ">
-                <FaUser className="w-5 h-5 " />
-                <p className="">Administrator(s)</p>
+          {!isLowerAdmin && (
+            <div className="w-full h-max flex flex-col gap-2 ">
+              <div
+                className="w-full h-12 text-sm flex cursor-pointer transition-all  items-center justify-between text-[#777777]"
+                onClick={handleDropAdmin}
+              >
+                <div className="w-[90%] h-full hover:text-[0.90rem] transition-all hover:text-[#0e4152] flex items-center gap-4 font-bold px-2 ">
+                  <FaUser className="w-5 h-5 " />
+                  <p className="">Administrator(s)</p>
+                </div>
+                <div
+                  className={`w-8 h-full  flex items-center transition-all duration-700 justify-center ${
+                    dropAdmin ? "transform -rotate-180" : ""
+                  }`}
+                >
+                  <FaCaretDown />
+                </div>
               </div>
               <div
-                className={`w-8 h-full  flex items-center transition-all duration-700 justify-center ${
-                  dropAdmin ? "transform -rotate-180" : ""
+                className={`w-full h-max flex flex-col cursor-pointer text-sm gap-2 text-[#777777] ${
+                  dropAdmin
+                    ? "w-full max-h-[9rem] overflow-hidden transition-max-h duration-700 ease-in-out "
+                    : "max-h-0 transition-max-h duration-700 pointer-events-none overflow-hidden opacity-0"
                 }`}
               >
-                <FaCaretDown />
+                <NavLink
+                  to={"/admin/dashboard/add-manager"}
+                  className={({ isActive }) =>
+                    !isActive
+                      ? "transition-all hover:text-[0.90rem] hover:bg-gray-100 rounded  hover:text-[#0e4152] text-[#777]"
+                      : "transition-all bg-[#0e4152] hover:bg-[#0e4152] text-white"
+                  }
+                >
+                  <div className="w-full  h-12 flex gap-2 items-center px-4">
+                    <span className="w-1 h-1 rounded-full bg-[#777777]"></span>
+                    <p className="">manage Wallet</p>
+                  </div>
+                </NavLink>
+                <NavLink
+                  to={"/admin/dashboard/manage-admin"}
+                  className={({ isActive }) =>
+                    !isActive
+                      ? "transition-all hover:text-[0.90rem] hover:bg-gray-100 rounded  hover:text-[#0e4152] text-[#777]"
+                      : "transition-all bg-[#0e4152] hover:bg-[#0e4152] text-white"
+                  }
+                >
+                  <div className="w-full h-12  flex gap-2 items-center px-4">
+                    <span className="w-1 h-1 rounded-full bg-[#777777]"></span>
+                    <p className="">Add Admin Wallet(s)</p>
+                  </div>
+                </NavLink>
+                <NavLink
+                  to={"/admin/dashboard/allAdministrators"}
+                  className={({ isActive }) =>
+                    !isActive
+                      ? "transition-all hover:text-[0.90rem] hover:bg-gray-100 rounded  hover:text-[#0e4152] text-[#777]"
+                      : "transition-all bg-[#0e4152] hover:bg-[#0e4152] text-white"
+                  }
+                >
+                  <div className="w-full h-12  flex gap-2 items-center px-4">
+                    <span className="w-1 h-1 rounded-full bg-[#777777]"></span>
+                    <p className="">All Administrators</p>
+                  </div>
+                </NavLink>
+                <NavLink
+                  to={"/admin/dashboard/allAdministrators"}
+                  className={({ isActive }) =>
+                    !isActive
+                      ? "transition-all hover:text-[0.90rem] hover:bg-gray-100 rounded  hover:text-[#0e4152] text-[#777]"
+                      : "transition-all bg-[#0e4152] hover:bg-[#0e4152] text-white"
+                  }
+                >
+                  <div className="w-full h-12  flex gap-2 items-center px-4">
+                    <FaGift className="w-4 h-4 text-[#777777]" />
+                    <p className="">Gift Options</p>
+                  </div>
+                </NavLink>
               </div>
             </div>
-            <div
-              className={`w-full h-max flex flex-col cursor-pointer text-sm gap-2 text-[#777777] ${
-                dropAdmin
-                  ? "w-full max-h-[9rem] overflow-hidden transition-max-h duration-700 ease-in-out "
-                  : "max-h-0 transition-max-h duration-700 pointer-events-none overflow-hidden opacity-0"
-              }`}
-            >
-              <NavLink
-                to={"/admin/dashboard/add-manager"}
-                className={({ isActive }) =>
-                  !isActive
-                    ? "transition-all hover:text-[0.90rem] hover:bg-gray-100 rounded  hover:text-[#0e4152] text-[#777]"
-                    : "transition-all bg-[#0e4152] hover:bg-[#0e4152] text-white"
-                }
-              >
-                <div className="w-full  h-12 flex gap-2 items-center px-4">
-                  <span className="w-1 h-1 rounded-full bg-[#777777]"></span>
-                  <p className="">manage Wallet</p>
-                </div>
-              </NavLink>
-              <NavLink
-                to={"/admin/dashboard/manage-admin"}
-                className={({ isActive }) =>
-                  !isActive
-                    ? "transition-all hover:text-[0.90rem] hover:bg-gray-100 rounded  hover:text-[#0e4152] text-[#777]"
-                    : "transition-all bg-[#0e4152] hover:bg-[#0e4152] text-white"
-                }
-              >
-                <div className="w-full h-12  flex gap-2 items-center px-4">
-                  <span className="w-1 h-1 rounded-full bg-[#777777]"></span>
-                  <p className="">Add Admin Wallet(s)</p>
-                </div>
-              </NavLink>
-              <NavLink
-                to={"/admin/dashboard/allAdministrators"}
-                className={({ isActive }) =>
-                  !isActive
-                    ? "transition-all hover:text-[0.90rem] hover:bg-gray-100 rounded  hover:text-[#0e4152] text-[#777]"
-                    : "transition-all bg-[#0e4152] hover:bg-[#0e4152] text-white"
-                }
-              >
-                <div className="w-full h-12  flex gap-2 items-center px-4">
-                  <span className="w-1 h-1 rounded-full bg-[#777777]"></span>
-                  <p className="">All Administrators</p>
-                </div>
-              </NavLink>
-              <NavLink
-                to={"/admin/dashboard/allAdministrators"}
-                className={({ isActive }) =>
-                  !isActive
-                    ? "transition-all hover:text-[0.90rem] hover:bg-gray-100 rounded  hover:text-[#0e4152] text-[#777]"
-                    : "transition-all bg-[#0e4152] hover:bg-[#0e4152] text-white"
-                }
-              >
-                <div className="w-full h-12  flex gap-2 items-center px-4">
-                  <FaGift className="w-4 h-4 text-[#777777]" />
-                  <p className="">Gift Options</p>
-                </div>
-              </NavLink>
-            </div>
-          </div>
+          )}
           {/* <div className="w-full h-max flex flex-col gap-2 ">
                         <div
                             className="w-full h-12 text-sm flex cursor-pointer transition-all  items-center justify-between text-[#777777]"

@@ -5,8 +5,12 @@ import { LuKey } from "react-icons/lu";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { fetchAdminById } from "../redux/adminSlice";
 
 const Login = () => {
+  const dispatch = useDispatch();
+
   const getAllUserData = () => {
     const url = "https://yaticare-backend.onrender.com/api/admin/allusers";
     axios
@@ -14,17 +18,15 @@ const Login = () => {
       .then((response) => {
         localStorage.setItem("allUserData", JSON.stringify(response?.data));
       })
-      .catch((error) => {
-        // console.log(error);
-      });
+      .catch(() => {});
   };
 
   useEffect(() => {
     getAllUserData();
   }, []);
+
   const nav = useNavigate();
   const year = new Date().getFullYear();
-
   const [loading, setLoading] = useState(false);
 
   const handleLogin = () => {
@@ -40,33 +42,58 @@ const Login = () => {
     } else {
       setLoading(true);
 
-      let userData = {
+      const userData = {
         email: document.getElementById("email").value,
         password: document.getElementById("password").value,
       };
-      // console.log(userData);
+
       axios
         .post(
           "https://yaticare-backend.onrender.com/api/admin/adminlogin",
           userData,
         )
-        .then((res) => {
+        .then(async (res) => {
           toast.success("Login Successful");
-          localStorage.setItem("adminData", JSON.stringify(res?.data));
+
+          const responseData = res?.data || {};
+          const token = responseData?.token || "";
+
+          // Decode the JWT payload to extract the admin ID (no library needed)
+          let adminId = "";
+          if (token) {
+            try {
+              const payload = JSON.parse(atob(token.split(".")[1]));
+              adminId = payload?.id || payload?._id || payload?.adminId || "";
+            } catch {
+              // malformed token
+            }
+          }
+
+          let isLowerAdmin = false;
+          if (adminId) {
+            localStorage.setItem("adminId", adminId);
+            localStorage.setItem("adminToken", token);
+            const result = await dispatch(fetchAdminById(adminId));
+            const adminData = result?.payload;
+            const name = (adminData?.fullName || adminData?.name || "")
+              .trim()
+              .toLowerCase();
+            isLowerAdmin = name === "lower admin";
+          }
 
           if (res.status === 200) {
-            nav("/admin/dashboard");
+            nav(
+              isLowerAdmin ? "/admin/dashboard/all-chats" : "/admin/dashboard",
+            );
           }
           setLoading(false);
         })
-        .catch((error) => {
-          // console.log(error);
+        .catch(() => {
           setLoading(false);
-
-          // alert("Incorrect username or password");
         });
     }
   };
+
   return (
     <>
       <div className="w-full h-screen bg-[#ebf8fc] flex justify-center">

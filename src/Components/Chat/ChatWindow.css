@@ -1,0 +1,290 @@
+.chat-window {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: white;
+  overflow: hidden;
+}
+
+.messages-container {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: #f5f7fa;
+}
+
+.messages-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.messages-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.messages-container::-webkit-scrollbar-thumb {
+  background: #d9d9d9;
+  border-radius: 3px;
+}
+
+.messages-container::-webkit-scrollbar-thumb:hover {
+  background: #bfbfbf;
+}
+
+.typing-bubble-wrapper {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.message-input-container {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  padding: 16px 24px;
+  border-top: 1px solid #e8e8e8;
+  background: white;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.attach-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: #f0f0f0;
+  color: #595959;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.attach-button:hover {
+  background: #e0e0e0;
+  color: #262626;
+}
+
+.message-input {
+  flex: 1;
+  border: 1px solid #d9d9d9;
+  border-radius: 20px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  resize: none;
+  max-height: 100px;
+  background: white;
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.message-input:focus {
+  border-color: #1890ff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.1);
+}
+
+.message-input::placeholder {
+  color: #bfbfbf;
+}
+
+.send-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: #1890ff;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.send-button:hover:not(:disabled) {
+  background: #40a9ff;
+  transform: scale(1.05);
+}
+
+.send-button:disabled {
+  background: #d9d9d9;
+  cursor: not-allowed;
+}
+
+.emoji-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: #f0f0f0;
+  color: #595959;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 10;
+}
+
+.emoji-button:hover {
+  background: #e0e0e0;
+  color: #262626;
+}
+
+.file-preview {
+  background: #fafafa;
+  border-top: 1px solid #e8e8e8;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  animation: slideUp 0.2s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.file-preview-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  max-width: 300px;
+}
+
+.file-preview-image {
+  max-width: 100%;
+  max-height: 80px;
+  border-radius: 8px;
+  object-fit: contain;
+}
+
+.file-preview-video {
+  max-width: 100%;
+  max-height: 80px;
+  border-radius: 8px;
+}
+
+.file-preview-document {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.file-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.file-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.file-name {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 500;
+  color: #262626;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.file-size {
+  margin: 0;
+  font-size: 12px;
+  color: #999;
+}
+
+.file-remove-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #d9d9d9;
+  background: white;
+  color: #999;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.file-remove-btn:hover {
+  border-color: #ff4d4f;
+  color: #ff4d4f;
+  background: #fff1f0;
+}
+
+@media (max-width: 768px) {
+  .message-input-container {
+    position: relative;
+  }
+
+  .file-preview {
+    padding: 10px 16px;
+  }
+
+  .file-preview-document {
+    padding: 6px 10px;
+  }
+
+  .file-remove-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+  }
+  .messages-container {
+    padding: 16px 16px;
+    gap: 10px;
+  }
+
+  .message-input-container {
+    padding: 12px 16px;
+    gap: 6px;
+  }
+
+  .attach-button,
+  .send-button {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+
+  .message-input {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+}

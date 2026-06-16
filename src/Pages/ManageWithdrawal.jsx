@@ -49,7 +49,6 @@ const ManageWithdrawal = () => {
       getallWithdrawal();
       setAcceptModalVisible(false);
     } catch (error) {
-      console.log("error", error);
       toast.error(error?.response?.data?.message || "An error occurred");
     } finally {
       setApproveLoading(false);
@@ -172,8 +171,6 @@ const ManageWithdrawal = () => {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage,
   );
-
-  console.log(paginatedWithdrawals);
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString("en-US", {

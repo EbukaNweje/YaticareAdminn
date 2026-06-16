@@ -23,7 +23,6 @@ const Testimonials = () => {
         "https://yaticare-backend.onrender.com/api/user/testimonials",
       ); // Adjust the API endpoint as needed
 
-      console.log(response.data);
       const data =
         response.data.data ||
         (Array.isArray(response.data)

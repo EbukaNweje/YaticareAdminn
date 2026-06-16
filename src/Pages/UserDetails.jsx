@@ -42,7 +42,7 @@ const UserDetails = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  console.log("this is userData", oneUserData);
+  // console.log("this is userData", oneUserData);
 
   const Nav = useNavigate();
   // console.log("id", id);
@@ -72,7 +72,6 @@ const UserDetails = () => {
         error?.response?.data?.message ||
         error?.message ||
         "Unable to load user details.";
-      console.error(error);
       setError(message);
       toast.error(message);
     } finally {
@@ -95,9 +94,8 @@ const UserDetails = () => {
       settotalreferredactivesubscribers(
         res?.data?.totalReferredActiveSubscribers || 0,
       );
-      console.log("this is totalreferredactivesubscribers", res);
+      // console.log("this is totalreferredactivesubscribers", res);
     } catch (error) {
-      console.error(error);
       toast.error(
         error?.response?.data?.message || "Unable to load referral stats.",
       );
@@ -449,9 +447,9 @@ const UserDetails = () => {
       });
       const options = res?.data?.data || [];
       setGiftOptions(options);
-      console.log("this is gift options", options);
+      // console.log("this is gift options", options);
     } catch (error) {
-      console.error("Failed to load gift options", error);
+      // console.error("Failed to load gift options", error);
       toast.error(
         error?.response?.data?.message ||
           "Failed to load gift options. Please try again.",
@@ -470,7 +468,6 @@ const UserDetails = () => {
 
   const handleGiftUser = () => {
     const useGiftOption = Boolean(selectedGiftOptionId);
-    console.log("useGiftOption", useGiftOption);
     const amount = useGiftOption ? undefined : Number(customGiftAmount || 0);
 
     if (!useGiftOption && (!customGiftAmount || amount <= 0)) {

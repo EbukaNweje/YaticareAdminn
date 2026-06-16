@@ -82,7 +82,6 @@ const ManageDeposit = () => {
       setUserData(response.data.data || []);
       setCurrentPage(1); // Reset to first page to show newest deposits
     } catch (error) {
-      console.error("Error fetching deposits:", error);
       toast.error("Failed to fetch deposits");
       setUserData([]);
     } finally {
@@ -146,8 +145,6 @@ const ManageDeposit = () => {
   useEffect(() => {
     setCurrentPage(1);
   }, [searchTerm, statusFilter, sortBy, sortOrder, itemsPerPage]);
-
-  console.log("object", userData);
 
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-6">

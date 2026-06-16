@@ -59,54 +59,42 @@ const Dashboard = () => {
       const data = await axios.get(`${baseUrl}/totalblockedandactiveusers`);
       setActiveUser(data?.data?.activeCount || 0);
       setBlockedUser(data?.data?.blockedCount || 0);
-    } catch (err) {
-      console.log("Error fetching blocked and active users:", err);
-    }
+    } catch (err) {}
   };
 
   const getAciveSubscribers = async () => {
     try {
       const data = await axios.get(`${baseUrl}/totalactivesubscribers`);
       setAciveSubscribers(data?.data?.activeSubscribersCount || 0);
-    } catch (err) {
-      console.log("Error fetching active subscribers:", err);
-    }
+    } catch (err) {}
   };
 
   const totalDailyWithdrawals = async () => {
     try {
       const data = await axios.get(`${baseUrl}/totaldailywithdrawals`);
       setTotalDailyWithdrawals(data?.data?.totalAmount || 0);
-    } catch (err) {
-      console.log("Error fetching daily withdrawals:", err);
-    }
+    } catch (err) {}
   };
 
   const totalDailyDeposits = async () => {
     try {
       const data = await axios.get(`${baseUrl}/totaldailydeposit`);
       setTotalDailyDeposits(data?.data?.totalAmount || 0);
-    } catch (err) {
-      console.log("Error fetching daily deposits:", err);
-    }
+    } catch (err) {}
   };
 
   const totalPendingWithdrawals = async () => {
     try {
       const data = await axios.get(`${baseUrl}/totalpendingwithdrawals`);
       setTotalPendingWithdrawals(data?.data?.pendingCount || 0);
-    } catch (err) {
-      console.log("Error fetching pending withdrawals:", err);
-    }
+    } catch (err) {}
   };
 
   const totalPendingDeposits = async () => {
     try {
       const data = await axios.get(`${baseUrl}/totalpendingdeposits`);
       settotalPendingDeposits(data?.data?.pendingCount || 0);
-    } catch (err) {
-      console.log("Error fetching pending deposits:", err);
-    }
+    } catch (err) {}
   };
 
   const loadAllData = async () => {
@@ -121,7 +109,6 @@ const Dashboard = () => {
         totalPendingDeposits(),
       ]);
     } catch (error) {
-      console.error("Error loading dashboard data:", error);
     } finally {
       setLoading(false);
     }

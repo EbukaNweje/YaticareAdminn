@@ -27,7 +27,6 @@ const ManageUsers = () => {
       const response = await axios.get(url);
       setUserData(response?.data?.data || []);
     } catch (error) {
-      console.error("Error fetching users:", error);
       setUserData([]);
     } finally {
       setLoading(false);

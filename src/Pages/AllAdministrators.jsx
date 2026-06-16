@@ -23,7 +23,6 @@ const AllAdministrators = () => {
       });
       setAdminData(response?.data?.admins || []);
     } catch (error) {
-      console.log(error);
       toast.error("Failed to fetch admins");
     }
   };
@@ -39,7 +38,6 @@ const AllAdministrators = () => {
       });
       setGiftOptions(response?.data?.data || []);
     } catch (error) {
-      console.log(error);
       toast.error("Failed to fetch gift options");
     }
   };
@@ -74,7 +72,6 @@ const AllAdministrators = () => {
       setNewGiftTitle("");
       getGiftOptions();
     } catch (error) {
-      console.log(error);
       toast.error(
         error?.response?.data?.message || "Failed to create gift option",
       );
@@ -94,7 +91,6 @@ const AllAdministrators = () => {
       toast.success("Gift option deleted successfully");
       getGiftOptions();
     } catch (error) {
-      console.log(error);
       toast.error(
         error?.response?.data?.message || "Failed to delete gift option",
       );

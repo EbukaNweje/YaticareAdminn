@@ -76,10 +76,7 @@ const ManageAdmin = () => {
       setWalletAddress("");
       setCoin("");
       setErrors({});
-
-      console.log("Wallet added:", response.data);
     } catch (error) {
-      console.error("Add Wallet Error:", error);
       toast.dismiss(toastLoadingId);
 
       if (error.response?.data?.message) {
