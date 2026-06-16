@@ -22,7 +22,7 @@ const AddManager = () => {
   const [toDate, setToDate] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const token = JSON.parse(localStorage.getItem("adminData"))?.token;
+  const token = localStorage.getItem("adminToken");
 
   const getallWalletAddress = async () => {
     try {

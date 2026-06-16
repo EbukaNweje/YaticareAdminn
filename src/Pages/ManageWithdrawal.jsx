@@ -29,7 +29,7 @@ const ManageWithdrawal = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
-  const token = JSON.parse(localStorage.getItem("adminData"))?.token;
+  const token = localStorage.getItem("adminToken");
 
   const acceptWithdrawal = async (withdrawId) => {
     try {

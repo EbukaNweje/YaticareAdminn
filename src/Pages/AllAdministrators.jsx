@@ -11,7 +11,7 @@ const AllAdministrators = () => {
   const [newGiftTitle, setNewGiftTitle] = useState("");
   const [creatingGift, setCreatingGift] = useState(false);
 
-  const token = JSON.parse(localStorage.getItem("adminData"))?.token;
+  const token = localStorage.getItem("adminToken");
 
   const getAllAdmin = async () => {
     try {

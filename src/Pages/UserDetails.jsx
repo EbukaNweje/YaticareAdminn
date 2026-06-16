@@ -31,7 +31,7 @@ import { useParams } from "react-router-dom";
 const UserDetails = () => {
   const [oneUserData, setOneUserData] = useState({});
   const { id } = useParams();
-  const token = JSON.parse(localStorage.getItem("adminData"))?.token;
+  const token = localStorage.getItem("adminToken");
   const [EditInfo, setEditInfo] = useState({
     pin: false,
     password: false,

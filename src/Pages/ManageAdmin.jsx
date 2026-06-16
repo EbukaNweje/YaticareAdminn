@@ -14,7 +14,7 @@ const ManageAdmin = () => {
   const [errors, setErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState("");
 
-  const token = JSON.parse(localStorage.getItem("adminData"))?.token;
+  const token = localStorage.getItem("adminToken");
 
   // Form validation
   const validateForm = () => {

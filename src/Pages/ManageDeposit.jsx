@@ -28,7 +28,10 @@ const ManageDeposit = () => {
   const [imageModalVisible, setImageModalVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
 
-  const token = JSON.parse(localStorage.getItem("adminData"))?.token;
+  const adminDataRaw = localStorage.getItem("adminData");
+  const token = localStorage.getItem("adminToken");
+
+  // console.log("token", token);
 
   const acceptDeposit = async (depositId) => {
     try {
